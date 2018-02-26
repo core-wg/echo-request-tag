@@ -36,9 +36,9 @@ normative:
 informative:
   RFC6347:
   RFC7641:
+  RFC8323:
   I-D.ietf-core-object-security:
   I-D.mattsson-core-coap-actuators:
-  I-D.tschofenig-core-coap-tcp-tls:
 
 --- abstract
 
@@ -260,7 +260,7 @@ In order to gain that protection, use the Request-Tag mechanism as follows:
 
 Authors of other documents (e.g. {{I-D.ietf-core-object-security}}) are invited to mandate this behavior for clients that execute blockwise interactions over secured transports. In this way, the server can rely on a conforming client to set the Request-Tag option when required, and thereby conclude on the integrity of the assembled body.
 
-Note that this mechanism is implicitly implemented when the security layer guarantees ordered delivery (e.g. CoAP over TLS {{I-D.tschofenig-core-coap-tcp-tls}}). This is because with each message, any earlier operation can be regarded as concluded by the client, so it never needs to set the Request-Tag option unless it wants to perform concurrent operations.
+Note that this mechanism is implicitly implemented when the security layer guarantees ordered delivery (e.g. CoAP over TLS {{RFC8323}}). This is because with each message, any earlier operation can be regarded as concluded by the client, so it never needs to set the Request-Tag option unless it wants to perform concurrent operations.
 
 ### Multiple Concurrent Blockwise Operations
 
