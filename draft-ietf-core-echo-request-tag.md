@@ -390,7 +390,7 @@ and MUST NOT use the same ETag value for different representations of a resource
 
 As described in {{req-resp-bind}}, the client must be able to verify that a response corresponds to a particular request. This section updates the CoAP Token processing requirements for clients. The Token processing for servers is not updated. Token processing in Section 5.3.1 of {{RFC7252}} is updated by adding the following text:
 
-When CoAP is used with a security protocol not providing bindings between requests and responses, the tokens have cryptographic importance. The client MUST make sure that tokens are not used in a way so that responses risk being associated with the wrong request. The easiest way to accomplish this is to implement the Token (or part of the Token) as a sequence number starting at zero for each new or rekeyed secure connection, this approach SHOULD be followed. To avoid collisions the sequence number can be encoded with a fixed length or with some length-value encoding.
+When CoAP is used with a security protocol not providing bindings between requests and responses, the tokens have cryptographic importance. The client MUST make sure that tokens are not used in a way so that responses risk being associated with the wrong request. The easiest way to accomplish this is to implement the Token (or part of the Token) as a sequence number starting at zero for each new or rekeyed secure connection, this approach SHOULD be followed.
 
 # Security Considerations {#sec-cons}
 
@@ -408,6 +408,7 @@ Servers MAY use the time since reboot measured in some unit of time. Servers MAY
 
 Servers that use the List of Cached Random Values and Timestamps method described in {{echo-state}} may be vulnerable to resource exhaustion attacks. One way to minimize state is to use the Integrity Protected Timestamp method described in {{echo-state}}.
 
+When the Token (or part of the Token) contains a sequence number, the encoding of the sequence number has to be chosen in a way to avoid any collisions. This is especially true when the Token contains more information than just the sequence number (e.g. serialized state).
 
 # Privacy Considerations {#priv-cons}
 
