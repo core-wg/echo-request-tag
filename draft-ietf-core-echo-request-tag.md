@@ -82,7 +82,7 @@ In HTTPS, this type of binding is always assured by the ordered and reliable del
 
 CoAP {{RFC7252}} does not treat Token as a cryptographically important value and does not give stricter guidelines than that the tokens currently "in use" SHOULD (not SHALL) be unique. If used with a security protocol not providing bindings between requests and responses (e.g. DTLS and TLS) token reuse may result in situations where a client matches a response to the wrong request. Note that mismatches can also happen for other reasons than a malicious attacker, e.g. delayed delivery or a server sending notifications to an uninterested client.
 
-A straightforward mitigation is to mandate clients to not reuse tokens until the traffic keys have been replaced. The easiest way to accomplish this is to implement the token as a counter starting at zero for each new or rekeyed secure connection. This document updates the Token processing in {{RFC7252}} to always assure a cryptographically secure binding of responses to requests for secure REST operations like "coaps".
+A straightforward mitigation is to mandate clients to not reuse tokens until the traffic keys have been replaced. One easy way to accomplish this is to implement the token as a counter starting at zero for each new or rekeyed secure connection. This document updates the Token processing in {{RFC7252}} to always assure a cryptographically secure binding of responses to requests for secure REST operations like "coaps".
 
 ## Terminology
 
@@ -390,7 +390,7 @@ and MUST NOT use the same ETag value for different representations of a resource
 
 As described in {{req-resp-bind}}, the client must be able to verify that a response corresponds to a particular request. This section updates the CoAP Token processing requirements for clients. The Token processing for servers is not updated. Token processing in Section 5.3.1 of {{RFC7252}} is updated by adding the following text:
 
-When CoAP is used with a security protocol not providing bindings between requests and responses, the tokens have cryptographic importance. The client MUST make sure that tokens are not used in a way so that responses risk being associated with the wrong request. The easiest way to accomplish this is to implement the Token (or part of the Token) as a sequence number starting at zero for each new or rekeyed secure connection, this approach SHOULD be followed.
+When CoAP is used with a security protocol not providing bindings between requests and responses, the tokens have cryptographic importance. The client MUST make sure that tokens are not used in a way so that responses risk being associated with the wrong request. One easy way to accomplish this is to implement the Token (or part of the Token) as a sequence number starting at zero for each new or rekeyed secure connection, this approach SHOULD be followed.
 
 # Security Considerations {#sec-cons}
 
