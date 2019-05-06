@@ -473,6 +473,14 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 \[ The editor is asked to remove this section before publication. \]
 
+* Changes since draft-ietf-core-echo-request-tag-04:
+
+    * Editorial fixes
+
+        - Moved paragraph on collision-free encoding of data in the token to
+          Security Considerations and rephrased it
+        - "easiest" -> "one easy"
+
 * Changes since draft-ietf-core-echo-request-tag-03:
 
     * Mention token processing changes in title
