@@ -55,7 +55,7 @@ The initial Constrained Application Protocol (CoAP) suite of specifications ({{R
 
 This document specifies two CoAP options, the Echo option and the Request-Tag option: The Echo option enables a CoAP server to verify the freshness of a request, synchronize state, or force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match message fragments belonging to the same request, fragmented using the CoAP Block-Wise Transfer mechanism, which mitigates attacks and enables concurrent blockwise operations. These options in themselves do not replace the need for a security protocol; they specify the format and processing of data which, when integrity protected using e.g. DTLS ({{RFC6347}}), TLS ({{RFC8446}}), or OSCORE ({{RFC8613}}), provide the additional security features.
 
-The document also updates the Token processing requirements for clients specified in {{RFC7252}}. TThe updated processing forbids non-secure reuse of tokens to ensure binding of responses to requests when CoAP is used with security, thus mitigating error cases and attacks where the client may erroneously associate the wrong response to a request.
+The document also updates the Token processing requirements for clients specified in {{RFC7252}}. The updated processing forbids non-secure reuse of tokens to ensure binding of responses to requests when CoAP is used with security, thus mitigating error cases and attacks where the client may erroneously associate the wrong response to a request.
 
 
 ## Request Freshness {#req-fresh}
