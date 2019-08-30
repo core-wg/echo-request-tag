@@ -45,7 +45,7 @@ informative:
 
 --- abstract
 
-This document specifies enhancements to the Constrained Application Protocol (CoAP) that mitigate security issues in particular use cases. The Echo option enables a CoAP server to verify the freshness of a request or to force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match Block-Wise message fragments belonging to the same request. The updates to the client Token processing requirements of RFC 7252 forbid non-secure reuse of tokens to ensure binding of responses to requests when CoAP is used with security.
+This document specifies enhancements to the Constrained Application Protocol (CoAP) that mitigate security issues in particular use cases. The Echo option enables a CoAP server to verify the freshness of a request or to force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match Block-Wise message fragments belonging to the same request. The update to the client Token processing requirements of RFC 7252 forbids non-secure reuse of tokens to ensure binding of responses to requests when CoAP is used with security.
 
 --- middle
 
