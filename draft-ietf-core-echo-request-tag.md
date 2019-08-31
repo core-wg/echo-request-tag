@@ -42,6 +42,7 @@ informative:
   RFC8613:
   I-D.ietf-core-oscore-groupcomm:
   I-D.mattsson-core-coap-actuators:
+  I-D.ietf-core-stateless:
 
 --- abstract
 
@@ -406,7 +407,7 @@ Servers MAY use the time since reboot measured in some unit of time. Servers MAY
 
 Servers that use the List of Cached Random Values and Timestamps method described in {{echo-state}} may be vulnerable to resource exhaustion attacks. One way to minimize state is to use the Integrity Protected Timestamp method described in {{echo-state}}.
 
-When the Token (or part of the Token) contains a sequence number, the encoding of the sequence number has to be chosen in a way to avoid any collisions. This is especially true when the Token contains more information than just the sequence number (e.g. serialized state).
+When the Token (or part of the Token) contains a sequence number, the encoding of the sequence number has to be chosen in a way to avoid any collisions. This is especially true when the Token contains more information than just the sequence number, e.g. serialized state as in {{I-D.ietf-core-stateless}}.
 
 # Privacy Considerations {#priv-cons}
 
