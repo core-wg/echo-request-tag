@@ -1,5 +1,6 @@
 ---
 title: "CoAP: Echo, Request-Tag, and Token Processing"
+abbrev: "CoAP: ERT"
 docname: draft-ietf-core-echo-request-tag-latest
 category: std
 updates: 7252
