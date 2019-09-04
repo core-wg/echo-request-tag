@@ -47,7 +47,7 @@ informative:
 
 --- abstract
 
-This document specifies enhancements to the Constrained Application Protocol (CoAP) that mitigate security issues in particular use cases. The Echo option enables a CoAP server to verify the freshness of a request or to force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match Block-Wise message fragments belonging to the same request. The update to the client Token processing requirements of RFC 7252 forbids non-secure reuse of tokens to ensure binding of responses to requests when CoAP is used with security.
+This document specifies enhancements to the Constrained Application Protocol (CoAP) that mitigate security issues in particular use cases. The Echo option enables a CoAP server to verify the freshness of a request or to force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match block-wise message fragments belonging to the same request. The update to the client Token processing requirements of RFC 7252 forbids non-secure reuse of Tokens to ensure binding of responses to requests when CoAP is used with security.
 
 --- middle
 
@@ -55,9 +55,9 @@ This document specifies enhancements to the Constrained Application Protocol (Co
 
 The initial Constrained Application Protocol (CoAP) suite of specifications ({{RFC7252}}, {{RFC7641}}, and {{RFC7959}}) was designed with the assumption that security could be provided on a separate layer, in particular by using DTLS ({{RFC6347}}). However, for some use cases, additional functionality or extra processing is needed to support secure CoAP operations. This document specifies security enhancements to the Constrained Application Protocol (CoAP).
 
-This document specifies two CoAP options, the Echo option and the Request-Tag option: The Echo option enables a CoAP server to verify the freshness of a request, synchronize state, or force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match message fragments belonging to the same request, fragmented using the CoAP Block-Wise Transfer mechanism, which mitigates attacks and enables concurrent blockwise operations. These options in themselves do not replace the need for a security protocol; they specify the format and processing of data which, when integrity protected using e.g. DTLS ({{RFC6347}}), TLS ({{RFC8446}}), or OSCORE ({{RFC8613}}), provide the additional security features.
+This document specifies two CoAP options, the Echo option and the Request-Tag option: The Echo option enables a CoAP server to verify the freshness of a request, synchronize state, or force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match message fragments belonging to the same request, fragmented using the CoAP block-wise Transfer mechanism, which mitigates attacks and enables concurrent block-wise operations. These options in themselves do not replace the need for a security protocol; they specify the format and processing of data which, when integrity protected using e.g. DTLS ({{RFC6347}}), TLS ({{RFC8446}}), or OSCORE ({{RFC8613}}), provide the additional security features.
 
-The document also updates the Token processing requirements for clients specified in {{RFC7252}}. The updated processing forbids non-secure reuse of tokens to ensure binding of responses to requests when CoAP is used with security, thus mitigating error cases and attacks where the client may erroneously associate the wrong response to a request.
+The document also updates the Token processing requirements for clients specified in {{RFC7252}}. The updated processing forbids non-secure reuse of Tokens to ensure binding of responses to requests when CoAP is used with security, thus mitigating error cases and attacks where the client may erroneously associate the wrong response to a request.
 
 
 ## Request Freshness {#req-fresh}
@@ -72,7 +72,7 @@ A straightforward mitigation of potential delayed requests is that the CoAP serv
 
 CoAP was designed to work over unreliable transports, such as UDP, and include a lightweight reliability feature to handle messages which are lost or arrive out of order. In order for a security protocol to support CoAP operations over unreliable transports, it must allow out-of-order delivery of messages using e.g. a sliding replay window such as described in Section 4.1.2.6 of DTLS ({{RFC6347}}).
 
-The Block-Wise Transfer mechanism {{RFC7959}} extends CoAP by defining the transfer of a large resource representation (CoAP message body) as a sequence of blocks (CoAP message payloads). The mechanism uses a pair of CoAP options, Block1 and Block2, pertaining to the request and response payload, respectively. The blockwise functionality does not support the detection of interchanged blocks between different message bodies to the same resource having the same block number. This remains true even when CoAP is used together with a security protocol such as DTLS or OSCORE, within the replay window ({{I-D.mattsson-core-coap-actuators}}), which is a vulnerability of CoAP when using RFC7959.
+The block-wise transfer mechanism {{RFC7959}} extends CoAP by defining the transfer of a large resource representation (CoAP message body) as a sequence of blocks (CoAP message payloads). The mechanism uses a pair of CoAP options, Block1 and Block2, pertaining to the request and response payload, respectively. The block-wise functionality does not support the detection of interchanged blocks between different message bodies to the same resource having the same block number. This remains true even when CoAP is used together with a security protocol such as DTLS or OSCORE, within the replay window ({{I-D.mattsson-core-coap-actuators}}), which is a vulnerability of CoAP when using RFC7959.
 
 A straightforward mitigation of mixing up blocks from different messages is to use unique identifiers for different message bodies, which would provide equivalent protection to the case where the complete body fits into a single payload. The ETag option {{RFC7252}}, set by the CoAP server, identifies a response body fragmented using the Block2 option. This document defines the Request-Tag option for identifying request bodies, similar to ETag, but ephemeral and set by the CoAP client. The Request-Tag option is only used in requests that carry the Block1 option, and in Block2 requests following these.
 
@@ -82,9 +82,9 @@ A fundamental requirement of secure REST operations is that the client can bind 
 
 In HTTPS, this type of binding is always assured by the ordered and reliable delivery as well as mandating that the server sends responses in the same order that the requests were received. The same is not true for CoAP where the server (or an attacker) can return responses in any order and where there can be any number of responses to a request (see e.g. {{RFC7641}}). In CoAP, concurrent requests are differentiated by their Token. Note that the CoAP Message ID cannot be used for this purpose since those are typically different for REST request and corresponding response in case of "separate response", see Section 2.2 of {{RFC7252}}.
 
-CoAP {{RFC7252}} does not treat Token as a cryptographically important value and does not give stricter guidelines than that the tokens currently "in use" SHOULD (not SHALL) be unique. If used with a security protocol not providing bindings between requests and responses (e.g. DTLS and TLS) token reuse may result in situations where a client matches a response to the wrong request. Note that mismatches can also happen for other reasons than a malicious attacker, e.g. delayed delivery or a server sending notifications to an uninterested client.
+CoAP {{RFC7252}} does not treat Token as a cryptographically important value and does not give stricter guidelines than that the Tokens currently "in use" SHOULD (not SHALL) be unique. If used with a security protocol not providing bindings between requests and responses (e.g. DTLS and TLS) Token reuse may result in situations where a client matches a response to the wrong request. Note that mismatches can also happen for other reasons than a malicious attacker, e.g. delayed delivery or a server sending notifications to an uninterested client.
 
-A straightforward mitigation is to mandate clients to not reuse tokens until the traffic keys have been replaced. One easy way to accomplish this is to implement the token as a counter starting at zero for each new or rekeyed secure connection. This document updates the Token processing in {{RFC7252}} to always assure a cryptographically secure binding of responses to requests for secure REST operations like "coaps".
+A straightforward mitigation is to mandate clients to not reuse Tokens until the traffic keys have been replaced. One easy way to accomplish this is to implement the Token as a counter starting at zero for each new or rekeyed secure connection. This document updates the Token processing in {{RFC7252}} to always assure a cryptographically secure binding of responses to requests for secure REST operations like "coaps".
 
 ## Terminology
 
@@ -92,13 +92,13 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 Unless otherwise specified, the terms "client" and "server" refers to "CoAP client" and "CoAP server", respectively, as defined in {{RFC7252}}. The term "origin server" is used as in {{RFC7252}}. The term "origin client" is used in this document to denote the client from which a request originates; to distinguish from clients in proxies.
 
-The terms "payload" and "body" of a message are used as in {{RFC7959}}.  The complete interchange of a request and a response body is called a (REST) "operation". An operation fragmented using {{RFC7959}} is called a "blockwise operation". A blockwise operation which is fragmenting the request body is called a "blockwise request operation".  A blockwise operation which is fragmenting the response body is called a "blockwise response operation".
+The terms "payload" and "body" of a message are used as in {{RFC7959}}.  The complete interchange of a request and a response body is called a (REST) "operation". An operation fragmented using {{RFC7959}} is called a "block-wise operation". A block-wise operation which is fragmenting the request body is called a "block-wise request operation".  A block-wise operation which is fragmenting the response body is called a "block-wise response operation".
 
 Two request messages are said to be "matchable" if they occur between the same endpoint pair, have the same code and the same set of options except for elective NoCacheKey options and options involved in block-wise transfer (Block1, Block2 and Request-Tag).
 <!-- We could also keep the Request-Tag inside the matchable criterion, but then we'd be saying "matchable except for the Request-Tag" all over the document. -->
 Two operations are said to be matchable if any of their messages are.
 
-Two matchable blockwise operations are said to be "concurrent" if a block of the second request is exchanged even though the client still intends to exchange further blocks in the first operation. (Concurrent blockwise request operations are impossible with the options of {{RFC7959}} because the second operation's block overwrites any state of the first exchange.).
+Two matchable block-wise operations are said to be "concurrent" if a block of the second request is exchanged even though the client still intends to exchange further blocks in the first operation. (Concurrent block-wise request operations are impossible with the options of {{RFC7959}} because the second operation's block overwrites any state of the first exchange.).
 
 The Echo and Request-Tag options are defined in this document.
 
@@ -106,7 +106,7 @@ The Echo and Request-Tag options are defined in this document.
 
 # The Echo Option {#echo}
 
-A fresh request is one whose age has not yet exceeded the freshness requirements set by the server. The freshness requirements are application specific and may vary based on resource, method, and parameters outside of CoAP such as policies. The Echo option is a lightweight challenge-response mechanism for CoAP, motivated by a need for a server to verify freshness of a request as described in {{req-fresh}}. The Echo option value is a challenge from the server to the client included in a CoAP response and echoed back to the server in one or more CoAP requests. The Echo option provides a convention to transfer freshness tokens that works for all CoAP methods and response codes.
+A fresh request is one whose age has not yet exceeded the freshness requirements set by the server. The freshness requirements are application specific and may vary based on resource, method, and parameters outside of CoAP such as policies. The Echo option is a lightweight challenge-response mechanism for CoAP, motivated by a need for a server to verify freshness of a request as described in {{req-fresh}}. The Echo option value is a challenge from the server to the client included in a CoAP response and echoed back to the server in one or more CoAP requests. The Echo option provides a convention to transfer freshness Tokens that works for all CoAP methods and response codes.
 
 
 ## Option Format {#echo-format}
@@ -206,7 +206,7 @@ different origin client endpoints. Following from the recommendation above, a pr
 
 # The Request-Tag Option # {#request-tag}
 
-The Request-Tag is intended for use as a short-lived identifier for keeping apart distinct blockwise request operations on one resource from one client, addressing the issue described in {{body-int}}. It enables the receiving server to reliably assemble request payloads (blocks) to their message bodies, and, if it chooses to support it, to reliably process simultaneous blockwise request operations on a single resource. The requests must be integrity protected if they should protect against interchange of blocks between different message bodies.
+The Request-Tag is intended for use as a short-lived identifier for keeping apart distinct block-wise request operations on one resource from one client, addressing the issue described in {{body-int}}. It enables the receiving server to reliably assemble request payloads (blocks) to their message bodies, and, if it chooses to support it, to reliably process simultaneous block-wise request operations on a single resource. The requests must be integrity protected if they should protect against interchange of blocks between different message bodies.
 
 In essence, it is an implementation of the "proxy-safe elective option" used just to "vary the cache key" as suggested in {{RFC7959}} Section 2.4.
 
@@ -229,7 +229,7 @@ The Request-Tag option is not critical, is safe to forward, repeatable, and part
 
 Request-Tag, like the block options, is both a class E and a class U option in terms of OSCORE processing (see Section 4.1 of {{RFC8613}}): The Request-Tag MAY be an inner or outer option. It influences the inner or outer block operation, respectively. The inner and outer values are therefore independent of each other. The inner option is encrypted and integrity protected between client and server, and provides message body identification in case of end-to-end fragmentation of requests. The outer option is visible to proxies and labels message bodies in case of hop-by-hop fragmentation of requests.
 
-The Request-Tag option is only used in the request messages of blockwise operations.
+The Request-Tag option is only used in the request messages of block-wise operations.
 
 The Request-Tag mechanism can be applied independently on the server and client sides of CoAP-to-CoAP proxies as are the block options,
 though given it is safe to forward, a proxy is free to just forward it when processing an operation.
@@ -240,7 +240,7 @@ it is not applicable to HTTP requests.
 
 The Request-Tag option does not require any particular processing on the server side
 outside of the processing already necessary for any unknown elective proxy-safe cache-key option:
-The option varies the properties that distinguish blockwise operations
+The option varies the properties that distinguish block-wise operations
 (which includes all options except elective NoCacheKey and except Block1/2),
 and thus the server can not treat messages with a different list of Request-Tag options as belonging to the same operation.
 <!-- not speaking of "matchable" here as that working definition explicitly excludes Request-Tag to make the rest of the document easier to read -->
@@ -268,7 +268,7 @@ or it can forget about the state established with the older operation and respon
 
 ## Setting the Request-Tag
 
-For each separate blockwise request operation, the client can choose a Request-Tag value, or choose not to set a Request-Tag.
+For each separate block-wise request operation, the client can choose a Request-Tag value, or choose not to set a Request-Tag.
 Starting a request operation matchable to a
 previous operation and even using the same Request-Tag value is called request tag recycling.
 The absence of a Request-Tag option is viewed as a value distinct from all values with a single Request-Tag option set;
@@ -309,25 +309,25 @@ In order to gain that protection, use the Request-Tag mechanism as follows:
   after an endpoint's details (like the IP address) have changed, then
   the client MUST consider messages sent to *any* endpoint address within the new operation's security context.
 
-* The client MUST NOT regard a blockwise request operation as concluded unless all of the messages the client previously sent in the operation have been confirmed by the message integrity protection mechanism, or are considered invalid by the server if replayed.
+* The client MUST NOT regard a block-wise request operation as concluded unless all of the messages the client previously sent in the operation have been confirmed by the message integrity protection mechanism, or are considered invalid by the server if replayed.
 
   Typically, in OSCORE, these confirmations can result either from the client receiving an OSCORE response message matching the request (an empty ACK is insufficient), or because the message's sequence number is old enough to be outside the server's receive window.
 
   In DTLS, this can only be confirmed if the request message was not retransmitted, and was responded to.
 
 <!-- pending see thread "ERT and OSCORE" -->
-Authors of other documents (e.g. applications of {{RFC8613}}) are invited to mandate this behavior for clients that execute blockwise interactions over secured transports. In this way, the server can rely on a conforming client to set the Request-Tag option when required, and thereby conclude on the integrity of the assembled body.
+Authors of other documents (e.g. applications of {{RFC8613}}) are invited to mandate this behavior for clients that execute block-wise interactions over secured transports. In this way, the server can rely on a conforming client to set the Request-Tag option when required, and thereby conclude on the integrity of the assembled body.
 
 Note that this mechanism is implicitly implemented when the security layer guarantees ordered delivery (e.g. CoAP over TLS {{RFC8323}}). This is because with each message, any earlier message can not be replayed any more, so the client never needs to set the Request-Tag option unless it wants to perform concurrent operations.
 
-### Multiple Concurrent Blockwise Operations
+### Multiple Concurrent Block-wise Operations
 
-CoAP clients, especially CoAP proxies, may initiate a blockwise request operation to a resource, to which a previous one is already in progress, which the new request should not cancel.
+CoAP clients, especially CoAP proxies, may initiate a block-wise request operation to a resource, to which a previous one is already in progress, which the new request should not cancel.
 A CoAP proxy would be in such a situation when it forwards operations with the same cache-key options but possibly different payloads.
 
 For those cases, Request-Tag is the proxy-safe elective option suggested in {{RFC7959}} Section 2.4 last paragraph.
 
-When initializing a new blockwise operation, a client has to look at other active operations:
+When initializing a new block-wise operation, a client has to look at other active operations:
 
 * If any of them is matchable to the new one, and the client neither wants to cancel the old one nor postpone the new one,
 it can pick a Request-Tag value that is not in use by the other matchable operations for the new operation.
@@ -390,7 +390,7 @@ and MUST NOT use the same ETag value for different representations of a resource
 
 As described in {{req-resp-bind}}, the client must be able to verify that a response corresponds to a particular request. This section updates the CoAP Token processing requirements for clients. The Token processing for servers is not updated. Token processing in Section 5.3.1 of {{RFC7252}} is updated by adding the following text:
 
-When CoAP is used with a security protocol not providing bindings between requests and responses, the tokens have cryptographic importance. The client MUST make sure that tokens are not used in a way so that responses risk being associated with the wrong request. One easy way to accomplish this is to implement the Token (or part of the Token) as a sequence number starting at zero for each new or rekeyed secure connection, this approach SHOULD be followed.
+When CoAP is used with a security protocol not providing bindings between requests and responses, the Tokens have cryptographic importance. The client MUST make sure that Tokens are not used in a way so that responses risk being associated with the wrong request. One easy way to accomplish this is to implement the Token (or part of the Token) as a sequence number starting at zero for each new or rekeyed secure connection, this approach SHOULD be followed.
 
 # Security Considerations {#sec-cons}
 
@@ -467,7 +467,7 @@ Other mechanisms complying with the security and privacy considerations may be u
 # Request-Tag Message Size Impact
 
 In absence of concurrent operations, the Request-Tag mechanism for body integrity ({{body-integrity}}) incurs no overhead if no messages are lost (more precisely: in OSCORE, if no operations are aborted due to repeated transmission failure; in DTLS, if no packages are lost),
-or when blockwise request operations happen rarely (in OSCORE, if there is always only one request blockwise operation in the replay window).
+or when block-wise request operations happen rarely (in OSCORE, if there is always only one request block-wise operation in the replay window).
 
 In those situations, no message has any Request-Tag option set, and that can be recycled indefinitely.
 
@@ -486,15 +486,15 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
     * Editorial fixes
 
-        - Moved paragraph on collision-free encoding of data in the token to
+        - Moved paragraph on collision-free encoding of data in the Token to
           Security Considerations and rephrased it
         - "easiest" -> "one easy"
 
 * Changes since draft-ietf-core-echo-request-tag-03:
 
-    * Mention token processing changes in title
+    * Mention Token processing changes in title
     * Abstract reworded
-    * Clarify updates to token processing
+    * Clarify updates to Token processing
     * Describe security levels from Echo length
     * Allow non-monotonic clocks under certain conditions for freshness
     * Simplify freshness expressions
@@ -514,7 +514,7 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 * Major changes since draft-ietf-core-echo-request-tag-01:
 
-    * Follow-up changes after the "relying on blockwise" change in -01:
+    * Follow-up changes after the "relying on block-wise" change in -01:
 
         * Simplify the description of Request-Tag and matchability
         * Do not update RFC7959 any more
@@ -527,8 +527,8 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
     * Added rules for Token processing.
     * Added security considerations.
     * Added actual IANA section.
-    * Made Request-Tag optional and safe-to-forward, relying on blockwise to treat it as part of the cache-key
-    * Dropped use case about OSCORE outer-blockwise (the case went away when its Partial IV was moved into the Object-Security option)
+    * Made Request-Tag optional and safe-to-forward, relying on block-wise to treat it as part of the cache-key
+    * Dropped use case about OSCORE outer-block-wise (the case went away when its Partial IV was moved into the Object-Security option)
 
 * Major changes since draft-amsuess-core-repeat-request-tag-00:
     * The option used for establishing freshness was renamed from "Repeat" to "Echo" to reduce confusion about repeatable options.
