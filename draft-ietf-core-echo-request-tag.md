@@ -136,7 +136,7 @@ OSCORE servers MUST only produce Inner Echo options, but clients need to use Out
 
 ## Echo Processing {#echo-proc}
 
-The Echo option MAY be included in any request or response (see {{echo-app}} for different applications), but the Echo option MUST NOT be used with empty CoAP requests (i.e., Code=0.00).
+The Echo option MAY be included in any request or response (see {{echo-app}} for different applications).
 
 The application decides under what conditions a CoAP request to a resource is required to be fresh. These conditions can for example include what resource is requested, the request method and other data in the request, and conditions in the environment such as the state of the server or the time of the day.
 
