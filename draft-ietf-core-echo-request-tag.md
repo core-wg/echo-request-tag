@@ -1,5 +1,6 @@
 ---
 title: "CoAP: Echo, Request-Tag, and Token Processing"
+abbrev: "CoAP: ERT"
 docname: draft-ietf-core-echo-request-tag-latest
 category: std
 updates: 7252
@@ -39,13 +40,14 @@ informative:
   RFC7641:
   RFC8323:
   RFC8446:
-  I-D.ietf-core-object-security:
+  RFC8613:
   I-D.ietf-core-oscore-groupcomm:
   I-D.mattsson-core-coap-actuators:
+  I-D.ietf-core-stateless:
 
 --- abstract
 
-This document specifies enhancements to the Constrained Application Protocol (CoAP) that mitigate security issues in particular use cases. The Echo option enables a CoAP server to verify the freshness of a request or to force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match Block-Wise message fragments belonging to the same request. The updated Token processing requirements for clients ensure secure binding of responses to requests when CoAP is used with security.
+This document specifies enhancements to the Constrained Application Protocol (CoAP) that mitigate security issues in particular use cases. The Echo option enables a CoAP server to verify the freshness of a request or to force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match block-wise message fragments belonging to the same request. The update to the client Token processing requirements of RFC 7252 forbids non-secure reuse of Tokens to ensure binding of responses to requests when CoAP is used with security.
 
 --- middle
 
@@ -53,9 +55,9 @@ This document specifies enhancements to the Constrained Application Protocol (Co
 
 The initial Constrained Application Protocol (CoAP) suite of specifications ({{RFC7252}}, {{RFC7641}}, and {{RFC7959}}) was designed with the assumption that security could be provided on a separate layer, in particular by using DTLS ({{RFC6347}}). However, for some use cases, additional functionality or extra processing is needed to support secure CoAP operations. This document specifies security enhancements to the Constrained Application Protocol (CoAP).
 
-This document specifies two CoAP options, the Echo option and the Request-Tag option: The Echo option enables a CoAP server to verify the freshness of a request, synchronize state, or force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match message fragments belonging to the same request, fragmented using the CoAP Block-Wise Transfer mechanism, which mitigates attacks and enables concurrent blockwise operations. These options in themselves do not replace the need for a security protocol; they specify the format and processing of data which, when integrity protected using e.g. DTLS ({{RFC6347}}), TLS ({{RFC8446}}), or OSCORE ({{I-D.ietf-core-object-security}}), provide the additional security features.
+This document specifies two CoAP options, the Echo option and the Request-Tag option: The Echo option enables a CoAP server to verify the freshness of a request, synchronize state, or force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match message fragments belonging to the same request, fragmented using the CoAP block-wise Transfer mechanism, which mitigates attacks and enables concurrent block-wise operations. These options in themselves do not replace the need for a security protocol; they specify the format and processing of data which, when integrity protected using e.g. DTLS ({{RFC6347}}), TLS ({{RFC8446}}), or OSCORE ({{RFC8613}}), provide the additional security features.
 
-The document also updates the Token processing requirements for clients specified in {{RFC7252}}. The updated processing ensures secure binding of responses to requests when CoAP is used with security, thus mitigating error cases and attacks where the client may erroneously associate the wrong response to a request.
+The document also updates the Token processing requirements for clients specified in {{RFC7252}}. The updated processing forbids non-secure reuse of Tokens to ensure binding of responses to requests when CoAP is used with security, thus mitigating error cases and attacks where the client may erroneously associate the wrong response to a request.
 
 
 ## Request Freshness {#req-fresh}
@@ -70,7 +72,7 @@ A straightforward mitigation of potential delayed requests is that the CoAP serv
 
 CoAP was designed to work over unreliable transports, such as UDP, and include a lightweight reliability feature to handle messages which are lost or arrive out of order. In order for a security protocol to support CoAP operations over unreliable transports, it must allow out-of-order delivery of messages using e.g. a sliding replay window such as described in Section 4.1.2.6 of DTLS ({{RFC6347}}).
 
-The Block-Wise Transfer mechanism {{RFC7959}} extends CoAP by defining the transfer of a large resource representation (CoAP message body) as a sequence of blocks (CoAP message payloads). The mechanism uses a pair of CoAP options, Block1 and Block2, pertaining to the request and response payload, respectively. The blockwise functionality does not support the detection of interchanged blocks between different message bodies to the same resource having the same block number. This remains true even when CoAP is used together with a security protocol such as DTLS or OSCORE, within the replay window ({{I-D.mattsson-core-coap-actuators}}), which is a vulnerability of CoAP when using RFC7959.
+The block-wise transfer mechanism {{RFC7959}} extends CoAP by defining the transfer of a large resource representation (CoAP message body) as a sequence of blocks (CoAP message payloads). The mechanism uses a pair of CoAP options, Block1 and Block2, pertaining to the request and response payload, respectively. The block-wise functionality does not support the detection of interchanged blocks between different message bodies to the same resource having the same block number. This remains true even when CoAP is used together with a security protocol such as DTLS or OSCORE, within the replay window ({{I-D.mattsson-core-coap-actuators}}), which is a vulnerability of CoAP when using RFC7959.
 
 A straightforward mitigation of mixing up blocks from different messages is to use unique identifiers for different message bodies, which would provide equivalent protection to the case where the complete body fits into a single payload. The ETag option {{RFC7252}}, set by the CoAP server, identifies a response body fragmented using the Block2 option. This document defines the Request-Tag option for identifying request bodies, similar to ETag, but ephemeral and set by the CoAP client. The Request-Tag option is only used in requests that carry the Block1 option, and in Block2 requests following these.
 
@@ -80,9 +82,9 @@ A fundamental requirement of secure REST operations is that the client can bind 
 
 In HTTPS, this type of binding is always assured by the ordered and reliable delivery as well as mandating that the server sends responses in the same order that the requests were received. The same is not true for CoAP where the server (or an attacker) can return responses in any order and where there can be any number of responses to a request (see e.g. {{RFC7641}}). In CoAP, concurrent requests are differentiated by their Token. Note that the CoAP Message ID cannot be used for this purpose since those are typically different for REST request and corresponding response in case of "separate response", see Section 2.2 of {{RFC7252}}.
 
-CoAP {{RFC7252}} does not treat Token as a cryptographically important value and does not give stricter guidelines than that the tokens currently "in use" SHOULD (not SHALL) be unique. If used with a security protocol not providing bindings between requests and responses (e.g. DTLS and TLS) token reuse may result in situations where a client matches a response to the wrong request. Note that mismatches can also happen for other reasons than a malicious attacker, e.g. delayed delivery or a server sending notifications to an uninterested client.
+CoAP {{RFC7252}} does not treat Token as a cryptographically important value and does not give stricter guidelines than that the Tokens currently "in use" SHOULD (not SHALL) be unique. If used with a security protocol not providing bindings between requests and responses (e.g. DTLS and TLS) Token reuse may result in situations where a client matches a response to the wrong request. Note that mismatches can also happen for other reasons than a malicious attacker, e.g. delayed delivery or a server sending notifications to an uninterested client.
 
-A straightforward mitigation is to mandate clients to not reuse tokens until the traffic keys have been replaced. One easy way to accomplish this is to implement the token as a counter starting at zero for each new or rekeyed secure connection. This document updates the Token processing in {{RFC7252}} to always assure a cryptographically secure binding of responses to requests for secure REST operations like "coaps".
+A straightforward mitigation is to mandate clients to not reuse Tokens until the traffic keys have been replaced. One easy way to accomplish this is to implement the Token as a counter starting at zero for each new or rekeyed secure connection. This document updates the Token processing in {{RFC7252}} to always assure a cryptographically secure binding of responses to requests for secure REST operations like "coaps".
 
 ## Terminology
 
@@ -90,13 +92,13 @@ The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "S
 
 Unless otherwise specified, the terms "client" and "server" refers to "CoAP client" and "CoAP server", respectively, as defined in {{RFC7252}}. The term "origin server" is used as in {{RFC7252}}. The term "origin client" is used in this document to denote the client from which a request originates; to distinguish from clients in proxies.
 
-The terms "payload" and "body" of a message are used as in {{RFC7959}}.  The complete interchange of a request and a response body is called a (REST) "operation". An operation fragmented using {{RFC7959}} is called a "blockwise operation". A blockwise operation which is fragmenting the request body is called a "blockwise request operation".  A blockwise operation which is fragmenting the response body is called a "blockwise response operation".
+The terms "payload" and "body" of a message are used as in {{RFC7959}}.  The complete interchange of a request and a response body is called a (REST) "operation". An operation fragmented using {{RFC7959}} is called a "block-wise operation". A block-wise operation which is fragmenting the request body is called a "block-wise request operation".  A block-wise operation which is fragmenting the response body is called a "block-wise response operation".
 
 Two request messages are said to be "matchable" if they occur between the same endpoint pair, have the same code and the same set of options except for elective NoCacheKey options and options involved in block-wise transfer (Block1, Block2 and Request-Tag).
 <!-- We could also keep the Request-Tag inside the matchable criterion, but then we'd be saying "matchable except for the Request-Tag" all over the document. -->
 Two operations are said to be matchable if any of their messages are.
 
-Two matchable blockwise operations are said to be "concurrent" if a block of the second request is exchanged even though the client still intends to exchange further blocks in the first operation. (Concurrent blockwise request operations are impossible with the options of {{RFC7959}} because the second operation's block overwrites any state of the first exchange.).
+Two matchable block-wise operations are said to be "concurrent" if a block of the second request is exchanged even though the client still intends to exchange further blocks in the first operation. (Concurrent block-wise request operations are impossible with the options of {{RFC7959}} because the second operation's block overwrites any state of the first exchange.).
 
 The Echo and Request-Tag options are defined in this document.
 
@@ -104,7 +106,7 @@ The Echo and Request-Tag options are defined in this document.
 
 # The Echo Option {#echo}
 
-A fresh request is one whose age has not yet exceeded the freshness requirements set by the server. The freshness requirements are application specific and may vary based on resource, method, and parameters outside of coap such as policies. The Echo option is a lightweight challenge-response mechanism for CoAP, motivated by a need for a server to verify freshness of a request as described in {{req-fresh}}. The Echo option value is a challenge from the server to the client included in a CoAP response and echoed back to the server in one or more CoAP requests. The Echo option provides a convention to transfer freshness tokens that works for all CoAP methods and response codes.
+A fresh request is one whose age has not yet exceeded the freshness requirements set by the server. The freshness requirements are application specific and may vary based on resource, method, and parameters outside of CoAP such as policies. The Echo option is a lightweight challenge-response mechanism for CoAP, motivated by a need for a server to verify freshness of a request as described in {{req-fresh}}. The Echo option value is a challenge from the server to the client included in a CoAP response and echoed back to the server in one or more CoAP requests. The Echo option provides a convention to transfer freshness Tokens that works for all CoAP methods and response codes.
 
 
 ## Option Format {#echo-format}
@@ -123,13 +125,13 @@ The Echo Option is elective, safe-to-forward, not part of the cache-key, and not
 ~~~~~~~~~~
 {: #echo-table title="Echo Option Summary" artwork-align="center"}
 
-\[ Note to RFC editor: If this document is released before core-object-security, then the following paragraph and the "E"/"U" columns above need to move into core-object-security, as they are defined in that draft. \]
-
 The Echo option value is generated by a server, and its content and structure are implementation specific. Different methods for generating Echo option values are outlined in {{echo-state}}. Clients and intermediaries MUST treat an Echo option value as opaque and make no assumptions about its content or structure.
 
 When receiving an Echo option in a request, the server MUST be able to verify when the Echo option value was generated. This implies that the server MUST be able to verify that the Echo option value was generated by the server or some other party that the server trusts. Depending on the freshness requirements the server may verify exactly when the Echo option value was generated (time-based freshness) or verify that the Echo option was generated after a specific event (event-based freshness). As the request is bound to the Echo option value, the server can determine that the request is not older that the Echo option value.
 
-When the Echo option is used with OSCORE {{I-D.ietf-core-object-security}} it MAY be an Inner or Outer option, and the Inner and Outer values are independent. The Inner option is encrypted and integrity protected between the endpoints, whereas the Outer option is not protected by OSCORE and visible between the endpoints to the extent it is not protected by some other security protocol.  E.g. in the case of DTLS hop-by-hop between the endpoints, the Outer option is visible to proxies along the path.
+When the Echo option is used with OSCORE {{RFC8613}} it MAY be an Inner or Outer option, and the Inner and Outer values are independent. 
+
+OSCORE servers MUST only produce Inner Echo options, but clients need to use Outer Echo as well, as reaction to a proxy testing reachability of the client using a CoAP error message including Echo in response to a previous OSCORE message from the client. The Inner option is encrypted and integrity protected between the endpoints, whereas the Outer option is not protected by OSCORE and visible between the endpoints to the extent it is not protected by some other security protocol.  E.g. in the case of DTLS hop-by-hop between the endpoints, the Outer option is visible to proxies along the path.
 
 
 ## Echo Processing {#echo-proc}
@@ -143,6 +145,8 @@ If a certain request is required to be fresh, the request does not contain a fre
 The server may use request freshness provided by the Echo option to verify the aliveness of a client or to synchronize state. The server may also include the Echo option in a response to force a client to demonstrate reachability at its claimed network address.
 
 Upon receiving a 4.01 Unauthorized response with the Echo option, the client SHOULD resend the original request with the addition of an Echo option with the received Echo option value. The client MAY send a different request compared to the original request. Upon receiving any other response with the Echo option, the client SHOULD echo the Echo option value in the next request to the server. The client MAY include the same Echo option value in several different requests to the server.
+
+When OSCORE is used, client and server MUST process Inner (Class E use) and Outer (Class U use) Echo options independently. That is, a client MUST NOT echo an Inner response value in an Outer request value or vice versa, and the server MUST NOT accept Echo values from a different class than where it sent them.
 
 Upon receiving a request with the Echo option, the server determines if the request is required to be fresh. If not, the Echo option MAY be ignored. If the request is required to be fresh and the server cannot verify the freshness of the request in some other way, the server MUST use the Echo option to verify that the request is fresh enough. If the server cannot verify that the request is fresh enough, the request is not processed further, and an error message MAY be sent. The error message SHOULD include a new Echo option.
 
@@ -172,7 +176,7 @@ Client   Server
 ~~~~~~~~~~
 {: #echo-figure title="Example Echo Option Message Flow" artwork-align="center"}
 
-When used to serve freshness requirements (including client aliveness and state synchronizing), CoAP messages containing the Echo option MUST be integrity protected between the intended endpoints, e.g. using DTLS, TLS, or an OSCORE Inner option ({{I-D.ietf-core-object-security}}). When used to demonstrate reachability at a claimed network address, the Echo option SHOULD contain the client's network address, but MAY be unprotected.
+When used to serve freshness requirements (including client aliveness and state synchronizing), CoAP messages containing the Echo option MUST be integrity protected between the intended endpoints, e.g. using DTLS, TLS, or an OSCORE Inner option ({{RFC8613}}). When used to demonstrate reachability at a claimed network address, the Echo option SHOULD contain the client's network address, but MAY be unprotected.
 
 A CoAP-to-CoAP proxy MAY respond to requests with 4.01 with an Echo option to ensure the client's reachability at its claimed address, and MUST remove the Echo option it recognizes as one generated by itself on follow-up requests. However, it MUST relay the Echo option of responses unmodified, and MUST relay the Echo option of requests it does not recognize as generated by itself unmodified.
 
@@ -185,13 +189,13 @@ The CoAP server side of CoAP-to-HTTP proxies MAY request freshness, especially i
 
     * The same Echo value may be used for multiple actuation requests to the same server, as long as the total round-trip time since the Echo option value was generated is below the freshness threshold.
 
-    * For actuator applications with low delay tolerance, to avoid additional round-trips for multiple requests in rapid sequence, the server may include the Echo option with a new value in response to a request containing the Echo option. The client then uses the Echo option with the new value in the next actuation request, and the server compares the receive time accordingly.
+    * For actuator applications with low delay tolerance, to avoid additional round-trips for multiple requests in rapid sequence, the server may include the Echo option with a new value even in a successful response to a request, irrespectively of whether the request contained an Echo option or not. The client then uses the Echo option with the new value in the next actuation request, and the server compares the receive time accordingly.
 
 2. A server may use the Echo option to synchronize state or time with a requesting client. A server MUST NOT synchronize state or time with clients which are not the authority of the property being synchronized. E.g. if access to a server resource is dependent on time, then the client MUST NOT set the time of the server.
 
-    * If a server reboots during operation it may need to synchronize state or time before continuing the interaction. For example, with OSCORE it is possible to reuse a partly persistently stored security context by synchronizing the Partial IV (sequence number) using the Echo option, see Section 7.5 of {{I-D.ietf-core-object-security}}.
+    * If a server reboots during operation it may need to synchronize state or time before continuing the interaction. For example, with OSCORE it is possible to reuse a partly persistently stored security context by synchronizing the Partial IV (sequence number) using the Echo option, see Section 7.5 of {{RFC8613}}.
 
-    * A device joining a CoAP group communication {{RFC7390}} protected with OSCORE {{I-D.ietf-core-oscore-groupcomm}} may be required to initially verify freshness and synchronize state or time with a client by using the Echo option in a unicast response to a multicast request. The client receiving the response with the Echo option includes the Echo option with the same value in a request, either in a unicast request to the responding server, or in a subsequent group request. In the latter case, the Echo option will be ignored expect by responding server.
+    * A device joining a CoAP group communication {{RFC7390}} protected with OSCORE {{I-D.ietf-core-oscore-groupcomm}} may be required to initially verify freshness and synchronize state or time with a client by using the Echo option in a unicast response to a multicast request. The client receiving the response with the Echo option includes the Echo option with the same value in a request, either in a unicast request to the responding server, or in a subsequent group request. In the latter case, the Echo option will be ignored except by the responding server.
 
 
 3. A server that sends large responses to unauthenticated peers SHOULD mitigate amplification attacks such as described in Section 11.3 of {{RFC7252}} (where an attacker would put a victim's address in the source address of a CoAP request). For this purpose, a server MAY ask a client to Echo its request to verify its source address. This needs to be done only once per peer and limits the range of potential victims from the general Internet to endpoints that have been previously in contact with the server. For this application, the Echo option can be used in messages that are not integrity protected, for example during discovery.
@@ -204,7 +208,7 @@ different origin client endpoints. Following from the recommendation above, a pr
 
 # The Request-Tag Option # {#request-tag}
 
-The Request-Tag is intended for use as a short-lived identifier for keeping apart distinct blockwise request operations on one resource from one client, addressing the issue described in {{body-int}}. It enables the receiving server to reliably assemble request payloads (blocks) to their message bodies, and, if it chooses to support it, to reliably process simultaneous blockwise request operations on a single resource. The requests must be integrity protected in order to protect against interchange of blocks between different message bodies.
+The Request-Tag is intended for use as a short-lived identifier for keeping apart distinct block-wise request operations on one resource from one client, addressing the issue described in {{body-int}}. It enables the receiving server to reliably assemble request payloads (blocks) to their message bodies, and, if it chooses to support it, to reliably process simultaneous block-wise request operations on a single resource. The requests must be integrity protected if they should protect against interchange of blocks between different message bodies.
 
 In essence, it is an implementation of the "proxy-safe elective option" used just to "vary the cache key" as suggested in {{RFC7959}} Section 2.4.
 
@@ -225,11 +229,9 @@ The Request-Tag option is not critical, is safe to forward, repeatable, and part
 ~~~~~~~~~~
 {: #req-tag-table title="Request-Tag Option Summary" artwork-align="center"}
 
-\[ Note to RFC editor: If this document is released before core-object-security, then the following paragraph and the "E"/"U" columns above need to move into core-object-security, as they are defined in that draft. \]
+Request-Tag, like the block options, is both a class E and a class U option in terms of OSCORE processing (see Section 4.1 of {{RFC8613}}): The Request-Tag MAY be an inner or outer option. It influences the inner or outer block operation, respectively. The inner and outer values are therefore independent of each other. The inner option is encrypted and integrity protected between client and server, and provides message body identification in case of end-to-end fragmentation of requests. The outer option is visible to proxies and labels message bodies in case of hop-by-hop fragmentation of requests.
 
-Request-Tag, like the block options, is both a class E and a class U option in terms of OSCORE processing (see Section 4.1 of {{I-D.ietf-core-object-security}}): The Request-Tag MAY be an inner or outer option. It influences the inner or outer block operation, respectively. The inner and outer values are therefore independent of each other. The inner option is encrypted and integrity protected between client and server, and provides message body identification in case of end-to-end fragmentation of requests. The outer option is visible to proxies and labels message bodies in case of hop-by-hop fragmentation of requests.
-
-The Request-Tag option is only used in the request messages of blockwise operations.
+The Request-Tag option is only used in the request messages of block-wise operations.
 
 The Request-Tag mechanism can be applied independently on the server and client sides of CoAP-to-CoAP proxies as are the block options,
 though given it is safe to forward, a proxy is free to just forward it when processing an operation.
@@ -240,7 +242,7 @@ it is not applicable to HTTP requests.
 
 The Request-Tag option does not require any particular processing on the server side
 outside of the processing already necessary for any unknown elective proxy-safe cache-key option:
-The option varies the properties that distinguish blockwise operations
+The option varies the properties that distinguish block-wise operations
 (which includes all options except elective NoCacheKey and except Block1/2),
 and thus the server can not treat messages with a different list of Request-Tag options as belonging to the same operation.
 <!-- not speaking of "matchable" here as that working definition explicitly excludes Request-Tag to make the rest of the document easier to read -->
@@ -268,7 +270,7 @@ or it can forget about the state established with the older operation and respon
 
 ## Setting the Request-Tag
 
-For each separate blockwise request operation, the client can choose a Request-Tag value, or choose not to set a Request-Tag.
+For each separate block-wise request operation, the client can choose a Request-Tag value, or choose not to set a Request-Tag.
 Starting a request operation matchable to a
 previous operation and even using the same Request-Tag value is called request tag recycling.
 The absence of a Request-Tag option is viewed as a value distinct from all values with a single Request-Tag option set;
@@ -309,25 +311,25 @@ In order to gain that protection, use the Request-Tag mechanism as follows:
   after an endpoint's details (like the IP address) have changed, then
   the client MUST consider messages sent to *any* endpoint address within the new operation's security context.
 
-* The client MUST NOT regard a blockwise request operation as concluded unless all of the messages the client previously sent in the operation have been confirmed by the message integrity protection mechanism, or are considered invalid by the server if replayed.
+* The client MUST NOT regard a block-wise request operation as concluded unless all of the messages the client previously sent in the operation have been confirmed by the message integrity protection mechanism, or are considered invalid by the server if replayed.
 
   Typically, in OSCORE, these confirmations can result either from the client receiving an OSCORE response message matching the request (an empty ACK is insufficient), or because the message's sequence number is old enough to be outside the server's receive window.
 
   In DTLS, this can only be confirmed if the request message was not retransmitted, and was responded to.
 
 <!-- pending see thread "ERT and OSCORE" -->
-Authors of other documents (e.g. {{I-D.ietf-core-object-security}}) are invited to mandate this behavior for clients that execute blockwise interactions over secured transports. In this way, the server can rely on a conforming client to set the Request-Tag option when required, and thereby conclude on the integrity of the assembled body.
+Authors of other documents (e.g. applications of {{RFC8613}}) are invited to mandate this behavior for clients that execute block-wise interactions over secured transports. In this way, the server can rely on a conforming client to set the Request-Tag option when required, and thereby conclude on the integrity of the assembled body.
 
 Note that this mechanism is implicitly implemented when the security layer guarantees ordered delivery (e.g. CoAP over TLS {{RFC8323}}). This is because with each message, any earlier message can not be replayed any more, so the client never needs to set the Request-Tag option unless it wants to perform concurrent operations.
 
-### Multiple Concurrent Blockwise Operations
+### Multiple Concurrent Block-wise Operations
 
-CoAP clients, especially CoAP proxies, may initiate a blockwise request operation to a resource, to which a previous one is already in progress, which the new request should not cancel.
+CoAP clients, especially CoAP proxies, may initiate a block-wise request operation to a resource, to which a previous one is already in progress, which the new request should not cancel.
 A CoAP proxy would be in such a situation when it forwards operations with the same cache-key options but possibly different payloads.
 
 For those cases, Request-Tag is the proxy-safe elective option suggested in {{RFC7959}} Section 2.4 last paragraph.
 
-When initializing a new blockwise operation, a client has to look at other active operations:
+When initializing a new block-wise operation, a client has to look at other active operations:
 
 * If any of them is matchable to the new one, and the client neither wants to cancel the old one nor postpone the new one,
 it can pick a Request-Tag value that is not in use by the other matchable operations for the new operation.
@@ -390,13 +392,13 @@ and MUST NOT use the same ETag value for different representations of a resource
 
 As described in {{req-resp-bind}}, the client must be able to verify that a response corresponds to a particular request. This section updates the CoAP Token processing requirements for clients. The Token processing for servers is not updated. Token processing in Section 5.3.1 of {{RFC7252}} is updated by adding the following text:
 
-When CoAP is used with a security protocol not providing bindings between requests and responses, the tokens have cryptographic importance. The client MUST make sure that tokens are not used in a way so that responses risk being associated with the wrong request. One easy way to accomplish this is to implement the Token (or part of the Token) as a sequence number starting at zero for each new or rekeyed secure connection, this approach SHOULD be followed.
+When CoAP is used with a security protocol not providing bindings between requests and responses, the Tokens have cryptographic importance. The client MUST make sure that Tokens are not used in a way so that responses risk being associated with the wrong request. One easy way to accomplish this is to implement the Token (or part of the Token) as a sequence number starting at zero for each new or rekeyed secure connection, this approach SHOULD be followed.
 
 # Security Considerations {#sec-cons}
 
-The availability of a secure pseudorandom number generator and truly random seeds are essential for the security of the Echo option. If no true random number generator is available, a truly random seed must be provided from an external source.
+The availability of a secure pseudorandom number generator and truly random seeds are essential for the security of the Echo option. If no true random number generator is available, a truly random seed must be provided from an external source. As each pseudoranom number must only be used once, an implementation need to get a new truly random seed after reboot, or continously store state in nonvolatile memory, see ({{RFC8613}}, Appendix B.1.1) for issues and solution approaches for writing to nonvolatile memory.
 
-A single active Echo value with 64 (pseudo-)random bits gives the same theoretical security level against forgeries as a 64-bit MAC (as used in e.g. AES_128_CCM_8). In practice, forgery of an Echo option value is much harder as an attacker must also forge the MAC in the security protocol. The Echo option value MUST contain 32 (pseudo-)random bits that are not predictable for any other party than the server, and SHOULD contain 64 (pseudo-)random bits. A server MAY use different security levels for different uses cases (client aliveness, request freshness, state synchronization, network address reachability, etc.).
+A single active Echo value with 64 (pseudo-)random bits gives the same theoretical security level as a 64-bit MAC (as used in e.g. AES_128_CCM_8). The Echo option value MUST contain 32 (pseudo-)random bits that are not predictable for any other party than the server, and SHOULD contain 64 (pseudo-)random bits. A server MAY use different security levels for different uses cases (client aliveness, request freshness, state synchronization, network address reachability, etc.).
 
 The security provided by the Echo and Request-Tag options depends on the security protocol used. CoAP and HTTP proxies require (D)TLS to be terminated at the proxies. The proxies are therefore able to manipulate, inject, delete, or reorder options or packets. The security claims in such architectures only hold under the assumption that all intermediaries are fully trusted and have not been compromised.
 
@@ -408,12 +410,21 @@ Servers MAY use the time since reboot measured in some unit of time. Servers MAY
 
 Servers that use the List of Cached Random Values and Timestamps method described in {{echo-state}} may be vulnerable to resource exhaustion attacks. One way to minimize state is to use the Integrity Protected Timestamp method described in {{echo-state}}.
 
-When the Token (or part of the Token) contains a sequence number, the encoding of the sequence number has to be chosen in a way to avoid any collisions. This is especially true when the Token contains more information than just the sequence number (e.g. serialized state).
+Reusing Tokens in a way so that responses are guaranteed to not be associated with the wrong request is not trivial as on-path attackers may block, delay, and reorder messages, requests may be send to several servers, and servers may process requests in any order and send many responses to the same request. The use of a sequence number is therefore recommended when CoAP is used with a security protocol that does not providing bindings between requests and responses such as DTLS or TLS.
+
+Even when a client is sending DTLS protected requests without Observe to a single server, the client cannot reuse a Token simply because a response has been received as the server may have retransmitted the response. The client would need to determine when the server received the request, how long after receival the server may send a response, and then make sure that it has received least (client replay window size) many responses sent after that. This is in general not possible and Token reuse with DTLS is therefore strongly not recommended.
+
+Token reuse for TLS is much easier to do securely as retransmissions are not handled by the CoAP layer and the replay window size is always exactly 1. When a client is sending TLS protected requests without Observe to a single server, the client can reuse a Token as soon as the previous response with that Token has been received.
+
+When using Observe, the Token used for registration cannot be reused until the client can confirm that the server has cancelled the registration and that all notifications (including retransmissions) will be blocked by the clients replay window.
+
+When the Token (or part of the Token) contains a sequence number, the encoding of the sequence number has to be chosen in a way to avoid any collisions. This is especially true when the Token contains more information than just the sequence number, e.g. serialized state as in {{I-D.ietf-core-stateless}}.
 
 # Privacy Considerations {#priv-cons}
 
 Implementations SHOULD NOT put any privacy sensitive information in the Echo or Request-Tag option values. Unencrypted timestamps MAY reveal information about the server such as location or time since reboot. The use of wall clock time is not allowed (see {{sec-cons}}) and there also privacy reasons, e.g. it may reveal that the server will accept expired certificates. Timestamps MAY be used if Echo is encrypted between the client and the server, e.g. in the case of DTLS without proxies or when using OSCORE with an Inner Echo option.
 
+Like HTTP cookies, the Echo option could potentially be abused as a tracking mechanism to link to different requests to the same client. This is especially true for pre-emptive Echo values. Servers MUST NOT use the Echo option to correlate requests for other purposes than freshness and reachability. Clients SHOULD only send Echo to the same from which they were received. Compared to HTTP, CoAP clients are often authenticated and non-mobile, and servers can therefore often correlate requests based on the security context, the client credentials, or the network address. When the Echo option increases a server’s ability to correlate requests, clients MAY discard all pre-emptive Echo values.
 
 # IANA Considerations {#iana}
 
@@ -439,26 +450,26 @@ The content and structure of the Echo option value are implementation specific a
 
 Different mechanisms have different tradeoffs between the size of the Echo option value, the amount of server state, the amount of computation, and the security properties offered. A server MAY use different methods and security levels for different uses cases (client aliveness, request freshness, state synchronization, network address reachability, etc.).
 
-1\. List of Cached Random Values and Timestamps. The Echo option value is a (pseudo-)random byte string. The server caches a list containing the random byte strings and their transmission times. Assuming 72-bit random values and 32-bit timestamps, the size of the Echo option value is 9 bytes and the amount of server state is 13n bytes, where n is the number of active Echo Option values. The security against forged echo values is given by s = bit length of r - log2(n). The length of r and the maximum allowed n should be set so that the security level is harmonized with other parts of the deployment, e.g., s >= 64. If the server loses time continuity, e.g. due to reboot, the entries in the old list MUST be deleted.
+1\. List of Cached Random Values and Timestamps. The Echo option value is a (pseudo-)random byte string. The server caches a list containing the random byte strings and their transmission times. Assuming 72-bit random values and 32-bit timestamps, the size of the Echo option value is 9 bytes and the amount of server state is 13n bytes, where n is the number of active Echo Option values. The security against an attacker guessing echo values is given by s = bit length of r - log2(n). The length of r and the maximum allowed n should be set so that the security level is harmonized with other parts of the deployment, e.g., s >= 64. If the server loses time continuity, e.g. due to reboot, the entries in the old list MUST be deleted.
 
 ~~~~~~~~~~
       Echo option value: random value r
       Server State: random value r, timestamp t0
 ~~~~~~~~~~
 
-2\. Integrity Protected Timestamp. The Echo option value is an integrity protected timestamp. The timestamp can have different resolution and range. A 32-bit timestamp can e.g. give a resolution of 1 second with a range of 136 years. The (pseudo-)random secret key is generated by the server and not shared with any other party. The use of truncated HMAC-SHA-256 is RECOMMENDED. With a 32-bit timestamp and a 64-bit MAC, the size of the Echo option value is 12 bytes and the Server state is small and constant. The security against forged echo values is given by the MAC length. If the server loses time continuity, e.g. due to reboot, the old key MUST be deleted and replaced by a new random secret key. Note that the privacy considerations in {{priv-cons}} may apply to the timestamp. A server MAY want to encrypt its timestamps, and, depending on the choice of encryption algorithms, this may require a nonce to be included in the Echo option value.
+2\. Integrity Protected Timestamp. The Echo option value is an integrity protected timestamp. The timestamp can have different resolution and range. A 32-bit timestamp can e.g. give a resolution of 1 second with a range of 136 years. The (pseudo-)random secret key is generated by the server and not shared with any other party. The use of truncated HMAC-SHA-256 is RECOMMENDED. With a 32-bit timestamp and a 64-bit MAC, the size of the Echo option value is 12 bytes and the Server state is small and constant. The security against an attacker guessing echo values is given by the MAC length. If the server loses time continuity, e.g. due to reboot, the old key MUST be deleted and replaced by a new random secret key. Note that the privacy considerations in {{priv-cons}} may apply to the timestamp. A server MAY want to encrypt its timestamps, and, depending on the choice of encryption algorithms, this may require a nonce to be included in the Echo option value.
 
 ~~~~~~~~~~
       Echo option value: timestamp t0, MAC(k, t0)
       Server State: secret key k
 ~~~~~~~~~~
 
-Other mechanisms complying with the security and privacy considerations may be used. The use of encrypted timestamps in the Echo option typically requires an IV to be included in the Echo option value, which adds overhead and makes the specification of such a mechanism slightly more complicated than the two mechanisms specified here.
+Other mechanisms complying with the security and privacy considerations may be used. The use of encrypted timestamps in the Echo option increases security, but typically requires an IV to be included in the Echo option value, which adds overhead and makes the specification of such a mechanism slightly more complicated than the two mechanisms specified here.
 
 # Request-Tag Message Size Impact
 
 In absence of concurrent operations, the Request-Tag mechanism for body integrity ({{body-integrity}}) incurs no overhead if no messages are lost (more precisely: in OSCORE, if no operations are aborted due to repeated transmission failure; in DTLS, if no packages are lost),
-or when blockwise request operations happen rarely (in OSCORE, if there is always only one request blockwise operation in the replay window).
+or when block-wise request operations happen rarely (in OSCORE, if there is always only one request block-wise operation in the replay window).
 
 In those situations, no message has any Request-Tag option set, and that can be recycled indefinitely.
 
@@ -477,15 +488,15 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
     * Editorial fixes
 
-        - Moved paragraph on collision-free encoding of data in the token to
+        - Moved paragraph on collision-free encoding of data in the Token to
           Security Considerations and rephrased it
         - "easiest" -> "one easy"
 
 * Changes since draft-ietf-core-echo-request-tag-03:
 
-    * Mention token processing changes in title
+    * Mention Token processing changes in title
     * Abstract reworded
-    * Clarify updates to token processing
+    * Clarify updates to Token processing
     * Describe security levels from Echo length
     * Allow non-monotonic clocks under certain conditions for freshness
     * Simplify freshness expressions
@@ -505,7 +516,7 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 * Major changes since draft-ietf-core-echo-request-tag-01:
 
-    * Follow-up changes after the "relying on blockwise" change in -01:
+    * Follow-up changes after the "relying on block-wise" change in -01:
 
         * Simplify the description of Request-Tag and matchability
         * Do not update RFC7959 any more
@@ -518,8 +529,8 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
     * Added rules for Token processing.
     * Added security considerations.
     * Added actual IANA section.
-    * Made Request-Tag optional and safe-to-forward, relying on blockwise to treat it as part of the cache-key
-    * Dropped use case about OSCORE outer-blockwise (the case went away when its Partial IV was moved into the Object-Security option)
+    * Made Request-Tag optional and safe-to-forward, relying on block-wise to treat it as part of the cache-key
+    * Dropped use case about OSCORE outer-block-wise (the case went away when its Partial IV was moved into the Object-Security option)
 
 * Major changes since draft-amsuess-core-repeat-request-tag-00:
     * The option used for establishing freshness was renamed from "Repeat" to "Echo" to reduce confusion about repeatable options.
