@@ -349,8 +349,7 @@ to all request carrying any Block option,
 it does not need to keep track of any further block state.
 
 This is particularly useful to proxies that strive for stateless operation
-as described in {{?I-D.hartke-core-stateless}} Section 3.1.
-
+as described in {{?I-D.ietf-core-stateless}} Section 3.1.
 
 ## Rationale for the Option Properties
 
