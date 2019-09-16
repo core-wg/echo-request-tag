@@ -411,13 +411,27 @@ Servers MAY use the time since reboot measured in some unit of time. Servers MAY
 
 Servers that use the List of Cached Random Values and Timestamps method described in {{echo-state}} may be vulnerable to resource exhaustion attacks. One way to minimize state is to use the Integrity Protected Timestamp method described in {{echo-state}}.
 
+## Token reuse
+
 Reusing Tokens in a way so that responses are guaranteed to not be associated with the wrong request is not trivial as on-path attackers may block, delay, and reorder messages, requests may be send to several servers, and servers may process requests in any order and send many responses to the same request. The use of a sequence number is therefore recommended when CoAP is used with a security protocol that does not providing bindings between requests and responses such as DTLS or TLS.
 
-Even when a client is sending DTLS protected requests without Observe to a single server, the client cannot reuse a Token simply because a response has been received as the server may have retransmitted the response. The client would need to determine when the server received the request, how long after receival the server may send a response, and then make sure that it has received least (client replay window size) many responses sent after that. This is in general not possible and Token reuse with DTLS is therefore strongly not recommended.
+For a generic response to a confirmable message over DTLS, that can only be claimed without out-of-band knowledge if
 
-Token reuse for TLS is much easier to do securely as retransmissions are not handled by the CoAP layer and the replay window size is always exactly 1. When a client is sending TLS protected requests without Observe to a single server, the client can reuse a Token as soon as the previous response with that Token has been received.
+* the original message was never retransmitted,
+* the response came piggy-backed (a non-confirmable response may have been transmitted multiple times), and
+* if observation was used, the same holds for the registration, all re-registrations, and the cancellation.
 
-When using Observe, the Token used for registration cannot be reused until the client can confirm that the server has cancelled the registration and that all notifications (including retransmissions) will be blocked by the clients replay window.
+(In addition, for observations, any incoming messages using that token and a DTLS sequence number earlier than the cancellation confirmation must be discarded.)
+
+In some setups, tokens can be reused without the above constraints, as a different component in the setup provides the associations:
+
+* In CoAP over TLS, retransmissions are not handled by the CoAP layer and the replay window size is always exactly 1. When a client is sending TLS protected requests without Observe to a single server, the client can reuse a Token as soon as the previous response with that Token has been received.
+* Requests whose responses are cryptographically bound to the requests (like in OSCORE) can reuse tokens indefinitely.
+<!-- could be added but is probably not worth the lines of text
+* Requests whose responses reflect all the data in the request that is varied ofer reuses of the same token (for example, if a token is always used on a single path with the single query parameter `?t=X` for various values of X, then the response needs to contain X in a unique position) can share a token, provided the application does not rely on the freshness of the responses, or sends different requests all the time.
+-->
+
+In all other cases, a sequence number approach is recommended as per {{token}}.
 
 When the Token (or part of the Token) contains a sequence number, the encoding of the sequence number has to be chosen in a way to avoid any collisions. This is especially true when the Token contains more information than just the sequence number, e.g. serialized state as in {{I-D.ietf-core-stateless}}.
 
