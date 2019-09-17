@@ -421,7 +421,7 @@ For a generic response to a confirmable request over DTLS, binding can only be c
 * the response came piggy-backed (a confirmable response may have been transmitted multiple times), and
 * if observation was used, the same holds for the registration, all re-registrations, and the cancellation.
 
-(In addition, for observations, any responses using that Token and a DTLS sequence number earlier than the cancellation confirmation must be discarded.)
+(In addition, for observations, any responses using that Token and a DTLS sequence number earlier than the cancellation confirmation must be discarded. This is typically not supported in DTLS implementations.)
 
 In some setups, Tokens can be reused without the above constraints, as a different component in the setup provides the associations:
 
