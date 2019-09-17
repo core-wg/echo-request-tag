@@ -418,7 +418,7 @@ Reusing Tokens in a way so that responses are guaranteed to not be associated wi
 For a generic response to a confirmable request over DTLS, binding can only be claimed without out-of-band knowledge if
 
 * the original request was never retransmitted,
-* the response came piggy-backed (a confirmable response may have been transmitted multiple times), and
+* the response was piggybacked in an Acknowledgement message (a confirmable response may have been transmitted multiple times), and
 * if observation was used, the same holds for the registration, all re-registrations, and the cancellation.
 
 (In addition, for observations, any responses using that Token and a DTLS sequence number earlier than the cancellation confirmation must be discarded. This is typically not supported in DTLS implementations.)
