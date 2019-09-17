@@ -415,13 +415,13 @@ Servers that use the List of Cached Random Values and Timestamps method describe
 
 Reusing Tokens in a way so that responses are guaranteed to not be associated with the wrong request is not trivial as on-path attackers may block, delay, and reorder messages, requests may be send to several servers, and servers may process requests in any order and send many responses to the same request. The use of a sequence number is therefore recommended when CoAP is used with a security protocol that does not providing bindings between requests and responses such as DTLS or TLS.
 
-For a generic response to a confirmable message over DTLS, binding can only be claimed without out-of-band knowledge if
+For a generic response to a confirmable request over DTLS, binding can only be claimed without out-of-band knowledge if
 
-* the original message was never retransmitted,
+* the original request was never retransmitted,
 * the response came piggy-backed (a non-confirmable response may have been transmitted multiple times), and
 * if observation was used, the same holds for the registration, all re-registrations, and the cancellation.
 
-(In addition, for observations, any incoming messages using that Token and a DTLS sequence number earlier than the cancellation confirmation must be discarded.)
+(In addition, for observations, any responses using that Token and a DTLS sequence number earlier than the cancellation confirmation must be discarded.)
 
 In some setups, Tokens can be reused without the above constraints, as a different component in the setup provides the associations:
 
