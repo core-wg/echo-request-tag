@@ -144,7 +144,7 @@ The server may use request freshness provided by the Echo option to verify the a
 
 Upon receiving a 4.01 Unauthorized response with the Echo option, the client SHOULD resend the original request with the addition of an Echo option with the received Echo option value. The client MAY send a different request compared to the original request. Upon receiving any other response with the Echo option, the client SHOULD echo the Echo option value in the next request to the server. The client MAY include the same Echo option value in several different requests to the server.
 
-A client MUST only send Echo values to endpoints it received them from (where as defined in {{RFC7252}} Section 1.2, the security association is part of the endpoint). In OSCORE processing, that means sending Echo values from outer options back in outer options, and those from inner options in inner options in the same security context. Echo options in error responses not protected by OSCORE are treated as outer options.
+A client MUST only send Echo values to endpoints it received them from (where as defined in {{RFC7252}} Section 1.2, the security association is part of the endpoint). In OSCORE processing, that means sending Echo values from Outer options back in Outer options, and those from Inner options in Inner options in the same security context. Echo options in error responses not protected by OSCORE are treated as Outer options.
 
 Upon receiving a request with the Echo option, the server determines if the request is required to be fresh. If not, the Echo option MAY be ignored. If the request is required to be fresh and the server cannot verify the freshness of the request in some other way, the server MUST use the Echo option to verify that the request is fresh enough. If the server cannot verify that the request is fresh enough, the request is not processed further, and an error message MAY be sent. The error message SHOULD include a new Echo option.
 
@@ -227,7 +227,7 @@ The Request-Tag option is not critical, is safe to forward, repeatable, and part
 ~~~~~~~~~~
 {: #req-tag-table title="Request-Tag Option Summary" artwork-align="center"}
 
-Request-Tag, like the block options, is both a class E and a class U option in terms of OSCORE processing (see Section 4.1 of {{RFC8613}}): The Request-Tag MAY be an inner or outer option. It influences the inner or outer block operation, respectively. The inner and outer values are therefore independent of each other. The inner option is encrypted and integrity protected between client and server, and provides message body identification in case of end-to-end fragmentation of requests. The outer option is visible to proxies and labels message bodies in case of hop-by-hop fragmentation of requests.
+Request-Tag, like the block options, is both a class E and a class U option in terms of OSCORE processing (see Section 4.1 of {{RFC8613}}): The Request-Tag MAY be an Inner or Outer option. It influences the Inner or Outer block operation, respectively. The Inner and Outer values are therefore independent of each other. The Inner option is encrypted and integrity protected between client and server, and provides message body identification in case of end-to-end fragmentation of requests. The Outer option is visible to proxies and labels message bodies in case of hop-by-hop fragmentation of requests.
 
 The Request-Tag option is only used in the request messages of block-wise operations.
 
@@ -527,7 +527,7 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
     * Added security considerations.
     * Added actual IANA section.
     * Made Request-Tag optional and safe-to-forward, relying on block-wise to treat it as part of the cache-key
-    * Dropped use case about OSCORE outer-block-wise (the case went away when its Partial IV was moved into the Object-Security option)
+    * Dropped use case about OSCORE Outer-block-wise (the case went away when its Partial IV was moved into the Object-Security option)
 
 * Major changes since draft-amsuess-core-repeat-request-tag-00:
     * The option used for establishing freshness was renamed from "Repeat" to "Echo" to reduce confusion about repeatable options.
