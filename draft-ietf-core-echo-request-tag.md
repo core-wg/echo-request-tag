@@ -413,7 +413,7 @@ Servers that use the List of Cached Random Values and Timestamps method describe
 
 ## Token reuse
 
-Reusing Tokens in a way so that responses are guaranteed to not be associated with the wrong request is not trivial as on-path attackers may block, delay, and reorder messages, requests may be send to several servers, and servers may process requests in any order and send many responses to the same request. The use of a sequence number is therefore recommended when CoAP is used with a security protocol that does not providing bindings between requests and responses such as DTLS or TLS.
+Reusing Tokens in a way so that responses are guaranteed to not be associated with the wrong request is not trivial as on-path attackers may block, delay, and reorder messages, requests may be sent to several servers, and servers may process requests in any order and send many responses to the same request. The use of a sequence number is therefore recommended when CoAP is used with a security protocol that does not providing bindings between requests and responses such as DTLS or TLS.
 
 For a generic response to a confirmable request over DTLS, binding can only be claimed without out-of-band knowledge if
 
