@@ -415,18 +415,18 @@ Servers that use the List of Cached Random Values and Timestamps method describe
 
 Reusing Tokens in a way so that responses are guaranteed to not be associated with the wrong request is not trivial as on-path attackers may block, delay, and reorder messages, requests may be send to several servers, and servers may process requests in any order and send many responses to the same request. The use of a sequence number is therefore recommended when CoAP is used with a security protocol that does not providing bindings between requests and responses such as DTLS or TLS.
 
-For a generic response to a confirmable message over DTLS, that can only be claimed without out-of-band knowledge if
+For a generic response to a confirmable message over DTLS, binding can only be claimed without out-of-band knowledge if
 
 * the original message was never retransmitted,
 * the response came piggy-backed (a non-confirmable response may have been transmitted multiple times), and
 * if observation was used, the same holds for the registration, all re-registrations, and the cancellation.
 
-(In addition, for observations, any incoming messages using that token and a DTLS sequence number earlier than the cancellation confirmation must be discarded.)
+(In addition, for observations, any incoming messages using that Token and a DTLS sequence number earlier than the cancellation confirmation must be discarded.)
 
-In some setups, tokens can be reused without the above constraints, as a different component in the setup provides the associations:
+In some setups, Tokens can be reused without the above constraints, as a different component in the setup provides the associations:
 
 * In CoAP over TLS, retransmissions are not handled by the CoAP layer and the replay window size is always exactly 1. When a client is sending TLS protected requests without Observe to a single server, the client can reuse a Token as soon as the previous response with that Token has been received.
-* Requests whose responses are cryptographically bound to the requests (like in OSCORE) can reuse tokens indefinitely.
+* Requests whose responses are cryptographically bound to the requests (like in OSCORE) can reuse Tokens indefinitely.
 <!-- could be added but is probably not worth the lines of text
 * Requests whose responses reflect all the data in the request that is varied ofer reuses of the same token (for example, if a token is always used on a single path with the single query parameter `?t=X` for various values of X, then the response needs to contain X in a unique position) can share a token, provided the application does not rely on the freshness of the responses, or sends different requests all the time.
 -->
