@@ -433,6 +433,8 @@ In some setups, Tokens can be reused without the above constraints, as a differe
 
 In all other cases, a sequence number approach is recommended as per {{token}}.
 
+Tokens that cannot be reused need to be blacklisted. This could be solved by increasing the Token as soon as the currently used Token cannot be reused, or by keeping a list of all blacklisted Tokens.
+
 When the Token (or part of the Token) contains a sequence number, the encoding of the sequence number has to be chosen in a way to avoid any collisions. This is especially true when the Token contains more information than just the sequence number, e.g. serialized state as in {{I-D.ietf-core-stateless}}.
 
 # Privacy Considerations {#priv-cons}
