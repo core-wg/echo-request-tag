@@ -19,7 +19,7 @@ author:
     email: christian@amsuess.com
  -
     ins: J. Mattsson
-    name: John Mattsson
+    name: John Preuß Mattsson
     organization: Ericsson AB
     email: john.mattsson@ericsson.com
  -
