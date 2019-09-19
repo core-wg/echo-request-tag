@@ -496,6 +496,10 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 \[ The editor is asked to remove this section before publication. \]
 
+* Changes since draft-ietf-core-echo-request-tag-06:
+
+    * Removed visible comment that should not be visible in Token reuse considerations.
+
 * Changes since draft-ietf-core-echo-request-tag-05:
 
     * Add privacy considerations on cookie-style use of Echo values
