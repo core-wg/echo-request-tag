@@ -197,7 +197,7 @@ The CoAP server side of CoAP-to-HTTP proxies MAY request freshness, especially i
 
     * For actuator applications with low delay tolerance, to avoid additional round-trips for multiple requests in rapid sequence, the server may include the Echo option with a new value even in a successful response to a request, irrespectively of whether the request contained an Echo option or not. The client then uses the Echo option with the new value in the next actuation request, and the server compares the receive time accordingly.
 
-2. A server may use the Echo option to synchronize state or time with a requesting client. A server MUST NOT synchronize state or time with clients which are not the authority of the property being synchronized. E.g. if access to a server resource is dependent on time, then the client MUST NOT set the time of the server.
+2. A server may use the Echo option to synchronize a property (state or time) with a requesting client. A server MUST NOT synchronize a property with clients which are not the authority of the property being synchronized. E.g. if access to a server resource is dependent on time, then the client requesting access MUST NOT set the time of the server.
 
     * If a server reboots during operation it may need to synchronize state or time before continuing the interaction. For example, with OSCORE it is possible to reuse a partly persistently stored security context by synchronizing the Partial IV (sequence number) using the Echo option, see Section 7.5 of {{RFC8613}}.
 
