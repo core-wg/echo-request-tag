@@ -330,7 +330,7 @@ For those cases, Request-Tag is the proxy-safe elective option suggested in {{RF
 When initializing a new block-wise operation, a client has to look at other active operations:
 
 * If any of them is matchable to the new one, and the client neither wants to cancel the old one nor postpone the new one,
-it can pick a Request-Tag value that is not in use by the other matchable operations for the new operation.
+it can pick a Request-Tag value (including the absent option) that is not in use by the other matchable operations for the new operation.
 
 * Otherwise, it can start the new operation without setting the Request-Tag option on it.
 
