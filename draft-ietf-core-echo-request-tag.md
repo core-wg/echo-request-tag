@@ -269,6 +269,9 @@ or it can forget about the state established with the older operation and respon
 ## Setting the Request-Tag
 
 For each separate block-wise request operation, the client can choose a Request-Tag value, or choose not to set a Request-Tag.
+It needs to be set to the same value (or unset) in all messages belonging to the same operation,
+as otherwise they are treated as separate operations by the server.
+
 Starting a request operation matchable to a
 previous operation and even using the same Request-Tag value is called request tag recycling.
 The absence of a Request-Tag option is viewed as a value distinct from all values with a single Request-Tag option set;
