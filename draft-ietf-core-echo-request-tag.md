@@ -276,8 +276,8 @@ starting a request operation matchable to a previous operation where neither has
 therefore constitutes request tag recycling just as well
 (also called "recycling the absent option").
 
-Clients MUST NOT recycle a request tag unless the first operation has concluded.
-What constitutes a concluded operation depends on the application, and is outlined individually in {{req-tag-applications}}.
+Clients that use Request-Tag for a particular purpose (like in {{req-tag-applications}}) MUST NOT recycle a request tag unless the first operation has concluded.
+What constitutes a concluded operation depends on that purpose, and is defined there.
 
 When Block1 and Block2 are combined in an operation,
 the Request-Tag of the Block1 phase is set in the Block2 phase as well
