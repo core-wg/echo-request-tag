@@ -258,8 +258,8 @@ see {{RFC7252}} Section 5.4.2).
 A server receiving a Request-Tag MUST treat it as opaque and make no assumptions about its content or structure.
 
 Two messages carrying the same Request-Tag is a necessary but not sufficient condition for being part of the same operation.
-They can still be treated as independent messages by the server (e.g. when it sends 2.01/2.04 responses for every block),
-or initiate a new operation (overwriting kept context) when the later message carries Block1 number 0.
+For one, a server may still treat them as independent messages when it sends 2.01/2.04 responses for every block.
+Also, a client that lost interest in an old operation but wants to start over can overwrite the server's old state with a new initial (num=0) Block1 request and the same Request-Tag under some circumstances. Likewise, that results in the new message not being part of he old operation.
 
 As it has always been,
 a server that can only serve a limited number of block-wise operations at the same time
