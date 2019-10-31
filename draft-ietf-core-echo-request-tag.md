@@ -417,7 +417,7 @@ For a generic response to a confirmable request over DTLS, binding can only be c
 * the response was piggybacked in an Acknowledgement message (as a confirmable or non-confirmable response may have been transmitted multiple times), and
 * if observation was used, the same holds for the registration, all re-registrations, and the cancellation.
 
-(In addition, for observations, any responses using that Token and a DTLS sequence number earlier than the cancellation Acknowledgement message must be discarded. This is typically not supported in DTLS implementations.)
+(In addition, for observations, any responses using that Token and a DTLS sequence number earlier than the cancellation Acknowledgement message need to be discarded. This is typically not supported in DTLS implementations.)
 
 In some setups, Tokens can be reused without the above constraints, as a different component in the setup provides the associations:
 
@@ -426,9 +426,9 @@ In some setups, Tokens can be reused without the above constraints, as a differe
 <!-- could be added but is probably not worth the lines of text * Requests whose responses reflect all the data in the request that is varied ofer reuses of the same token (for example, if a token is always used on a single path with the single query parameter `?t=X` for various values of X, then the response needs to contain X in a unique position) can share a token, provided the application does not rely on the freshness of the responses, or sends different requests all the time.
 -->
 
-In all other cases, a sequence number approach is recommended as per {{token}}.
+In all other cases, a sequence number approach is RECOMMENDED as per {{token}}.
 
-Tokens that cannot be reused need to be blacklisted. This could be solved by increasing the Token as soon as the currently used Token cannot be reused, or by keeping a list of all blacklisted Tokens.
+Tokens that cannot be reused need to be handled appropriately. This could be solved by increasing the Token as soon as the currently used Token cannot be reused, or by keeping a list of all blacklisted Tokens.
 
 When the Token (or part of the Token) contains a sequence number, the encoding of the sequence number has to be chosen in a way to avoid any collisions. This is especially true when the Token contains more information than just the sequence number, e.g. serialized state as in {{I-D.ietf-core-stateless}}.
 
