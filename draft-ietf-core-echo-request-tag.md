@@ -187,12 +187,12 @@ Client   Server
    |       |
    |<------+        Code: 4.01 (Unauthorized)
    |  4.01 |       Token: 0x41
-   |       |        Echo: 0x437468756c687521 (e0)
+   |       |        Echo: 0x436F6D69632053616E73 (e0)
    |       |
    +------>| e1     Code: 0.03 (PUT)
    |  PUT  |       Token: 0x42
    |       |    Uri-Path: lock
-   |       |        Echo: 0x437468756c687521 (e0)
+   |       |        Echo: 0x436F6D69632053616E73 (e0)
    |       |     Payload: 0 (Unlock)
    |       |
    |<------+        Code: 2.04 (Changed)
