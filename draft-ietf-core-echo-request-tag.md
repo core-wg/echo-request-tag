@@ -98,7 +98,7 @@ Two request messages are said to be "matchable" if they occur between the same e
 <!-- We could also keep the Request-Tag inside the matchable criterion, but then we'd be saying "matchable except for the Request-Tag" all over the document. -->
 Two operations are said to be matchable if any of their messages are.
 
-Two matchable block-wise operations are said to be "concurrent" if a block of the second request is exchanged even though the client still intends to exchange further blocks in the first operation. (Concurrent block-wise request operations are impossible with the options of {{RFC7959}} because the second operation's block overwrites any state of the first exchange.).
+Two matchable block-wise operations are said to be "concurrent" if a block of the second request is exchanged even though the client still intends to exchange further blocks in the first operation. (Concurrent block-wise request operations from a single endpoint are impossible with the options of {{RFC7959}} (see the last paragraphs of Sections 2.4 and 2.5) because the second operation's block overwrites any state of the first exchange.).
 
 The Echo and Request-Tag options are defined in this document.
 
@@ -285,8 +285,8 @@ see {{RFC7252}} Section 5.4.2).
 A server receiving a Request-Tag MUST treat it as opaque and make no assumptions about its content or structure.
 
 Two messages carrying the same Request-Tag is a necessary but not sufficient condition for being part of the same operation.
-They can still be treated as independent messages by the server (e.g. when it sends 2.01/2.04 responses for every block),
-or initiate a new operation (overwriting kept context) when the later message carries Block1 number 0.
+For one, a server may still treat them as independent messages when it sends 2.01/2.04 responses for every block.
+Also, a client that lost interest in an old operation but wants to start over can overwrite the server's old state with a new initial (num=0) Block1 request and the same Request-Tag under some circumstances. Likewise, that results in the new message not being part of he old operation.
 
 As it has always been,
 a server that can only serve a limited number of block-wise operations at the same time
@@ -296,6 +296,9 @@ or it can forget about the state established with the older operation and respon
 ## Setting the Request-Tag
 
 For each separate block-wise request operation, the client can choose a Request-Tag value, or choose not to set a Request-Tag.
+It needs to be set to the same value (or unset) in all messages belonging to the same operation,
+as otherwise they are treated as separate operations by the server.
+
 Starting a request operation matchable to a
 previous operation and even using the same Request-Tag value is called request tag recycling.
 The absence of a Request-Tag option is viewed as a value distinct from all values with a single Request-Tag option set;
@@ -303,8 +306,8 @@ starting a request operation matchable to a previous operation where neither has
 therefore constitutes request tag recycling just as well
 (also called "recycling the absent option").
 
-Clients MUST NOT recycle a request tag unless the first operation has concluded.
-What constitutes a concluded operation depends on the application, and is outlined individually in {{req-tag-applications}}.
+Clients that use Request-Tag for a particular purpose (like in {{req-tag-applications}}) MUST NOT recycle a request tag unless the first operation has concluded.
+What constitutes a concluded operation depends on that purpose, and is defined there.
 
 When Block1 and Block2 are combined in an operation,
 the Request-Tag of the Block1 phase is set in the Block2 phase as well
@@ -357,7 +360,7 @@ For those cases, Request-Tag is the proxy-safe elective option suggested in {{RF
 When initializing a new block-wise operation, a client has to look at other active operations:
 
 * If any of them is matchable to the new one, and the client neither wants to cancel the old one nor postpone the new one,
-it can pick a Request-Tag value that is not in use by the other matchable operations for the new operation.
+it can pick a Request-Tag value (including the absent option) that is not in use by the other matchable operations for the new operation.
 
 * Otherwise, it can start the new operation without setting the Request-Tag option on it.
 
