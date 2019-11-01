@@ -148,7 +148,7 @@ A client MUST only send Echo values to endpoints it received them from (where as
 
 Upon receiving a request with the Echo option, the server determines if the request is required to be fresh. If not, the Echo option MAY be ignored. If the request is required to be fresh and the server cannot verify the freshness of the request in some other way, the server MUST use the Echo option to verify that the request is fresh. If the server cannot verify that the request is fresh, the request is not processed further, and an error message MAY be sent. The error message SHOULD include a new Echo option.
 
-One way for the server to verify freshness is that to bind the Echo value to a specific point in time and verify that the request is not older than a certain threshold T. The server can verify this by checking that (t1 - t0) < T, where t1 is the request receive time and t0 is the time when the Echo option value was generated. An example message flow is illustrated in {{echo-figure}}.
+One way for the server to verify freshness is that to bind the Echo value to a specific point in time and verify that the request is not older than a certain threshold T. The server can verify this by checking that (t1 - t0) < T, where t1 is the request receive time and t0 is the time when the Echo option value was generated. An example message flow is shown in {{echo-figure-time}}.
 
 ~~~~~~~~~~
 Client   Server
@@ -172,15 +172,34 @@ Client   Server
    |  2.04 |       Token: 0x42
    |       |
 ~~~~~~~~~~
-{: #echo-figure title="Example Echo Option Message Flow" artwork-align="center"}
+{: #echo-figure-time title="Example Message Flow for Time-Based Freshness" artwork-align="center"}
 
-Another way for the server to verify freshness is to maintain a cache of values associated to events: 
+Another way for the server to verify freshness is to maintain a cache of values associated to events. The size of the cache is defined by the application. In the following we assume the cache size is 1, in which case freshness is defined as no new event has taken place. At each event a new value is written into the cache. The cache values MUST be different for all practical purposes. The server verifies freshness by checking that e0 equals e1, where e0 is the cached value when the Echo option value was generated, and e1 is the cached value at the reception of the request. An example message flow is shown in {{echo-figure-event}}.
 
-* The cache size (defined by the application) is greater than or equal to 1.
-* All cache values MUST be different, or different with a probability close to 1 so they are different for all practical purposes.
-* The oldest value in the cache is overwritten at new events.
 
-The message flow in Figure 2 can serve as illustration also of event-based freshness. In this case t0 is defined as the most recent value in the cache when the server sends the 4.01 (Unauthorized) response. The Echo option value is echoed by the client in the second request and compared by the server with the contents of the cache at the reception of the second request. If t0 is in the cache then the request is considered fresh, otherwise the request is not considered fresh. (In the case of cache size equals 1, t1 is defined as the single value in the cache, and freshness is determined by comparing for equality between t0 and t1.)
+~~~~~~~~~~
+Client   Server
+   |       |
+   +------>|        Code: 0.03 (PUT)
+   |  PUT  |       Token: 0x41
+   |       |    Uri-Path: lock
+   |       |     Payload: 0 (Unlock)
+   |       |
+   |<------+        Code: 4.01 (Unauthorized)
+   |  4.01 |       Token: 0x41
+   |       |        Echo: 0x437468756c687521 (e0)
+   |       |
+   +------>| e1     Code: 0.03 (PUT)
+   |  PUT  |       Token: 0x42
+   |       |    Uri-Path: lock
+   |       |        Echo: 0x437468756c687521 (e0)
+   |       |     Payload: 0 (Unlock)
+   |       |
+   |<------+        Code: 2.04 (Changed)
+   |  2.04 |       Token: 0x42
+   |       |
+~~~~~~~~~~
+{: #echo-figure-event title="Example Message Flow for Event-Based Freshness" artwork-align="center"}
 
 When used to serve freshness requirements (including client aliveness and state synchronizing), the Echo option value MUST be integrity protected between the intended endpoints, e.g. using DTLS, TLS, or an OSCORE Inner option ({{RFC8613}}). When used to demonstrate reachability at a claimed network address, the Echo option SHOULD contain the client's network address, but MAY be unprotected.
 
