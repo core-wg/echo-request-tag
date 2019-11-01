@@ -103,7 +103,6 @@ Two matchable block-wise operations are said to be "concurrent" if a block of th
 The Echo and Request-Tag options are defined in this document.
 
 
-
 # The Echo Option {#echo}
 
 A fresh request is one whose age has not yet exceeded the freshness requirements set by the server. The freshness requirements are application specific and may vary based on resource, method, and parameters outside of CoAP such as policies. The Echo option is a lightweight challenge-response mechanism for CoAP, motivated by a need for a server to verify freshness of a request as described in {{req-fresh}}. The Echo option value is a challenge from the server to the client included in a CoAP response and echoed back to the server in one or more CoAP requests. The Echo option provides a convention to transfer freshness indicators that works for all CoAP methods and response codes.
@@ -431,7 +430,7 @@ The security provided by the Echo and Request-Tag options depends on the securit
 
 Servers SHOULD use a monotonic clock to generate timestamps and compute round-trip times. Use of non-monotonic clocks is not secure as the server will accept expired Echo option values if the clock is moved backward. The server will also reject fresh Echo option values if the clock is moved forward. Non-monotonic clocks MAY be used as long as they have deviations that are acceptable given the freshness requirements. If the deviations from a monotonic clock are known, it may be possible to adjust the threshold accordingly.
 
-Servers SHOULD NOT use wall clock time for timestamps, as wall clock time have large deviations from a monotonic clock. Furthermore, an attacker may be able to affect the server's wall clock time in various ways such as setting up a fake NTP server or broadcasting false time signals to radio-controlled clocks.
+An attacker may be able to affect the server's system time in various ways such as setting up a fake NTP server or broadcasting false time signals to radio-controlled clocks.
 
 Servers MAY use the time since reboot measured in some unit of time. Servers MAY reset the timer at certain times and MAY generate a random offset applied to all timestamps. When resetting the timer, the server MUST reject all Echo values that was created before the reset.
 
@@ -447,7 +446,7 @@ For a generic response to a confirmable request over DTLS, binding can only be c
 * the response was piggybacked in an Acknowledgement message (as a confirmable or non-confirmable response may have been transmitted multiple times), and
 * if observation was used, the same holds for the registration, all re-registrations, and the cancellation.
 
-(In addition, for observations, any responses using that Token and a DTLS sequence number earlier than the cancellation Acknowledgement message must be discarded. This is typically not supported in DTLS implementations.)
+(In addition, for observations, any responses using that Token and a DTLS sequence number earlier than the cancellation Acknowledgement message need to be discarded. This is typically not supported in DTLS implementations.)
 
 In some setups, Tokens can be reused without the above constraints, as a different component in the setup provides the associations:
 
@@ -456,15 +455,15 @@ In some setups, Tokens can be reused without the above constraints, as a differe
 <!-- could be added but is probably not worth the lines of text * Requests whose responses reflect all the data in the request that is varied ofer reuses of the same token (for example, if a token is always used on a single path with the single query parameter `?t=X` for various values of X, then the response needs to contain X in a unique position) can share a token, provided the application does not rely on the freshness of the responses, or sends different requests all the time.
 -->
 
-In all other cases, a sequence number approach is recommended as per {{token}}.
+In all other cases, a sequence number approach is RECOMMENDED as per {{token}}.
 
-Tokens that cannot be reused need to be blacklisted. This could be solved by increasing the Token as soon as the currently used Token cannot be reused, or by keeping a list of all blacklisted Tokens.
+Tokens that cannot be reused need to be handled appropriately. This could be solved by increasing the Token as soon as the currently used Token cannot be reused, or by keeping a list of all blacklisted Tokens.
 
 When the Token (or part of the Token) contains a sequence number, the encoding of the sequence number has to be chosen in a way to avoid any collisions. This is especially true when the Token contains more information than just the sequence number, e.g. serialized state as in {{I-D.ietf-core-stateless}}.
 
 # Privacy Considerations {#priv-cons}
 
-Implementations SHOULD NOT put any privacy sensitive information in the Echo or Request-Tag option values. Unencrypted timestamps MAY reveal information about the server such as location or time since reboot. The use of wall clock time is not allowed (see {{sec-cons}}) and there also privacy reasons, e.g. it may reveal that the server will accept expired certificates. Timestamps MAY be used if Echo is encrypted between the client and the server, e.g. in the case of DTLS without proxies or when using OSCORE with an Inner Echo option.
+Implementations SHOULD NOT put any privacy sensitive information in the Echo or Request-Tag option values. Unencrypted timestamps MAY reveal information about the server such as location or time since reboot, or that the server will accept expired certificates. Timestamps MAY be used if Echo is encrypted between the client and the server, e.g. in the case of DTLS without proxies or when using OSCORE with an Inner Echo option.
 
 Like HTTP cookies, the Echo option could potentially be abused as a tracking mechanism to link to different requests to the same client. This is especially true for pre-emptive Echo values. Servers MUST NOT use the Echo option to correlate requests for other purposes than freshness and reachability. Clients only send Echo to the same from which they were received. Compared to HTTP, CoAP clients are often authenticated and non-mobile, and servers can therefore often correlate requests based on the security context, the client credentials, or the network address. When the Echo option increases a server’s ability to correlate requests, clients MAY discard all pre-emptive Echo values.
 
