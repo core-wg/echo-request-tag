@@ -393,7 +393,7 @@ That approach would have been difficult to roll out reliably on DTLS
 where many implementations do not expose sequence numbers,
 and would still not prevent attacks like in {{I-D.mattsson-core-coap-actuators}} Section 2.5.2.
 
-# Block2 / ETag Processing # {#etag}
+## Block2 / ETag Processing # {#etag}
 
 The same security properties as in {{body-integrity}} can be obtained for blockwise response operations.
 The threat model here is not an attacker (because the response is made sure to belong to the current request by the security layer),
