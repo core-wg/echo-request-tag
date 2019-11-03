@@ -59,6 +59,7 @@ This document specifies two CoAP options, the Echo option and the Request-Tag op
 
 The document also updates the Token processing requirements for clients specified in {{RFC7252}}. The updated processing forbids non-secure reuse of Tokens to ensure binding of responses to requests when CoAP is used with security, thus mitigating error cases and attacks where the client may erroneously associate the wrong response to a request.
 
+Each of the following sections provides a more detailed introduction to the topic at hand in its first subsection.
 
 ## Terminology
 
