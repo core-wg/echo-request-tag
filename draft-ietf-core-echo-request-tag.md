@@ -211,13 +211,7 @@ different origin client endpoints. Following from the recommendation above, a pr
 
 4. A server may want to use the request freshness provided by the Echo to verify the aliveness of a client. Note that in a deployment with hop-by-hop security and proxies, the server can only verify aliveness of the closest proxy.
 
-
 # The Request-Tag Option # {#request-tag}
-
-The Request-Tag is intended for use as a short-lived identifier for keeping apart distinct block-wise request operations on one resource from one client, addressing the issue described in {{body-int}}. It enables the receiving server to reliably assemble request payloads (blocks) to their message bodies, and, if it chooses to support it, to reliably process simultaneous block-wise request operations on a single resource. The requests must be integrity protected if they should protect against interchange of blocks between different message bodies.
-
-In essence, it is an implementation of the "proxy-safe elective option" used just to "vary the cache key" as suggested in {{RFC7959}} Section 2.4.
-
 
 ## Fragmented Message Body Integrity {#body-int}
 
@@ -225,9 +219,15 @@ CoAP was designed to work over unreliable transports, such as UDP, and include a
 
 The block-wise transfer mechanism {{RFC7959}} extends CoAP by defining the transfer of a large resource representation (CoAP message body) as a sequence of blocks (CoAP message payloads). The mechanism uses a pair of CoAP options, Block1 and Block2, pertaining to the request and response payload, respectively. The block-wise functionality does not support the detection of interchanged blocks between different message bodies to the same resource having the same block number. This remains true even when CoAP is used together with a security protocol such as DTLS or OSCORE, within the replay window ({{I-D.mattsson-core-coap-actuators}}), which is a vulnerability of CoAP when using RFC7959.
 
-A straightforward mitigation of mixing up blocks from different messages is to use unique identifiers for different message bodies, which would provide equivalent protection to the case where the complete body fits into a single payload. The ETag option {{RFC7252}}, set by the CoAP server, identifies a response body fragmented using the Block2 option. This document defines the Request-Tag option for identifying request bodies, similar to ETag, but ephemeral and set by the CoAP client. The Request-Tag option is only used in requests that carry the Block1 option, and in Block2 requests following these.
+A straightforward mitigation of mixing up blocks from different messages is to use unique identifiers for different message bodies, which would provide equivalent protection to the case where the complete body fits into a single payload. The ETag option {{RFC7252}}, set by the CoAP server, identifies a response body fragmented using the Block2 option.
 
-## Request-Tag Option Format ## {#req-tag-format}
+## The Request-Tag Option
+
+This document defines the Request-Tag option for identifying request bodies, similar to ETag, but ephemeral and set by the CoAP client. The Request-Tag is intended for use as a short-lived identifier for keeping apart distinct block-wise request operations on one resource from one client, addressing the issue described in {{body-int}}. It enables the receiving server to reliably assemble request payloads (blocks) to their message bodies, and, if it chooses to support it, to reliably process simultaneous block-wise request operations on a single resource. The requests must be integrity protected if they should protect against interchange of blocks between different message bodies. The Request-Tag option is only used in requests that carry the Block1 option, and in Block2 requests following these.
+
+In essence, it is an implementation of the "proxy-safe elective option" used just to "vary the cache key" as suggested in {{RFC7959}} Section 2.4.
+
+### Request-Tag Option Format ## {#req-tag-format}
 
 The Request-Tag option is not critical, is safe to forward, repeatable, and part of the cache key, see {{req-tag-table}}, which extends Table 4 of {{RFC7252}}).
 
