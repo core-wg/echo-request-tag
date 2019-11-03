@@ -533,6 +533,8 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
     * Request tag: Explicitly limit "MUST NOT recycle" requirement to particular applications
     * Token reuse: upper-case RECOMMEND sequence number approach
 
+    * Structure: Move per-topic introductions to respective chapters (this avoids long jumps by the reader)
+
     * More precise references into other documents
     * "concurrent operations": Emphasise that all here only matters between endpoint pairs
     * Freshness: Generalize wording away from time-based freshness
