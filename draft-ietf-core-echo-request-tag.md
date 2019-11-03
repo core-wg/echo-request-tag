@@ -528,6 +528,23 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 \[ The editor is asked to remove this section before publication. \]
 
+* Changes since draft-ietf-core-echo-request-tag-07 (largely addressing Francesca's review):
+
+    * Request tag: Explicitly limit "MUST NOT recycle" requirement to particular applications
+    * Token reuse: upper-case RECOMMEND sequence number approach
+
+    * More precise references into other documents
+    * "concurrent operations": Emphasise that all here only matters between endpoint pairs
+    * Freshness: Generalize wording away from time-based freshness
+    * Echo: Emphasise that no binding between any particular pair of responses and requests is established
+    * Echo: Add event-based example
+    * Echo: Clarify when protection is needed
+    * Request tag: Enhance wording around "not sufficient condition"
+    * Request tag: Explicitly state when a tag needs to be set
+    * Request tag: Clarification about permissibility of leaving the option absent
+    * Security considerations: wall clock time -> system time (and remove inaccurate explanations)
+    * Token reuse: describe blacklisting in a more implementation-independent way
+
 * Changes since draft-ietf-core-echo-request-tag-06:
 
     * Removed visible comment that should not be visible in Token reuse considerations.
