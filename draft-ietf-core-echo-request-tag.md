@@ -77,7 +77,7 @@ Two matchable block-wise operations are said to be "concurrent" if a block of th
 
 The Echo and Request-Tag options are defined in this document.
 
-# Request freshness and the Echo option {#echo}
+# Request Freshness and the Echo Option {#echo}
 
 ## Request Freshness {#req-fresh}
 
@@ -212,7 +212,7 @@ different origin client endpoints. Following from the recommendation above, a pr
 
 4. A server may want to use the request freshness provided by the Echo to verify the aliveness of a client. Note that in a deployment with hop-by-hop security and proxies, the server can only verify aliveness of the closest proxy.
 
-# Protecting message bodies using request tags # {#request-tag}
+# Protecting Message Bodies using Request Tags # {#request-tag}
 
 ## Fragmented Message Body Integrity {#body-int}
 
@@ -405,7 +405,7 @@ To gain equivalent protection to {{body-integrity}},
 a server MUST use the Block2 option in conjunction with the ETag option ({{RFC7252}}, Section 5.10.6),
 and MUST NOT use the same ETag value for different representations of a resource.
 
-# Token Processing for secure request-response binding {#token}
+# Token Processing for Secure Request-Response Binding {#token}
 
 ## Request-Response Binding {#req-resp-bind}
 
