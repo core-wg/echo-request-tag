@@ -59,6 +59,7 @@ This document specifies two CoAP options, the Echo option and the Request-Tag op
 
 The document also updates the Token processing requirements for clients specified in {{RFC7252}}. The updated processing forbids non-secure reuse of Tokens to ensure binding of responses to requests when CoAP is used with security, thus mitigating error cases and attacks where the client may erroneously associate the wrong response to a request.
 
+Each of the following sections provides a more detailed introduction to the topic at hand in its first subsection.
 
 ## Terminology
 
@@ -76,7 +77,7 @@ Two matchable block-wise operations are said to be "concurrent" if a block of th
 
 The Echo and Request-Tag options are defined in this document.
 
-# The Echo Option {#echo}
+# Request Freshness and the Echo Option {#echo}
 
 ## Request Freshness {#req-fresh}
 
@@ -211,7 +212,7 @@ different origin client endpoints. Following from the recommendation above, a pr
 
 4. A server may want to use the request freshness provided by the Echo to verify the aliveness of a client. Note that in a deployment with hop-by-hop security and proxies, the server can only verify aliveness of the closest proxy.
 
-# The Request-Tag Option # {#request-tag}
+# Protecting Message Bodies using Request Tags # {#request-tag}
 
 ## Fragmented Message Body Integrity {#body-int}
 
@@ -392,7 +393,7 @@ That approach would have been difficult to roll out reliably on DTLS
 where many implementations do not expose sequence numbers,
 and would still not prevent attacks like in {{I-D.mattsson-core-coap-actuators}} Section 2.5.2.
 
-# Block2 / ETag Processing # {#etag}
+## Block2 / ETag Processing # {#etag}
 
 The same security properties as in {{body-integrity}} can be obtained for blockwise response operations.
 The threat model here is not an attacker (because the response is made sure to belong to the current request by the security layer),
@@ -404,7 +405,7 @@ To gain equivalent protection to {{body-integrity}},
 a server MUST use the Block2 option in conjunction with the ETag option ({{RFC7252}}, Section 5.10.6),
 and MUST NOT use the same ETag value for different representations of a resource.
 
-# Token Processing {#token}
+# Token Processing for Secure Request-Response Binding {#token}
 
 ## Request-Response Binding {#req-resp-bind}
 
