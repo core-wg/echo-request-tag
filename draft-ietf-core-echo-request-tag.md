@@ -535,6 +535,7 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
     * Token reuse: upper-case RECOMMEND sequence number approach
 
     * Structure: Move per-topic introductions to respective chapters (this avoids long jumps by the reader)
+    * Structure: Group Block2 / ETag section inside new fragmentation (formerly Request-Tag) section
 
     * More precise references into other documents
     * "concurrent operations": Emphasise that all here only matters between endpoint pairs
