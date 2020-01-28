@@ -96,11 +96,11 @@ This mechanism is not only important in the case of actuators, or other use case
 The Echo Option is elective, safe-to-forward, not part of the cache-key, and not repeatable, see {{echo-table}}, which extends Table 4 of {{RFC7252}}).
 
 ~~~~~~~~~~
-+-----+---+---+---+---+-------------+--------+------+---------+---+---+
-| No. | C | U | N | R | Name        | Format | Len. | Default | E | U |
-+-----+---+---+---+---+-------------+--------+------+---------+---+---+
-| TBD |   |   | x |   | Echo        | opaque | 4-40 | (none)  | x | x |
-+-----+---+---+---+---+-------------+--------+------+---------+---+---+
++--------+---+---+---+---+-------------+--------+------+---------+---+---+
+| No.    | C | U | N | R | Name        | Format | Len. | Default | E | U |
++--------+---+---+---+---+-------------+--------+------+---------+---+---+
+| TBD540 |   |   | x |   | Echo        | opaque | 4-40 | (none)  | x | x |
++--------+---+---+---+---+-------------+--------+------+---------+---+---+
 
       C = Critical, U = Unsafe, N = NoCacheKey, R = Repeatable,
       E = Encrypt and Integrity Protect (when using OSCORE)
@@ -473,15 +473,27 @@ Like HTTP cookies, the Echo option could potentially be abused as a tracking mec
 
 # IANA Considerations {#iana}
 
-This document adds the following option numbers to the "CoAP Option Numbers" registry defined by {{RFC7252}}:
+IANA is requested to add the following option numbers to the "CoAP Option Numbers" registry defined by {{RFC7252}}:
+
+\[
+
+    The editor is asked to suggest the numbers after TBD, as those satisfy the construction requirements set out in RFC7252:
+    Echo is NoCacheKey but not Unsafe or Critical, so it needs to end with 11100 in binary representation;
+    Request-Tag has no properties so it needs to end with 00 and not with 11100).
+
+    Both are picked to not waste the precious space of less-than-one-byte options,
+    but Request-Tag is picked such that its offset from the Block1 option it regularly occurs with can still be expressed in an 1-byte offset (27 + (13 + 255) > 292).
+    Echo has no typical options it occurs with, so a number above 512 is picked, leaving the slightly-above-256 ones for options that can profit from considerations like the above.
+
+\]
 
 ~~~~~~~~~~
 +--------+-------------+-------------------+
 | Number | Name        | Reference         |
 +--------+-------------+-------------------+
-| TBD1   | Echo        | [[this document]] |
+| TBD540 | Echo        | [[this document]] |
 |        |             |                   |
-| TBD2   | Request-Tag | [[this document]] |
+| TBD292 | Request-Tag | [[this document]] |
 +--------+-------------+-------------------+
 ~~~~~~~~~~
 {: #iana-table title="CoAP Option Numbers" artwork-align="center"}
