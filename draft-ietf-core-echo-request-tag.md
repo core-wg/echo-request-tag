@@ -306,11 +306,11 @@ and would not be recognized any more.
 
 Clients are encouraged to generate compact messages. This means sending messages without Request-Tag options whenever possible, and using short values when the absent option can not be recycled.
 
-The Request-Tag options MAY be present in request messages that carry a Block2 option
-even if those messages are not part of a blockwise request operation
-(this is to allow the operation described in {{simpleproxy}}).
-The Request-Tag option MUST NOT be present in response messages,
-and MUST NOT be present if neither the Block1 nor the Block2 option is present.
+The Request-Tag options MAY be present in request messages that carry no Block option
+(for example, because a Request-Tag unaware proxy reassembled them),
+and MUST be ignored in those.
+
+The Request-Tag option MUST NOT be present in response messages.
 
 ## Applications of the Request-Tag Option {#req-tag-applications}
 
