@@ -216,6 +216,10 @@ different origin client endpoints. Following from the recommendation above, a pr
       considering the complete frame on the wire as it is typically sent across the Internet.
       In practice, this allows UDP data of at least 152 Bytes without further checks.
 
+    * When an Echo response is sent to mitigate amplification,
+      it MUST be sent as a piggybacked or non-confirmable response,
+      never as a separate one (which would cause amplification due to retransmission).
+
 4. A server may want to use the request freshness provided by the Echo to verify the aliveness of a client. Note that in a deployment with hop-by-hop security and proxies, the server can only verify aliveness of the closest proxy.
 
 # Protecting Message Bodies using Request Tags # {#request-tag}
