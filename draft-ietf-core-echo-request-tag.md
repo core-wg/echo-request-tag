@@ -99,7 +99,7 @@ The Echo Option is elective, safe-to-forward, not part of the cache-key, and not
 +--------+---+---+---+---+-------------+--------+------+---------+---+---+
 | No.    | C | U | N | R | Name        | Format | Len. | Default | E | U |
 +--------+---+---+---+---+-------------+--------+------+---------+---+---+
-| TBD540 |   |   | x |   | Echo        | opaque | 4-40 | (none)  | x | x |
+| TBD540 |   |   | x |   | Echo        | opaque | 1-40 | (none)  | x | x |
 +--------+---+---+---+---+-------------+--------+------+---------+---+---+
 
       C = Critical, U = Unsafe, N = NoCacheKey, R = Repeatable,
