@@ -361,8 +361,9 @@ because a proxy that would forward blocks as plain messages would risk mixing up
 
 The Request-Tag option provides a very simple way for a proxy to keep them separate:
 if it appends a Request-Tag that is particular to the requesting endpoint
-to all request carrying any Block option,
-it does not need to keep track of any further block state.
+to all request carrying a Block1 option,
+it does not need to keep track of any further block state
+unless some forms of Block2 responses are returned.
 
 This is particularly useful to proxies that strive for stateless operation
 as described in {{?I-D.ietf-core-stateless}} Section 3.1.
