@@ -366,7 +366,7 @@ it does not need to keep track of any further block state
 unless some forms of Block2 responses are returned.
 
 This is particularly useful to proxies that strive for stateless operation
-as described in {{?I-D.ietf-core-stateless}} Section 3.1.
+as described in {{?I-D.ietf-core-stateless}} Section 4.
 
 ## Rationale for the Option Properties
 
