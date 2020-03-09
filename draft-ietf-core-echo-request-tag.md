@@ -101,7 +101,7 @@ The Echo Option is elective, safe-to-forward, not part of the cache-key, and not
 +--------+---+---+---+---+-------------+--------+------+---------+---+---+
 | No.    | C | U | N | R | Name        | Format | Len. | Default | E | U |
 +--------+---+---+---+---+-------------+--------+------+---------+---+---+
-| TBD540 |   |   | x |   | Echo        | opaque | 4-40 | (none)  | x | x |
+| TBD540 |   |   | x |   | Echo        | opaque | 1-40 | (none)  | x | x |
 +--------+---+---+---+---+-------------+--------+------+---------+---+---+
 
       C = Critical, U = Unsafe, N = NoCacheKey, R = Repeatable,
@@ -436,11 +436,13 @@ When CoAP is used with a security protocol not providing bindings between reques
 
 # Security Considerations {#sec-cons}
 
-The availability of a secure pseudorandom number generator and truly random seeds are essential for the security of the Echo option. If no true random number generator is available, a truly random seed must be provided from an external source. As each pseudoranom number must only be used once, an implementation need to get a new truly random seed after reboot, or continously store state in nonvolatile memory, see ({{RFC8613}}, Appendix B.1.1) for issues and solution approaches for writing to nonvolatile memory.
+The availability of a secure pseudorandom number generator and truly random seeds are essential for the security of the Echo option (except when using counting Echo values). If no true random number generator is available, a truly random seed must be provided from an external source. As each pseudoranom number must only be used once, an implementation need to get a new truly random seed after reboot, or continously store state in nonvolatile memory, see ({{RFC8613}}, Appendix B.1.1) for issues and solution approaches for writing to nonvolatile memory.
 
-A single active Echo value with 64 (pseudo-)random bits gives the same theoretical security level as a 64-bit MAC (as used in e.g. AES_128_CCM_8). The Echo option value MUST contain 32 (pseudo-)random bits that are not predictable for any other party than the server, and SHOULD contain 64 (pseudo-)random bits. A server MAY use different security levels for different uses cases (client aliveness, request freshness, state synchronization, network address reachability, etc.).
+A single active Echo value with 64 (pseudo-)random bits gives the same theoretical security level as a 64-bit MAC (as used in e.g. AES_128_CCM_8). Unless a counting Echo value is used, the Echo option value MUST contain 32 (pseudo-)random bits that are not predictable for any other party than the server, and SHOULD contain 64 (pseudo-)random bits. A server MAY use different security levels for different uses cases (client aliveness, request freshness, state synchronization, network address reachability, etc.).
 
 The security provided by the Echo and Request-Tag options depends on the security protocol used. CoAP and HTTP proxies require (D)TLS to be terminated at the proxies. The proxies are therefore able to manipulate, inject, delete, or reorder options or packets. The security claims in such architectures only hold under the assumption that all intermediaries are fully trusted and have not been compromised.
+
+Counting Echo values can only be used to show freshness relative to numbered events, and are the legitimate case for Echo values shorter than four bytes, which are not necessarily secret. They MUST only be used when the request Echo values are integrity protected.
 
 Servers SHOULD use a monotonic clock to generate timestamps and compute round-trip times. Use of non-monotonic clocks is not secure as the server will accept expired Echo option values if the clock is moved backward. The server will also reject fresh Echo option values if the clock is moved forward. Non-monotonic clocks MAY be used as long as they have deviations that are acceptable given the freshness requirements. If the deviations from a monotonic clock are known, it may be possible to adjust the threshold accordingly.
 
