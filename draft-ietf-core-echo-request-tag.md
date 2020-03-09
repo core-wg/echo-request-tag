@@ -101,7 +101,7 @@ The Echo Option is elective, safe-to-forward, not part of the cache-key, and not
 +--------+---+---+---+---+-------------+--------+------+---------+---+---+
 | No.    | C | U | N | R | Name        | Format | Len. | Default | E | U |
 +--------+---+---+---+---+-------------+--------+------+---------+---+---+
-| TBD540 |   |   | x |   | Echo        | opaque | 1-40 | (none)  | x | x |
+| TBD248 |   |   | x |   | Echo        | opaque | 1-40 | (none)  | x | x |
 +--------+---+---+---+---+-------------+--------+------+---------+---+---+
 
       C = Critical, U = Unsafe, N = NoCacheKey, R = Repeatable,
@@ -497,9 +497,12 @@ IANA is requested to add the following option numbers to the "CoAP Option Number
     Echo is NoCacheKey but not Unsafe or Critical, so it needs to end with 11100 in binary representation;
     Request-Tag has no properties so it needs to end with 00 and not with 11100).
 
-    Both are picked to not waste the precious space of less-than-one-byte options,
-    but Request-Tag is picked such that its offset from the Block1 option it regularly occurs with can still be expressed in an 1-byte offset (27 + (13 + 255) > 292).
-    Echo has no typical options it occurs with, so a number above 512 is picked, leaving the slightly-above-256 ones for options that can profit from considerations like the above.
+    Request-Tag are picked to not waste the precious space of less-than-one-byte options,
+    but such that its offset from the Block1 option it regularly occurs with can still be expressed in an 1-byte offset (27 + (13 + 255) > 292).
+
+    Echo was picked to be the shortest it can be in an empty message as a NoCacheKey option
+    (11100 in binary does not fit in a nibble, and two lower ones are already taken),
+    and as high as possible to keep room for other options that might typically occur in pairs and might still use optimization around low numbers.
 
 \]
 
@@ -507,7 +510,7 @@ IANA is requested to add the following option numbers to the "CoAP Option Number
 +--------+-------------+-------------------+
 | Number | Name        | Reference         |
 +--------+-------------+-------------------+
-| TBD540 | Echo        | [[this document]] |
+| TBD248 | Echo        | [[this document]] |
 |        |             |                   |
 | TBD292 | Request-Tag | [[this document]] |
 +--------+-------------+-------------------+
