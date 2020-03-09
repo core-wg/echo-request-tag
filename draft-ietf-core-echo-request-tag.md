@@ -359,14 +359,17 @@ it can pick a Request-Tag value (including the absent option) that is not in use
 The Block options were defined to be unsafe to forward
 because a proxy that would forward blocks as plain messages would risk mixing up clients' requests.
 
-The Request-Tag option provides a very simple way for a proxy to keep them separate:
-if it appends a Request-Tag that is particular to the requesting endpoint
-to all request carrying a Block1 option,
-it does not need to keep track of any further block state
-unless some forms of Block2 responses are returned.
+In some cases,
+for example when forwarding block-wise request operations,
+appending a Request-Tag value unique to the client
+can satisfy the requirements on the proxy that come from the presence of a block option.
 
 This is particularly useful to proxies that strive for stateless operation
 as described in {{?I-D.ietf-core-stateless}} Section 4.
+
+The precise classification of cases in which such a Request-Tag option is sufficient
+is not trivial, especially when both request and response body are fragmented,
+and out of scope for this document.
 
 ## Rationale for the Option Properties
 
