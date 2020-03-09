@@ -243,11 +243,11 @@ In essence, it is an implementation of the "proxy-safe elective option" used jus
 The Request-Tag option is not critical, is safe to forward, repeatable, and part of the cache key, see {{req-tag-table}}, which extends Table 4 of {{RFC7252}}).
 
 ~~~~~~~~~~
-+-----+---+---+---+---+-------------+--------+------+---------+---+---+
-| No. | C | U | N | R | Name        | Format | Len. | Default | E | U |
-+-----+---+---+---+---+-------------+--------+------+---------+---+---+
-| TBD |   |   |   | x | Request-Tag | opaque |  0-8 | (none)  | x | x |
-+-----+---+---+---+---+-------------+--------+------+---------+---+---+
++--------+---+---+---+---+-------------+--------+------+---------+---+---+
+| No.    | C | U | N | R | Name        | Format | Len. | Default | E | U |
++--------+---+---+---+---+-------------+--------+------+---------+---+---+
+| TBD292 |   |   |   | x | Request-Tag | opaque |  0-8 | (none)  | x | x |
++--------+---+---+---+---+-------------+--------+------+---------+---+---+
 
       C = Critical, U = Unsafe, N = NoCacheKey, R = Repeatable,
       E = Encrypt and Integrity Protect (when using OSCORE)
