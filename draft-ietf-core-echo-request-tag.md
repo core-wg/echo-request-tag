@@ -101,7 +101,7 @@ The Echo Option is elective, safe-to-forward, not part of the cache-key, and not
 +--------+---+---+---+---+-------------+--------+------+---------+---+---+
 | No.    | C | U | N | R | Name        | Format | Len. | Default | E | U |
 +--------+---+---+---+---+-------------+--------+------+---------+---+---+
-| TBD248 |   |   | x |   | Echo        | opaque | 1-40 | (none)  | x | x |
+| TBD252 |   |   | x |   | Echo        | opaque | 1-40 | (none)  | x | x |
 +--------+---+---+---+---+-------------+--------+------+---------+---+---+
 
       C = Critical, U = Unsafe, N = NoCacheKey, R = Repeatable,
@@ -510,7 +510,7 @@ IANA is requested to add the following option numbers to the "CoAP Option Number
 +--------+-------------+-------------------+
 | Number | Name        | Reference         |
 +--------+-------------+-------------------+
-| TBD248 | Echo        | [[this document]] |
+| TBD252 | Echo        | [[this document]] |
 |        |             |                   |
 | TBD292 | Request-Tag | [[this document]] |
 +--------+-------------+-------------------+
