@@ -352,6 +352,12 @@ Authors of other documents (e.g. applications of {{RFC8613}}) are invited to man
 
 Note that this mechanism is implicitly implemented when the security layer guarantees ordered delivery (e.g. CoAP over TLS {{RFC8323}}). This is because with each message, any earlier message can not be replayed any more, so the client never needs to set the Request-Tag option unless it wants to perform concurrent operations.
 
+Body integrity only makes sense in applications that have stateful block-wise transfers.
+On applications where all the state is in the application
+(e.g. because rather than POSTing a large representation to a collection in a stateful block-wise transfer,
+a collection item is created first, then written to once and available when written completely),
+clients need not concern themselves with body integrity and thus the Request-Tag.
+
 ### Multiple Concurrent Block-wise Operations
 
 CoAP clients, especially CoAP proxies, may initiate a block-wise request operation to a resource, to which a previous one is already in progress, which the new request should not cancel.
