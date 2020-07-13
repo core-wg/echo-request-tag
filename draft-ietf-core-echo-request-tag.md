@@ -89,7 +89,7 @@ A straightforward mitigation of potential delayed requests is that the CoAP serv
 
 ## The Echo Option
 
-This document defines the Echo option, a a lightweight challenge-response mechanism for CoAP that enables a CoAP server to verify the freshness of a request. A fresh request is one whose age has not yet exceeded the freshness requirements set by the server. The freshness requirements are application specific and may vary based on resource, method, and parameters outside of CoAP such as policies. The Echo option value is a challenge from the server to the client included in a CoAP response and echoed back to the server in one or more CoAP requests. The Echo option provides a convention to transfer freshness indicators that works for all CoAP methods and response codes.
+This document defines the Echo option, a lightweight challenge-response mechanism for CoAP that enables a CoAP server to verify the freshness of a request. A fresh request is one whose age has not yet exceeded the freshness requirements set by the server. The freshness requirements are application specific and may vary based on resource, method, and parameters outside of CoAP such as policies. The Echo option value is a challenge from the server to the client included in a CoAP response and echoed back to the server in one or more CoAP requests. The Echo option provides a convention to transfer freshness indicators that works for all CoAP methods and response codes.
 
 This mechanism is not only important in the case of actuators, or other use cases where the CoAP operations require freshness of requests, but also in general for synchronizing state between CoAP client and server, cryptographically verify the aliveness of the client, or force a client to demonstrate reachability at its claimed network address. The same functionality can be provided by echoing freshness indicators in CoAP payloads, but this only works for methods and response codes defined to have a payload. The Echo option provides a convention to transfer freshness indicators that works for all methods and response codes.
 
@@ -212,7 +212,7 @@ The CoAP server side of CoAP-to-HTTP proxies MAY request freshness, especially i
     *  In the presence of a proxy, a server will not be able to distinguish
 different origin client endpoints. Following from the recommendation above, a proxy that sends large responses to unauthenticated peers SHOULD mitigate amplification attacks. The proxy SHOULD use Echo to verify origin reachability as described in {{echo-proc}}. The proxy MAY forward idempotent requests immediately to have a cached result available when the client's Echoed request arrives.
 
-    * Amplification mitigation should be used when the the response would be more than three times the size of the request,
+    * Amplification mitigation should be used when the response would be more than three times the size of the request,
       considering the complete frame on the wire as it is typically sent across the Internet.
       In practice, this allows UDP data of at least 152 Bytes without further checks.
 
@@ -458,7 +458,7 @@ Servers that use the List of Cached Random Values and Timestamps method describe
 
 ## Token reuse
 
-Reusing Tokens in a way so that responses are guaranteed to not be associated with the wrong request is not trivial as on-path attackers may block, delay, and reorder messages, requests may be sent to several servers, and servers may process requests in any order and send many responses to the same request. The use of a sequence number is therefore recommended when CoAP is used with a security protocol that does not providing bindings between requests and responses such as DTLS or TLS.
+Reusing Tokens in a way so that responses are guaranteed to not be associated with the wrong request is not trivial as on-path attackers may block, delay, and reorder messages, requests may be sent to several servers, and servers may process requests in any order and send many responses to the same request. The use of a sequence number is therefore recommended when CoAP is used with a security protocol that does not provide bindings between requests and responses such as DTLS or TLS.
 
 For a generic response to a confirmable request over DTLS, binding can only be claimed without out-of-band knowledge if
 
@@ -485,7 +485,7 @@ When the Token (or part of the Token) contains a sequence number, the encoding o
 
 Implementations SHOULD NOT put any privacy sensitive information in the Echo or Request-Tag option values. Unencrypted timestamps MAY reveal information about the server such as location or time since reboot, or that the server will accept expired certificates. Timestamps MAY be used if Echo is encrypted between the client and the server, e.g. in the case of DTLS without proxies or when using OSCORE with an Inner Echo option.
 
-Like HTTP cookies, the Echo option could potentially be abused as a tracking mechanism to link to different requests to the same client. This is especially true for pre-emptive Echo values. Servers MUST NOT use the Echo option to correlate requests for other purposes than freshness and reachability. Clients only send Echo to the same from which they were received. Compared to HTTP, CoAP clients are often authenticated and non-mobile, and servers can therefore often correlate requests based on the security context, the client credentials, or the network address. When the Echo option increases a server’s ability to correlate requests, clients MAY discard all pre-emptive Echo values.
+Like HTTP cookies, the Echo option could potentially be abused as a tracking mechanism to link to different requests to the same client. This is especially true for pre-emptive Echo values. Servers MUST NOT use the Echo option to correlate requests for other purposes than freshness and reachability. Clients only send Echo to the same server from which they were received. Compared to HTTP, CoAP clients are often authenticated and non-mobile, and servers can therefore often correlate requests based on the security context, the client credentials, or the network address. When the Echo option increases a server’s ability to correlate requests, clients MAY discard all pre-emptive Echo values.
 
 # IANA Considerations {#iana}
 
@@ -497,7 +497,7 @@ IANA is requested to add the following option numbers to the "CoAP Option Number
     Echo is NoCacheKey but not Unsafe or Critical, so it needs to end with 11100 in binary representation;
     Request-Tag has no properties so it needs to end with 00 and not with 11100).
 
-    Request-Tag are picked to not waste the precious space of less-than-one-byte options,
+    Request-Tag was picked to not waste the precious space of less-than-one-byte options,
     but such that its offset from the Block1 option it regularly occurs with can still be expressed in an 1-byte offset (27 + (13 + 255) > 292).
 
     Echo was picked to be the shortest it can be in an empty message as a NoCacheKey option
