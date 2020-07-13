@@ -568,6 +568,16 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 \[ The editor is asked to remove this section before publication. \]
 
+* Changes since draft-ietf-core-echo-request-tag-09:
+
+    * Allow intermediaries to do Echo processing, provided they ask at least as much freshness as they forward
+    * Emphasize that clients can forget Echo to further discourage abuse as cookies
+    * Emphasize that RESTful application design can avoid the need for a Request-Tag
+    * Align with core-oscore-groupcomm-09
+    * Add interaction with HTTP Early Data / 425 Too Early
+    * Abstract: Explicitly mention both updates to 7252
+    * Change requested option number of Echo to 252 (previous property calculation was erroneous)
+
 * Changes since draft-ietf-core-echo-request-tag-08:
 
     * Make amplification attack mitigation by Echo an RFC7252 updating recommendation
