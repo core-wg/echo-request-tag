@@ -1,0 +1,41 @@
+\documentclass[aspectratio=169]{beamer}
+
+% generic packages
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+% about the presentation
+\title{Echo, Request-Tag, and Token Processing}
+\subtitle{\texttt{draft-ietf-core-echo-request-tag}}
+\author{\textit{Christian Amsüss}, John Mattson, Göran Selander}
+\date{2020-07-28}
+
+% attach self
+
+\usepackage{embedfile}
+\embedfile{\jobname.tex}
+
+\begin{document}
+
+\frame{\titlepage}
+
+\begin{frame}{Since IETF104}\begin{center}
+	\framesubtitle{Addressing WGLC- and post-WGLC reviews (Francesca, Marco, Klaus)}
+	\begin{itemize}
+		\item 7252 update: RECOMMEND Echo for amplification mitigation
+
+			Give numbers: $\le 3\times$ request (from QUIC)
+
+			practically: 152 octets free
+		\item Echo: Allow short values
+		\item Echo: Proxies may process it provided they don't deteriorate freshness
+		\item RT: Don't claim to solve to all stateless proxy blockwise problems
+		\item Structure: Introductions grouped with topics
+		\item Improved privacy and security considerations
+		\item Suggest concrete option numbers (twice\ldots)
+		\item Various wording
+	\end{itemize}
+\end{center}\end{frame}
+
+\end{document}
