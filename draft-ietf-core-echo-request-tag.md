@@ -44,10 +44,21 @@ informative:
   I-D.ietf-core-oscore-groupcomm:
   I-D.mattsson-core-coap-actuators:
   I-D.ietf-core-stateless:
+  REST:
+    target: https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf
+    title: "Architectural Styles and the Design of Network-based Software Architectures"
+    author:
+      -
+        ins: R. Fielding
+    date: 2000
+    
+
+
+
 
 --- abstract
 
-This document specifies enhancements to the Constrained Application Protocol (CoAP) that mitigate security issues in particular use cases. The Echo option enables a CoAP server to verify the freshness of a request or to force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match block-wise message fragments belonging to the same request. This document updates RFC7252 with respect to the client Token processing requirements, forbidding non-secure reuse of Tokens to ensure binding of response to request when CoAP is used with security, and with respect to amplification mitigation, where the use of Echo is now recommended.
+This document specifies enhancements to the Constrained Application Protocol (CoAP) that mitigate security issues in particular use cases. The Echo option enables a CoAP server to verify the freshness of a request or to force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match block-wise message fragments belonging to the same request. This document updates RFC7252 with respect to the client Token processing requirements, forbidding non-secure reuse of Tokens to ensure binding of response to request when CoAP is used with a security protocol, and with respect to amplification mitigation, where the use of Echo is now recommended.
 
 --- middle
 
@@ -66,12 +77,14 @@ Each of the following sections provides a more detailed introduction to the topi
 ## Terminology
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 {{RFC2119}} {{RFC8174}} when, and only when, they appear in all capitals, as shown here.
+ 
+Like {{RFC7252}}, this document is relying on the Representational State Transfer {{REST}} architecture of the Web.
 
-Unless otherwise specified, the terms "client" and "server" refers to "CoAP client" and "CoAP server", respectively, as defined in {{RFC7252}}. The term "origin server" is used as in {{RFC7252}}. The term "origin client" is used in this document to denote the client from which a request originates; to distinguish from clients in proxies.
+Unless otherwise specified, the terms "client" and "server" refer to "CoAP client" and "CoAP server", respectively, as defined in {{RFC7252}}. The term "origin server" is used as in {{RFC7252}}. The term "origin client" is used in this document to denote the client from which a request originates; to distinguish from clients in proxies.
 
 The terms "payload" and "body" of a message are used as in {{RFC7959}}.  The complete interchange of a request and a response body is called a (REST) "operation". An operation fragmented using {{RFC7959}} is called a "block-wise operation". A block-wise operation which is fragmenting the request body is called a "block-wise request operation".  A block-wise operation which is fragmenting the response body is called a "block-wise response operation".
 
-Two request messages are said to be "matchable" if they occur between the same endpoint pair, have the same code and the same set of options except for elective NoCacheKey options and options involved in block-wise transfer (Block1, Block2 and Request-Tag).
+Two request messages are said to be "matchable" if they occur between the same endpoint pair, have the same code, and the same set of options with the following exception: elective NoCacheKey options and options involved in block-wise transfer (Block1, Block2 and Request-Tag) need not be the same.
 <!-- We could also keep the Request-Tag inside the matchable criterion, but then we'd be saying "matchable except for the Request-Tag" all over the document. -->
 Two operations are said to be matchable if any of their messages are.
 
@@ -91,7 +104,7 @@ A straightforward mitigation of potential delayed requests is that the CoAP serv
 
 This document defines the Echo option, a lightweight challenge-response mechanism for CoAP that enables a CoAP server to verify the freshness of a request. A fresh request is one whose age has not yet exceeded the freshness requirements set by the server. The freshness requirements are application specific and may vary based on resource, method, and parameters outside of CoAP such as policies. The Echo option value is a challenge from the server to the client included in a CoAP response and echoed back to the server in one or more CoAP requests. The Echo option provides a convention to transfer freshness indicators that works for all CoAP methods and response codes.
 
-This mechanism is not only important in the case of actuators, or other use cases where the CoAP operations require freshness of requests, but also in general for synchronizing state between CoAP client and server, cryptographically verify the aliveness of the client, or force a client to demonstrate reachability at its claimed network address. The same functionality can be provided by echoing freshness indicators in CoAP payloads, but this only works for methods and response codes defined to have a payload. The Echo option provides a convention to transfer freshness indicators that works for all methods and response codes.
+This mechanism is not only important in the case of actuators, or other use cases where the CoAP operations require freshness of requests, but also in general for synchronizing state between CoAP client and server, cryptographically verifying the aliveness of the client, or forcing a client to demonstrate reachability at its claimed network address. The same functionality can be provided by echoing freshness indicators in CoAP payloads, but this only works for methods and response codes defined to have a payload. The Echo option provides a convention to transfer freshness indicators that works for all methods and response codes.
 
 ### Echo Option Format {#echo-format}
 
@@ -132,7 +145,7 @@ A client MUST only send Echo values to endpoints it received them from (where as
 
 Upon receiving a request with the Echo option, the server determines if the request is required to be fresh. If not, the Echo option MAY be ignored. If the request is required to be fresh and the server cannot verify the freshness of the request in some other way, the server MUST use the Echo option to verify that the request is fresh. If the server cannot verify that the request is fresh, the request is not processed further, and an error message MAY be sent. The error message SHOULD include a new Echo option.
 
-One way for the server to verify freshness is that to bind the Echo value to a specific point in time and verify that the request is not older than a certain threshold T. The server can verify this by checking that (t1 - t0) < T, where t1 is the request receive time and t0 is the time when the Echo option value was generated. An example message flow is shown in {{echo-figure-time}}.
+One way for the server to verify freshness is to bind the Echo value to a specific point in time and verify that the request is not older than a certain threshold T. The server can verify this by checking that (t1 - t0) < T, where t1 is the request receive time and t0 is the time when the Echo option value was generated. An example message flow is shown in {{echo-figure-time}}.
 
 ~~~~~~~~~~
 Client   Server
@@ -189,7 +202,7 @@ When used to serve freshness requirements (including client aliveness and state 
 
 A CoAP-to-CoAP proxy MAY set an Echo option on responses, both on forwarded ones that had no Echo option or ones generated by the proxy (from cache or as an error). If it does so, it MUST remove the Echo option it recognizes as one generated by itself on follow-up requests. When it receives an Echo option in a response, it may forward it to the client (and, not recognizing it as an own in future requests, relay it in the other direction as well) or process it on its own.
 If it does so, it MUST ensure that the client's request was generated (or is re-generated) after the Echo value used to send to the server was first seen.
-(In most cases, this means that the proxy needs to ask the client to repeat the request with a new Echo value).
+(In most cases, this means that the proxy needs to ask the client to repeat the request with a new Echo value.)
 
 The CoAP server side of CoAP-to-HTTP proxies MAY request freshness, especially if they have reason to assume that access may require it (e.g. because it is a PUT or POST); how this is determined is out of scope for this document. The CoAP client side of HTTP-to-CoAP proxies SHOULD respond to Echo challenges themselves if they know from the recent establishing of the connection that the HTTP request is fresh. Otherwise, they SHOULD respond with 503 Service Unavailable, Retry-After: 0 and terminate any underlying Keep-Alive connection. If the HTTP request arrived in Early Data, the proxy SHOULD use a 425 Too Early response instead (see {{?RFC8470}}). They MAY also use other mechanisms to establish freshness of the HTTP request that are not specified here.
 
@@ -288,7 +301,7 @@ A server receiving a Request-Tag MUST treat it as opaque and make no assumptions
 
 Two messages carrying the same Request-Tag is a necessary but not sufficient condition for being part of the same operation.
 For one, a server may still treat them as independent messages when it sends 2.01/2.04 responses for every block.
-Also, a client that lost interest in an old operation but wants to start over can overwrite the server's old state with a new initial (num=0) Block1 request and the same Request-Tag under some circumstances. Likewise, that results in the new message not being part of he old operation.
+Also, a client that lost interest in an old operation but wants to start over can overwrite the server's old state with a new initial (num=0) Block1 request and the same Request-Tag under some circumstances. Likewise, that results in the new message not being part of the old operation.
 
 As it has always been,
 a server that can only serve a limited number of block-wise operations at the same time
@@ -309,7 +322,7 @@ therefore constitutes request tag recycling just as well
 (also called "recycling the absent option").
 
 Clients that use Request-Tag for a particular purpose (like in {{req-tag-applications}}) MUST NOT recycle a request tag unless the first operation has concluded.
-What constitutes a concluded operation depends on that purpose, and is defined there.
+What constitutes a concluded operation depends on the purpose, and is defined accordingly, see examples in {{req-tag-applications}}. 
 
 When Block1 and Block2 are combined in an operation,
 the Request-Tag of the Block1 phase is set in the Block2 phase as well
@@ -318,7 +331,7 @@ and would not be recognized any more.
 
 Clients are encouraged to generate compact messages. This means sending messages without Request-Tag options whenever possible, and using short values when the absent option can not be recycled.
 
-The Request-Tag options MAY be present in request messages that carry no Block option
+Note that Request-Tag options can be present in request messages that carry no Block option
 (for example, because a Request-Tag unaware proxy reassembled them),
 and MUST be ignored in those.
 
@@ -339,7 +352,7 @@ In order to gain that protection, use the Request-Tag mechanism as follows:
 
   If any future security mechanisms allow a block-wise transfer to continue
   after an endpoint's details (like the IP address) have changed, then
-  the client MUST consider messages sent to *any* endpoint address within the new operation's security context.
+  the client MUST consider messages sent to *any* endpoint address using the new operation's security context.
 
 * The client MUST NOT regard a block-wise request operation as concluded unless all of the messages the client previously sent in the operation have been confirmed by the message integrity protection mechanism, or are considered invalid by the server if replayed.
 
