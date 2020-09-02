@@ -342,7 +342,7 @@ The Request-Tag option MUST NOT be present in response messages.
 
 ### Body Integrity Based on Payload Integrity {#body-integrity}
 
-When a client fragments a request body into multiple message payloads, even if the individual messages are integrity protected, it is still possible for a man-in-the-middle to maliciously replace a later operation's blocks with an earlier operation's blocks (see Section 2.5 of {{I-D.mattsson-core-coap-actuators}}). Therefore, the integrity protection of each block does not extend to the operation's request body.
+When a client fragments a request body into multiple message payloads, even if the individual messages are integrity protected, it is still possible for an attacker to maliciously replace a later operation's blocks with an earlier operation's blocks (see Section 2.5 of {{I-D.mattsson-core-coap-actuators}}). Therefore, the integrity protection of each block does not extend to the operation's request body.
 
 In order to gain that protection, use the Request-Tag mechanism as follows:
 
@@ -479,7 +479,7 @@ Servers that use the List of Cached Random Values and Timestamps method describe
 
 ## Token reuse
 
-Reusing Tokens in a way so that responses are guaranteed to not be associated with the wrong request is not trivial as on-path attackers may block, delay, and reorder messages, requests may be sent to several servers, and servers may process requests in any order and send many responses to the same request. The use of a sequence number is therefore recommended when CoAP is used with a security protocol that does not provide bindings between requests and responses such as DTLS or TLS.
+Reusing Tokens in a way so that responses are guaranteed to not be associated with the wrong request is not trivial as an attacker may block, delay, and reorder messages, requests may be sent to several servers, and servers may process requests in any order and send many responses to the same request. The use of a sequence number is therefore recommended when CoAP is used with a security protocol that does not provide bindings between requests and responses such as DTLS or TLS.
 
 For a generic response to a confirmable request over DTLS, binding can only be claimed without out-of-band knowledge if
 
