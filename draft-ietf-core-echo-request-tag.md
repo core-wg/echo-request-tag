@@ -581,6 +581,13 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 \[ The editor is asked to remove this section before publication. \]
 
+
+* Changes since draft-ietf-core-echo-request-tag-10 (Barry's comments)
+
+    * Aligned terminology on attacker
+    * A number of clarifications and editorial fixes
+
+
 * Changes since draft-ietf-core-echo-request-tag-09:
 
     * Allow intermediaries to do Echo processing, provided they ask at least as much freshness as they forward
