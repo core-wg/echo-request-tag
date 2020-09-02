@@ -84,7 +84,7 @@ Unless otherwise specified, the terms "client" and "server" refer to "CoAP clien
 
 The terms "payload" and "body" of a message are used as in {{RFC7959}}.  The complete interchange of a request and a response body is called a (REST) "operation". An operation fragmented using {{RFC7959}} is called a "block-wise operation". A block-wise operation which is fragmenting the request body is called a "block-wise request operation".  A block-wise operation which is fragmenting the response body is called a "block-wise response operation".
 
-Two request messages are said to be "matchable" if they occur between the same endpoint pair, have the same code, and the same set of options with the following exception: elective NoCacheKey options and options involved in block-wise transfer (Block1, Block2 and Request-Tag) need not be the same.
+Two request messages are said to be "matchable" if they occur between the same endpoint pair, have the same code, and have the same set of options, with the exception that elective NoCacheKey options and options involved in block-wise transfer (Block1, Block2 and Request-Tag) need not be the same.
 <!-- We could also keep the Request-Tag inside the matchable criterion, but then we'd be saying "matchable except for the Request-Tag" all over the document. -->
 Two operations are said to be matchable if any of their messages are.
 
@@ -322,7 +322,7 @@ therefore constitutes request tag recycling just as well
 (also called "recycling the absent option").
 
 Clients that use Request-Tag for a particular purpose (like in {{req-tag-applications}}) MUST NOT recycle a request tag unless the first operation has concluded.
-What constitutes a concluded operation depends on the purpose, and is defined accordingly, see examples in {{req-tag-applications}}. 
+What constitutes a concluded operation depends on the purpose, and is defined accordingly; see examples in {{req-tag-applications}}. 
 
 When Block1 and Block2 are combined in an operation,
 the Request-Tag of the Block1 phase is set in the Block2 phase as well
@@ -354,7 +354,7 @@ In order to gain that protection, use the Request-Tag mechanism as follows:
   after an endpoint's details (like the IP address) have changed, then
   the client MUST consider messages sent to *any* endpoint address using the new operation's security context.
 
-* The client MUST NOT regard a block-wise request operation as concluded unless all of the messages the client previously sent in the operation have been confirmed by the message integrity protection mechanism, or are considered invalid by the server if replayed.
+* The client MUST NOT regard a block-wise request operation as concluded unless all of the messages the client previously sent in the operation have been confirmed by the message integrity protection mechanism, or the client can determine that the server would not consider the messages to be valid if they were replayed.
 
   Typically, in OSCORE, these confirmations can result either from the client receiving an OSCORE response message matching the request (an empty ACK is insufficient), or because the message's sequence number is old enough to be outside the server's receive window.
 
