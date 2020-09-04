@@ -33,14 +33,14 @@ normative:
   RFC7252:
   RFC7959:
   RFC8174:
+  RFC8613:
+  RFC6347:
 
 informative:
-  RFC6347:
   RFC7390:
   RFC7641:
   RFC8323:
   RFC8446:
-  RFC8613:
   I-D.ietf-core-oscore-groupcomm:
   I-D.mattsson-core-coap-actuators:
   I-D.ietf-core-stateless:
