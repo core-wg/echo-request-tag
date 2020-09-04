@@ -51,7 +51,6 @@ informative:
       -
         ins: R. Fielding
     date: 2000
-    
 
 
 
@@ -77,7 +76,7 @@ Each of the following sections provides a more detailed introduction to the topi
 ## Terminology
 
 The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in BCP 14 {{RFC2119}} {{RFC8174}} when, and only when, they appear in all capitals, as shown here.
- 
+
 Like {{RFC7252}}, this document is relying on the Representational State Transfer {{REST}} architecture of the Web.
 
 Unless otherwise specified, the terms "client" and "server" refer to "CoAP client" and "CoAP server", respectively, as defined in {{RFC7252}}. The term "origin server" is used as in {{RFC7252}}. The term "origin client" is used in this document to denote the client from which a request originates; to distinguish from clients in proxies.
@@ -322,7 +321,7 @@ therefore constitutes request tag recycling just as well
 (also called "recycling the absent option").
 
 Clients that use Request-Tag for a particular purpose (like in {{req-tag-applications}}) MUST NOT recycle a request tag unless the first operation has concluded.
-What constitutes a concluded operation depends on the purpose, and is defined accordingly; see examples in {{req-tag-applications}}. 
+What constitutes a concluded operation depends on the purpose, and is defined accordingly; see examples in {{req-tag-applications}}.
 
 When Block1 and Block2 are combined in an operation,
 the Request-Tag of the Block1 phase is set in the Block2 phase as well
@@ -409,7 +408,7 @@ The Request-Tag option can be elective, because to servers unaware of the Reques
 The Request-Tag option can be safe to forward but part of the cache key, because proxies unaware of the Request-Tag option will consider operations with differing request tags unmatchable but can still forward them.
 
 The Request-Tag option is repeatable
-because this easily allows stateless proxies to "chain" their origin address.
+because this easily allows several cascaded stateless proxies to each put in an origin address.
 They can perform the steps of {{simpleproxy}} without the need to create an option value
 that is the concatenation of the received option and their own value,
 and can simply add a new Request-Tag option unconditionally.
@@ -431,8 +430,11 @@ and would still not prevent attacks like in {{I-D.mattsson-core-coap-actuators}}
 ## Block2 / ETag Processing # {#etag}
 
 The same security properties as in {{body-integrity}} can be obtained for blockwise response operations.
-The threat model here is not an attacker (because the response is made sure to belong to the current request by the security layer),
-but blocks in the client's cache.
+The threat model here does not depend on an attacker:
+a client can construct a wrong representation
+by assembling it from blocks from different resource states.
+That can happen when a resource is modified during a transfer,
+or when some blocks are still valid in the client's cache.
 
 Rules stating that response body reassembly is conditional on matching ETag values are already in place from Section 2.4 of {{RFC7959}}.
 
@@ -444,30 +446,32 @@ and MUST NOT use the same ETag value for different representations of a resource
 
 ## Request-Response Binding {#req-resp-bind}
 
-A fundamental requirement of secure REST operations is that the client can bind a response to a particular request. If this is not ensured, a client may erroneously associate the wrong response to a request. The wrong response may be an old response for the same resource or for a completely different resource (see e.g. Section 2.3 of {{I-D.mattsson-core-coap-actuators}}). For example, a request for the alarm status "GET /status" may be associated to a prior response "on", instead of the correct response "off".
+A fundamental requirement of secure REST operations is that the client can bind a response to a particular request. If this is not ensured, a client may erroneously associate the wrong response to a request. The wrong response may be an old response for the same resource or a response for a completely different resource (see e.g. Section 2.3 of {{I-D.mattsson-core-coap-actuators}}). For example, a request for the alarm status "GET /status" may be associated to a prior response "on", instead of the correct response "off".
 
 In HTTPS, this type of binding is always assured by the ordered and reliable delivery as well as mandating that the server sends responses in the same order that the requests were received. The same is not true for CoAP where the server (or an attacker) can return responses in any order and where there can be any number of responses to a request (see e.g. {{RFC7641}}). In CoAP, concurrent requests are differentiated by their Token. Note that the CoAP Message ID cannot be used for this purpose since those are typically different for REST request and corresponding response in case of "separate response", see Section 2.2 of {{RFC7252}}.
 
 CoAP {{RFC7252}} does not treat Token as a cryptographically important value and does not give stricter guidelines than that the Tokens currently "in use" SHOULD (not SHALL) be unique. If used with a security protocol not providing bindings between requests and responses (e.g. DTLS and TLS) Token reuse may result in situations where a client matches a response to the wrong request. Note that mismatches can also happen for other reasons than a malicious attacker, e.g. delayed delivery or a server sending notifications to an uninterested client.
 
-A straightforward mitigation is to mandate clients to not reuse Tokens until the traffic keys have been replaced. One easy way to accomplish this is to implement the Token as a counter starting at zero for each new or rekeyed secure connection.
+A straightforward mitigation is to mandate clients to not reuse Tokens until the traffic keys have been replaced. The following section formalizes that.
 
 ## Updated Token Processing Requirements for Clients
 
 As described in {{req-resp-bind}}, the client must be able to verify that a response corresponds to a particular request. This section updates the Token processing requirements for clients in {{RFC7252}} to always assure a cryptographically secure binding of responses to requests for secure REST operations like "coaps". The Token processing for servers is not updated. Token processing in Section 5.3.1 of {{RFC7252}} is updated by adding the following text:
 
-When CoAP is used with a security protocol not providing bindings between requests and responses, the Tokens have cryptographic importance. The client MUST make sure that Tokens are not used in a way so that responses risk being associated with the wrong request. One easy way to accomplish this is to implement the Token (or part of the Token) as a sequence number starting at zero for each new or rekeyed secure connection, this approach SHOULD be followed.
+When CoAP is used with a security protocol not providing bindings between requests and responses, the Tokens have cryptographic importance. The client MUST make sure that Tokens are not used in a way so that responses risk being associated with the wrong request.
+
+One easy way to accomplish this is to implement the Token (or part of the Token) as a sequence number starting at zero for each new or rekeyed secure connection. This approach SHOULD be followed.
 
 
 # Security Considerations {#sec-cons}
 
-The availability of a secure pseudorandom number generator and truly random seeds are essential for the security of the Echo option (except when using counting Echo values). If no true random number generator is available, a truly random seed must be provided from an external source. As each pseudorandom number must only be used once, an implementation needs to get a new truly random seed after reboot, or continously store state in nonvolatile memory, see ({{RFC8613}}, Appendix B.1.1) for issues and solution approaches for writing to nonvolatile memory.
+The availability of a secure pseudorandom number generator and truly random seeds are essential for the security of the Echo option (except when using counting Echo values). If no true random number generator is available, a truly random seed must be provided from an external source. As each pseudorandom number must only be used once, an implementation needs to get a new truly random seed after reboot, or continously store state in nonvolatile memory. See ({{RFC8613}}, Appendix B.1.1) for issues and solution approaches for writing to nonvolatile memory.
 
 A single active Echo value with 64 (pseudo-)random bits gives the same theoretical security level as a 64-bit MAC (as used in e.g. AES_128_CCM_8). Unless a counting Echo value is used, the Echo option value MUST contain 32 (pseudo-)random bits that are not predictable for any other party than the server, and SHOULD contain 64 (pseudo-)random bits. A server MAY use different security levels for different uses cases (client aliveness, request freshness, state synchronization, network address reachability, etc.).
 
 The security provided by the Echo and Request-Tag options depends on the security protocol used. CoAP and HTTP proxies require (D)TLS to be terminated at the proxies. The proxies are therefore able to manipulate, inject, delete, or reorder options or packets. The security claims in such architectures only hold under the assumption that all intermediaries are fully trusted and have not been compromised.
 
-Counting Echo values can only be used to show freshness relative to numbered events, and are the legitimate case for Echo values shorter than four bytes, which are not necessarily secret. They MUST only be used when the request Echo values are integrity protected.
+Counting Echo values can only be used to show freshness relative to numbered events, and are the legitimate case for Echo values shorter than four bytes, which are not necessarily secret. They MUST NOT be used unless the request Echo values are integrity protected.
 
 Servers SHOULD use a monotonic clock to generate timestamps and compute round-trip times. Use of non-monotonic clocks is not secure as the server will accept expired Echo option values if the clock is moved backward. The server will also reject fresh Echo option values if the clock is moved forward. Non-monotonic clocks MAY be used as long as they have deviations that are acceptable given the freshness requirements. If the deviations from a monotonic clock are known, it may be possible to adjust the threshold accordingly.
 
@@ -504,9 +508,9 @@ When the Token (or part of the Token) contains a sequence number, the encoding o
 
 # Privacy Considerations {#priv-cons}
 
-Implementations SHOULD NOT put any privacy-sensitive information in the Echo or Request-Tag option values. Unencrypted timestamps MAY reveal information about the server such as location or time since reboot, or that the server will accept expired certificates. Timestamps MAY be used if Echo is encrypted between the client and the server, e.g. in the case of DTLS without proxies or when using OSCORE with an Inner Echo option.
+Implementations SHOULD NOT put any privacy-sensitive information in the Echo or Request-Tag option values. Unencrypted timestamps could reveal information about the server such as location or time since reboot, or that the server will accept expired certificates. Timestamps MAY be used if Echo is encrypted between the client and the server, e.g. in the case of DTLS without proxies or when using OSCORE with an Inner Echo option.
 
-Like HTTP cookies, the Echo option could potentially be abused as a tracking mechanism to link to different requests to the same client. This is especially true for pre-emptive Echo values. Servers MUST NOT use the Echo option to correlate requests for other purposes than freshness and reachability. Clients only send Echo to the same server from which they were received. Compared to HTTP, CoAP clients are often authenticated and non-mobile, and servers can therefore often correlate requests based on the security context, the client credentials, or the network address. Especially when the Echo option increases a server’s ability to correlate requests, clients MAY discard all pre-emptive Echo values.
+Like HTTP cookies, the Echo option could potentially be abused as a tracking mechanism that identifies a client across requests. This is especially true for pre-emptive Echo values. Servers MUST NOT use the Echo option to correlate requests for other purposes than freshness and reachability. Clients only send Echo values to the same server from which the values were received. Compared to HTTP, CoAP clients are often authenticated and non-mobile, and servers can therefore often correlate requests based on the security context, the client credentials, or the network address. Especially when the Echo option increases a server’s ability to correlate requests, clients MAY discard all pre-emptive Echo values.
 
 # IANA Considerations {#iana}
 
