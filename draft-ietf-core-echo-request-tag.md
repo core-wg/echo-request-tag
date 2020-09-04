@@ -406,7 +406,7 @@ and out of scope for this document.
 
 The Request-Tag option can be elective, because to servers unaware of the Request-Tag option, operations with differing request tags will not be matchable.
 
-The Request-Tag option can be safe to forward but part of the cache key, because to proxies unaware of the Request-Tag option will consider operations with differing request tags unmatchable but can still forward them.
+The Request-Tag option can be safe to forward but part of the cache key, because proxies unaware of the Request-Tag option will consider operations with differing request tags unmatchable but can still forward them.
 
 The Request-Tag option is repeatable
 because this easily allows stateless proxies to "chain" their origin address.
@@ -461,7 +461,7 @@ When CoAP is used with a security protocol not providing bindings between reques
 
 # Security Considerations {#sec-cons}
 
-The availability of a secure pseudorandom number generator and truly random seeds are essential for the security of the Echo option (except when using counting Echo values). If no true random number generator is available, a truly random seed must be provided from an external source. As each pseudoranom number must only be used once, an implementation need to get a new truly random seed after reboot, or continously store state in nonvolatile memory, see ({{RFC8613}}, Appendix B.1.1) for issues and solution approaches for writing to nonvolatile memory.
+The availability of a secure pseudorandom number generator and truly random seeds are essential for the security of the Echo option (except when using counting Echo values). If no true random number generator is available, a truly random seed must be provided from an external source. As each pseudorandom number must only be used once, an implementation needs to get a new truly random seed after reboot, or continously store state in nonvolatile memory, see ({{RFC8613}}, Appendix B.1.1) for issues and solution approaches for writing to nonvolatile memory.
 
 A single active Echo value with 64 (pseudo-)random bits gives the same theoretical security level as a 64-bit MAC (as used in e.g. AES_128_CCM_8). Unless a counting Echo value is used, the Echo option value MUST contain 32 (pseudo-)random bits that are not predictable for any other party than the server, and SHOULD contain 64 (pseudo-)random bits. A server MAY use different security levels for different uses cases (client aliveness, request freshness, state synchronization, network address reachability, etc.).
 
@@ -473,7 +473,7 @@ Servers SHOULD use a monotonic clock to generate timestamps and compute round-tr
 
 An attacker may be able to affect the server's system time in various ways such as setting up a fake NTP server or broadcasting false time signals to radio-controlled clocks.
 
-Servers MAY use the time since reboot measured in some unit of time. Servers MAY reset the timer at certain times and MAY generate a random offset applied to all timestamps. When resetting the timer, the server MUST reject all Echo values that was created before the reset.
+Servers MAY use the time since reboot measured in some unit of time. Servers MAY reset the timer at certain times and MAY generate a random offset applied to all timestamps. When resetting the timer, the server MUST reject all Echo values that were created before the reset.
 
 Servers that use the List of Cached Random Values and Timestamps method described in {{echo-state}} may be vulnerable to resource exhaustion attacks. One way to minimize state is to use the Integrity Protected Timestamp method described in {{echo-state}}.
 
@@ -491,7 +491,7 @@ For a generic response to a confirmable request over DTLS, binding can only be c
 
 In some setups, Tokens can be reused without the above constraints, as a different component in the setup provides the associations:
 
-* In CoAP over TLS, retransmissions are not handled by the CoAP layer and the replay window size is always exactly 1. When a client is sending TLS protected requests without Observe to a single server, the client can reuse a Token as soon as the previous response with that Token has been received.
+* In CoAP over TLS, retransmissions are not handled by the CoAP layer and the replay window size is always exactly 1. When a client is sending TLS-protected requests without Observe to a single server, the client can reuse a Token as soon as the previous response with that Token has been received.
 * Requests whose responses are cryptographically bound to the requests (like in OSCORE) can reuse Tokens indefinitely.
 <!-- could be added but is probably not worth the lines of text * Requests whose responses reflect all the data in the request that is varied ofer reuses of the same token (for example, if a token is always used on a single path with the single query parameter `?t=X` for various values of X, then the response needs to contain X in a unique position) can share a token, provided the application does not rely on the freshness of the responses, or sends different requests all the time.
 -->
@@ -504,7 +504,7 @@ When the Token (or part of the Token) contains a sequence number, the encoding o
 
 # Privacy Considerations {#priv-cons}
 
-Implementations SHOULD NOT put any privacy sensitive information in the Echo or Request-Tag option values. Unencrypted timestamps MAY reveal information about the server such as location or time since reboot, or that the server will accept expired certificates. Timestamps MAY be used if Echo is encrypted between the client and the server, e.g. in the case of DTLS without proxies or when using OSCORE with an Inner Echo option.
+Implementations SHOULD NOT put any privacy-sensitive information in the Echo or Request-Tag option values. Unencrypted timestamps MAY reveal information about the server such as location or time since reboot, or that the server will accept expired certificates. Timestamps MAY be used if Echo is encrypted between the client and the server, e.g. in the case of DTLS without proxies or when using OSCORE with an Inner Echo option.
 
 Like HTTP cookies, the Echo option could potentially be abused as a tracking mechanism to link to different requests to the same client. This is especially true for pre-emptive Echo values. Servers MUST NOT use the Echo option to correlate requests for other purposes than freshness and reachability. Clients only send Echo to the same server from which they were received. Compared to HTTP, CoAP clients are often authenticated and non-mobile, and servers can therefore often correlate requests based on the security context, the client credentials, or the network address. Especially when the Echo option increases a server’s ability to correlate requests, clients MAY discard all pre-emptive Echo values.
 
