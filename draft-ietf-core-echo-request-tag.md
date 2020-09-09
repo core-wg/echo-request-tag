@@ -547,7 +547,7 @@ and as high as possible to keep room for other options that might typically occu
 
 # Methods for Generating Echo Option Values {#echo-state}
 
-The content and structure of the Echo option value are implementation specific and determined by the server. Two simple mechanisms for time-based freshness are outlined in this section, the first is RECOMMENDED in general, and the second is RECOMMENDED in case the Echo option is encrypted between the client and the server.
+The content and structure of the Echo option value are implementation specific and determined by the server. Two simple mechanisms for time-based freshness and one for event based freshness are outlined in this section, the first is RECOMMENDED in general, and the second is RECOMMENDED in case the Echo option is encrypted between the client and the server.
 
 Different mechanisms have different tradeoffs between the size of the Echo option value, the amount of server state, the amount of computation, and the security properties offered. A server MAY use different methods and security levels for different uses cases (client aliveness, request freshness, state synchronization, network address reachability, etc.).
 
@@ -563,6 +563,13 @@ Different mechanisms have different tradeoffs between the size of the Echo optio
 ~~~~~~~~~~
       Echo option value: timestamp t0, MAC(k, t0)
       Server State: secret key k
+~~~~~~~~~~
+
+3\. Unprotected counter of state loss. This is an event based freshness method usable for state synchronization after volatile state has been lost, and can not be used for client aliveness. It requires that the client can be trusted to not spuriously produce Echo values. The Echo option value is a simple counter without integrity protection, serialized in uint format. The counter is incremented in a persistent way every time the state to be synchronized is recognized to have been lost, for example by counting the number of device reboots. When recovering state for OSCORE as in ({{RFC8613}}, Appendix B.1.2, taking a sequence number from the replay window from that same context's sender sequence number counter qualifies as well (although it produces suboptimally long Echo values).
+
+~~~~~~~~~~
+      Echo option value: counter
+      Server State: counter
 ~~~~~~~~~~
 
 Other mechanisms complying with the security and privacy considerations may be used. The use of encrypted timestamps in the Echo option increases security, but typically requires an IV to be included in the Echo option value, which adds overhead and makes the specification of such a mechanism slightly more complicated than the two mechanisms specified here.
