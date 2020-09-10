@@ -495,7 +495,7 @@ For a generic response to a confirmable request over DTLS, binding can only be c
 
 In some setups, Tokens can be reused without the above constraints, as a different component in the setup provides the associations:
 
-* In CoAP over TLS, retransmissions are not handled by the CoAP layer and the replay window size is always exactly 1. When a client is sending TLS-protected requests without Observe to a single server, the client can reuse a Token as soon as the previous response with that Token has been received.
+* In CoAP over TLS, retransmissions are not handled by the CoAP layer and behaves like a replay window size of 1. When a client is sending TLS-protected requests without Observe to a single server, the client can reuse a Token as soon as the previous response with that Token has been received.
 * Requests whose responses are cryptographically bound to the requests (like in OSCORE) can reuse Tokens indefinitely.
 <!-- could be added but is probably not worth the lines of text * Requests whose responses reflect all the data in the request that is varied ofer reuses of the same token (for example, if a token is always used on a single path with the single query parameter `?t=X` for various values of X, then the response needs to contain X in a unique position) can share a token, provided the application does not rely on the freshness of the responses, or sends different requests all the time.
 -->
