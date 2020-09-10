@@ -479,7 +479,7 @@ Servers SHOULD use a monotonic clock to generate timestamps and compute round-tr
 
 An attacker may be able to affect the server's system time in various ways such as setting up a fake NTP server or broadcasting false time signals to radio-controlled clocks.
 
-Servers MAY use the time since reboot measured in some unit of time. Servers MAY reset the timer at certain times and MAY generate a random offset applied to all timestamps. When resetting the timer, the server MUST reject all Echo values that were created before the reset.
+For the purpose of generating timestamps for Echo a server MAY set a timer at reboot and use the time since reboot, in a unit such that  different requests arrive at different times. Servers MAY intermittently reset the timer and MAY generate a random offset applied to all timestamps. When resetting the timer, the server MUST reject all Echo values that were created before the reset.
 
 Servers that use the List of Cached Random Values and Timestamps method described in {{echo-state}} may be vulnerable to resource exhaustion attacks. One way to minimize state is to use the Integrity Protected Timestamp method described in {{echo-state}}.
 
