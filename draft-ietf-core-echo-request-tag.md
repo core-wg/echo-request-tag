@@ -602,6 +602,7 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
     * Promote DTLS and OSCORE to normative references
     * Add counter-based version to the Methods for Generating Echo Option Values appendix
     * Use 64-bit randomness recommendation throughout (but keep it as SHOULD so applications with strict requirements can reduce if if really needed)
+    * Speling and Capitalization
 
 * Changes since draft-ietf-core-echo-request-tag-09:
 
