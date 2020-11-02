@@ -567,7 +567,7 @@ Different mechanisms have different tradeoffs between the size of the Echo optio
       Server State: secret key k
 ~~~~~~~~~~
 
-3\. Persistent Counter. This is an event-based freshness method usable for state synchronization after volatile state has been lost, and cannot be used for client aliveness. It requires that the client can be trusted to not spuriously produce Echo values. The Echo option value is a simple counter without integrity protection, serialized in uint format. The counter is incremented in a persistent way every time the state that needs to be synchronized is recognized to have been lost, for example by counting the number of device reboots. Another example of a counter that is persistently stored and increased at loss of state is the OSCORE server Sender Sequence Number implemented according to Appendix B.1.1 in {{RFC8613}}.
+3\. Persistent Counter. This is an event-based freshness method usable for state synchronization (for example after volatile state has been lost), and cannot be used for client aliveness. It requires that the client can be trusted to not spuriously produce Echo values. The Echo option value is a simple counter without integrity protection of its own, serialized in uint format. The counter is incremented in a persistent way every time the state that needs to be synchronized is changed (in the aforementioned example: when a reboot indicates that volatile state may have been lost). An example of how such a persistent counter can be implemented efficiently is the OSCORE server Sender Sequence Number mechanism described in Appendix B.1.1 of {{RFC8613}}.
 
 ~~~~~~~~~~
       Echo option value: counter
