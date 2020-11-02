@@ -597,9 +597,11 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 * Changes since draft-ietf-core-echo-request-tag-10 (Barry's comments)
 
-    * Aligned terminology on attacker
+    * Align terminology on attacker
     * A number of clarifications and editorial fixes
-
+    * Promote DTLS and OSCORE to normative references
+    * Add counter-based version to the Methods for Generating Echo Option Values appendix
+    * Use 64-bit randomness recommendation throughout (but keep it as SHOULD so applications with strict requirements can reduce if if really needed)
 
 * Changes since draft-ietf-core-echo-request-tag-09:
 
