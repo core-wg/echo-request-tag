@@ -465,19 +465,21 @@ One easy way to accomplish this is to implement the Token (or part of the Token)
 
 # Security Considerations {#sec-cons}
 
-The availability of a secure pseudorandom number generator and truly random seeds are essential for the security of the Echo option (except when using counting Echo values). If no true random number generator is available, a truly random seed must be provided from an external source. As each pseudorandom number must only be used once, an implementation needs to get a new truly random seed after reboot, or continously store state in nonvolatile memory. See ({{RFC8613}}, Appendix B.1.1) for issues and solution approaches for writing to nonvolatile memory.
+The freshness assertion of the Echo option comes from the client reproducing the same value of the Echo option in a request as in a previous response. If the Echo value is a large random number then there is a high probability that the request is generated after having seen the response. If the Echo value of the response can be guessed, e.g. if based on a small random number or a counter (see {{echo-state}}), then it is possible to compose a request with the right Echo value ahead of time. However, this may not be an issue if the communication is integrity protected against third parties and the client is trusted not misusing this capability. Echo values MUST be set by the CoAP server such that the risk associated with unintended reuse can be managed.
 
-A single active Echo value with 64 (pseudo-)random bits gives the same theoretical security level as a 64-bit MAC (as used in e.g. AES_128_CCM_8). Unless a counting Echo value is used, the Echo option value MUST contain 32 (pseudo-)random bits that are not predictable for any other party than the server, and SHOULD contain 64 (pseudo-)random bits. A server MAY use different security levels for different uses cases (client aliveness, request freshness, state synchronization, network address reachability, etc.).
+If uniqueness of the Echo value is based on randomness, then the availability of a secure pseudorandom number generator and truly random seeds are essential for the security of the Echo option. If no true random number generator is available, a truly random seed must be provided from an external source. As each pseudorandom number must only be used once, an implementation needs to get a new truly random seed after reboot, or continously store state in nonvolatile memory. See ({{RFC8613}}, Appendix B.1.1) for issues and solution approaches for writing to nonvolatile memory.
+
+A single active Echo value with 64 (pseudo-)random bits gives the same theoretical security level as a 64-bit MAC (as used in e.g. AES_128_CCM_8). If a random unique Echo value is intended, the Echo option value SHOULD contain 64 (pseudo-)random bits that are not predictable for any other party than the server. A server MAY use different security levels for different uses cases (client aliveness, request freshness, state synchronization, network address reachability, etc.).
 
 The security provided by the Echo and Request-Tag options depends on the security protocol used. CoAP and HTTP proxies require (D)TLS to be terminated at the proxies. The proxies are therefore able to manipulate, inject, delete, or reorder options or packets. The security claims in such architectures only hold under the assumption that all intermediaries are fully trusted and have not been compromised.
 
-Counting Echo values can only be used to show freshness relative to numbered events, and are the legitimate case for Echo values shorter than four bytes, which are not necessarily secret. They MUST NOT be used unless the request Echo values are integrity protected.
+Counter Echo values can only be used to show freshness relative to numbered events, and are the legitimate case for Echo values shorter than four bytes, which are not necessarily secret. They MUST NOT be used unless the request Echo values are integrity protected as per {{echo-proc}}.
 
 Servers SHOULD use a monotonic clock to generate timestamps and compute round-trip times. Use of non-monotonic clocks is not secure as the server will accept expired Echo option values if the clock is moved backward. The server will also reject fresh Echo option values if the clock is moved forward. Non-monotonic clocks MAY be used as long as they have deviations that are acceptable given the freshness requirements. If the deviations from a monotonic clock are known, it may be possible to adjust the threshold accordingly.
 
 An attacker may be able to affect the server's system time in various ways such as setting up a fake NTP server or broadcasting false time signals to radio-controlled clocks.
 
-Servers MAY use the time since reboot measured in some unit of time. Servers MAY reset the timer at certain times and MAY generate a random offset applied to all timestamps. When resetting the timer, the server MUST reject all Echo values that were created before the reset.
+For the purpose of generating timestamps for Echo a server MAY set a timer at reboot and use the time since reboot, in a unit such that  different requests arrive at different times. Servers MAY intermittently reset the timer and MAY generate a random offset applied to all timestamps. When resetting the timer, the server MUST reject all Echo values that were created before the reset.
 
 Servers that use the List of Cached Random Values and Timestamps method described in {{echo-state}} may be vulnerable to resource exhaustion attacks. One way to minimize state is to use the Integrity Protected Timestamp method described in {{echo-state}}.
 
@@ -547,7 +549,7 @@ and as high as possible to keep room for other options that might typically occu
 
 # Methods for Generating Echo Option Values {#echo-state}
 
-The content and structure of the Echo option value are implementation specific and determined by the server. Two simple mechanisms for time-based freshness are outlined in this section, the first is RECOMMENDED in general, and the second is RECOMMENDED in case the Echo option is encrypted between the client and the server.
+The content and structure of the Echo option value are implementation specific and determined by the server. Two simple mechanisms for time-based freshness and one for event-based freshness are outlined in this section, the first is RECOMMENDED in general, and the second is RECOMMENDED in case the Echo option is encrypted between the client and the server.
 
 Different mechanisms have different tradeoffs between the size of the Echo option value, the amount of server state, the amount of computation, and the security properties offered. A server MAY use different methods and security levels for different uses cases (client aliveness, request freshness, state synchronization, network address reachability, etc.).
 
@@ -565,7 +567,14 @@ Different mechanisms have different tradeoffs between the size of the Echo optio
       Server State: secret key k
 ~~~~~~~~~~
 
-Other mechanisms complying with the security and privacy considerations may be used. The use of encrypted timestamps in the Echo option increases security, but typically requires an IV to be included in the Echo option value, which adds overhead and makes the specification of such a mechanism slightly more complicated than the two mechanisms specified here.
+3\. Persistent Counter. This is an event-based freshness method usable for state synchronization (for example after volatile state has been lost), and cannot be used for client aliveness. It requires that the client can be trusted to not spuriously produce Echo values. The Echo option value is a simple counter without integrity protection of its own, serialized in uint format. The counter is incremented in a persistent way every time the state that needs to be synchronized is changed (in the aforementioned example: when a reboot indicates that volatile state may have been lost). An example of how such a persistent counter can be implemented efficiently is the OSCORE server Sender Sequence Number mechanism described in Appendix B.1.1 of {{RFC8613}}.
+
+~~~~~~~~~~
+      Echo option value: counter
+      Server State: counter
+~~~~~~~~~~
+
+Other mechanisms complying with the security and privacy considerations may be used. The use of encrypted timestamps in the Echo option increases security, but typically requires an IV to be included in the Echo option value, which adds overhead and makes the specification of such a mechanism slightly more complicated than the two time-based mechanisms specified here.
 
 # Request-Tag Message Size Impact
 
