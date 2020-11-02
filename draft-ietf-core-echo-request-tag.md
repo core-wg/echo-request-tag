@@ -231,7 +231,7 @@ different origin client endpoints. Following from the recommendation above, a pr
       In practice, this allows UDP data of at least 152 Bytes without further checks.
 
     * When an Echo response is sent to mitigate amplification,
-      it MUST be sent as a piggybacked or non-confirmable response,
+      it MUST be sent as a piggybacked or Non-confirmable response,
       never as a separate one (which would cause amplification due to retransmission).
 
 4. A server may want to use the request freshness provided by the Echo to verify the aliveness of a client. Note that in a deployment with hop-by-hop security and proxies, the server can only verify aliveness of the closest proxy.
@@ -429,7 +429,7 @@ and would still not prevent attacks like in {{I-D.mattsson-core-coap-actuators}}
 
 ## Block2 / ETag Processing # {#etag}
 
-The same security properties as in {{body-integrity}} can be obtained for blockwise response operations.
+The same security properties as in {{body-integrity}} can be obtained for block-wise response operations.
 The threat model here does not depend on an attacker:
 a client can construct a wrong representation
 by assembling it from blocks from different resource states.
@@ -467,7 +467,7 @@ One easy way to accomplish this is to implement the Token (or part of the Token)
 
 The freshness assertion of the Echo option comes from the client reproducing the same value of the Echo option in a request as in a previous response. If the Echo value is a large random number then there is a high probability that the request is generated after having seen the response. If the Echo value of the response can be guessed, e.g. if based on a small random number or a counter (see {{echo-state}}), then it is possible to compose a request with the right Echo value ahead of time. However, this may not be an issue if the communication is integrity protected against third parties and the client is trusted not misusing this capability. Echo values MUST be set by the CoAP server such that the risk associated with unintended reuse can be managed.
 
-If uniqueness of the Echo value is based on randomness, then the availability of a secure pseudorandom number generator and truly random seeds are essential for the security of the Echo option. If no true random number generator is available, a truly random seed must be provided from an external source. As each pseudorandom number must only be used once, an implementation needs to get a new truly random seed after reboot, or continously store state in nonvolatile memory. See ({{RFC8613}}, Appendix B.1.1) for issues and solution approaches for writing to nonvolatile memory.
+If uniqueness of the Echo value is based on randomness, then the availability of a secure pseudorandom number generator and truly random seeds are essential for the security of the Echo option. If no true random number generator is available, a truly random seed must be provided from an external source. As each pseudorandom number must only be used once, an implementation needs to get a new truly random seed after reboot, or continuously store state in nonvolatile memory. See ({{RFC8613}}, Appendix B.1.1) for issues and solution approaches for writing to nonvolatile memory.
 
 A single active Echo value with 64 (pseudo-)random bits gives the same theoretical security level as a 64-bit MAC (as used in e.g. AES_128_CCM_8). If a random unique Echo value is intended, the Echo option value SHOULD contain 64 (pseudo-)random bits that are not predictable for any other party than the server. A server MAY use different security levels for different uses cases (client aliveness, request freshness, state synchronization, network address reachability, etc.).
 
@@ -487,10 +487,10 @@ Servers that use the List of Cached Random Values and Timestamps method describe
 
 Reusing Tokens in a way so that responses are guaranteed to not be associated with the wrong request is not trivial: The server may process requests in any order, and send multiple responses to the same request. An attacker may block, delay, and reorder messages. The use of a sequence number is therefore recommended when CoAP is used with a security protocol that does not provide bindings between requests and responses such as DTLS or TLS.
 
-For a generic response to a confirmable request over DTLS, binding can only be claimed without out-of-band knowledge if
+For a generic response to a Confirmable request over DTLS, binding can only be claimed without out-of-band knowledge if
 
 * the original request was never retransmitted,
-* the response was piggybacked in an Acknowledgement message (as a confirmable or non-confirmable response may have been transmitted multiple times), and
+* the response was piggybacked in an Acknowledgement message (as a Confirmable or Non-confirmable response may have been transmitted multiple times), and
 * if observation was used, the same holds for the registration, all re-registrations, and the cancellation.
 
 (In addition, for observations, any responses using that Token and a DTLS sequence number earlier than the cancellation Acknowledgement message need to be discarded. This is typically not supported in DTLS implementations.)
@@ -499,7 +499,7 @@ In some setups, Tokens can be reused without the above constraints, as a differe
 
 * In CoAP over TLS, retransmissions are not handled by the CoAP layer and behaves like a replay window size of 1. When a client is sending TLS-protected requests without Observe to a single server, the client can reuse a Token as soon as the previous response with that Token has been received.
 * Requests whose responses are cryptographically bound to the requests (like in OSCORE) can reuse Tokens indefinitely.
-<!-- could be added but is probably not worth the lines of text * Requests whose responses reflect all the data in the request that is varied ofer reuses of the same token (for example, if a token is always used on a single path with the single query parameter `?t=X` for various values of X, then the response needs to contain X in a unique position) can share a token, provided the application does not rely on the freshness of the responses, or sends different requests all the time.
+<!-- could be added but is probably not worth the lines of text * Requests whose responses reflect all the data in the request that is varied over reuses of the same token (for example, if a token is always used on a single path with the single query parameter `?t=X` for various values of X, then the response needs to contain X in a unique position) can share a token, provided the application does not rely on the freshness of the responses, or sends different requests all the time.
 -->
 
 In all other cases, a sequence number approach is RECOMMENDED as per {{token}}.
@@ -512,7 +512,7 @@ When the Token (or part of the Token) contains a sequence number, the encoding o
 
 Implementations SHOULD NOT put any privacy-sensitive information in the Echo or Request-Tag option values. Unencrypted timestamps could reveal information about the server such as location or time since reboot, or that the server will accept expired certificates. Timestamps MAY be used if Echo is encrypted between the client and the server, e.g. in the case of DTLS without proxies or when using OSCORE with an Inner Echo option.
 
-Like HTTP cookies, the Echo option could potentially be abused as a tracking mechanism that identifies a client across requests. This is especially true for pre-emptive Echo values. Servers MUST NOT use the Echo option to correlate requests for other purposes than freshness and reachability. Clients only send Echo values to the same server from which the values were received. Compared to HTTP, CoAP clients are often authenticated and non-mobile, and servers can therefore often correlate requests based on the security context, the client credentials, or the network address. Especially when the Echo option increases a server’s ability to correlate requests, clients MAY discard all pre-emptive Echo values.
+Like HTTP cookies, the Echo option could potentially be abused as a tracking mechanism that identifies a client across requests. This is especially true for preemptive Echo values. Servers MUST NOT use the Echo option to correlate requests for other purposes than freshness and reachability. Clients only send Echo values to the same server from which the values were received. Compared to HTTP, CoAP clients are often authenticated and non-mobile, and servers can therefore often correlate requests based on the security context, the client credentials, or the network address. Especially when the Echo option increases a server’s ability to correlate requests, clients MAY discard all preemptive Echo values.
 
 # IANA Considerations {#iana}
 
