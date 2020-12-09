@@ -283,7 +283,7 @@ The Request-Tag option does not require any particular processing on the server 
 outside of the processing already necessary for any unknown elective proxy-safe cache-key option:
 The option varies the properties that distinguish block-wise operations
 (which includes all options except elective NoCacheKey and except Block1/2),
-and thus the server can not treat messages with a different list of Request-Tag options as belonging to the same operation.
+and thus the server cannot treat messages with a different list of Request-Tag options as belonging to the same operation.
 <!-- not speaking of "matchable" here as that working definition explicitly excludes Request-Tag to make the rest of the document easier to read -->
 
 To keep utilizing the cache,
@@ -328,7 +328,7 @@ the Request-Tag of the Block1 phase is set in the Block2 phase as well
 for otherwise the request would have a different set of options
 and would not be recognized any more.
 
-Clients are encouraged to generate compact messages. This means sending messages without Request-Tag options whenever possible, and using short values when the absent option can not be recycled.
+Clients are encouraged to generate compact messages. This means sending messages without Request-Tag options whenever possible, and using short values when the absent option cannot be recycled.
 
 Note that Request-Tag options can be present in request messages that carry no Block option
 (for example, because a Request-Tag unaware proxy reassembled them),
@@ -362,7 +362,7 @@ In order to gain that protection, use the Request-Tag mechanism as follows:
 <!-- pending see thread "ERT and OSCORE" -->
 Authors of other documents (e.g. applications of {{RFC8613}}) are invited to mandate this behavior for clients that execute block-wise interactions over secured transports. In this way, the server can rely on a conforming client to set the Request-Tag option when required, and thereby conclude on the integrity of the assembled body.
 
-Note that this mechanism is implicitly implemented when the security layer guarantees ordered delivery (e.g. CoAP over TLS {{RFC8323}}). This is because with each message, any earlier message can not be replayed any more, so the client never needs to set the Request-Tag option unless it wants to perform concurrent operations.
+Note that this mechanism is implicitly implemented when the security layer guarantees ordered delivery (e.g. CoAP over TLS {{RFC8323}}). This is because with each message, any earlier message cannot be replayed any more, so the client never needs to set the Request-Tag option unless it wants to perform concurrent operations.
 
 Body integrity only makes sense in applications that have stateful block-wise transfers.
 On applications where all the state is in the application
@@ -583,7 +583,7 @@ or when block-wise request operations happen rarely (in OSCORE, if there is alwa
 
 In those situations, no message has any Request-Tag option set, and that can be recycled indefinitely.
 
-When the absence of a Request-Tag option can not be recycled any more within a security context, the messages with a present but empty Request-Tag option can be used (1 Byte overhead), and when that is used-up, 256 values from one byte long options (2 Bytes overhead) are available.
+When the absence of a Request-Tag option cannot be recycled any more within a security context, the messages with a present but empty Request-Tag option can be used (1 Byte overhead), and when that is used-up, 256 values from one byte long options (2 Bytes overhead) are available.
 
 In situations where those overheads are unacceptable (e.g. because the payloads are known to be at a fragmentation threshold), the absent Request-Tag value can be made usable again:
 
