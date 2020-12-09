@@ -574,7 +574,7 @@ Different mechanisms have different tradeoffs between the size of the Echo optio
       Server State: counter
 ~~~~~~~~~~
 
-Other mechanisms complying with the security and privacy considerations may be used. The use of encrypted timestamps in the Echo option increases security, but typically requires an IV to be included in the Echo option value, which adds overhead and makes the specification of such a mechanism slightly more complicated than the two time-based mechanisms specified here.
+Other mechanisms complying with the security and privacy considerations may be used. The use of encrypted timestamps in the Echo option increases security, but typically requires an IV (Initialization Vector) to be included in the Echo option value, which adds overhead and makes the specification of such a mechanism slightly more complicated than the two time-based mechanisms specified here.
 
 # Request-Tag Message Size Impact
 
