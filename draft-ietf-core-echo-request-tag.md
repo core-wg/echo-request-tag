@@ -156,19 +156,23 @@ Client   Server
    |       |
    |<------+        Code: 4.01 (Unauthorized)
    |  4.01 |       Token: 0x41
-   |       |        Echo: 0x437468756c687521 (t0)
+   |       |        Echo: 0x00000009437468756c687521 (t0 = 9, +MAC)
    |       |
-   +------>| t1     Code: 0.03 (PUT)
+   | ...   | The round trips take 1 second, time is now t1 = 10.
+   |       |
+   +------>|        Code: 0.03 (PUT)
    |  PUT  |       Token: 0x42
    |       |    Uri-Path: lock
-   |       |        Echo: 0x437468756c687521 (t0)
+   |       |        Echo: 0x00000009437468756c687521 (t0 = 9, +MAC)
    |       |     Payload: 0 (Unlock)
+   |       |
+   |       | Verify MAC, compare t1 - t0 = 1 < T => permitted.
    |       |
    |<------+        Code: 2.04 (Changed)
    |  2.04 |       Token: 0x42
    |       |
 ~~~~~~~~~~
-{: #echo-figure-time title="Example Message Flow for Time-Based Freshness" artwork-align="center"}
+{: #echo-figure-time title="Example Message Flow for Time-Based Freshness using the 'Integrity Protected Timestamp' construction of Appendix A" artwork-align="center"}
 
 Another way for the server to verify freshness is to maintain a cache of values associated to events. The size of the cache is defined by the application. In the following we assume the cache size is 1, in which case freshness is defined as no new event has taken place. At each event a new value is written into the cache. The cache values MUST be different for all practical purposes. The server verifies freshness by checking that e0 equals e1, where e0 is the cached value when the Echo option value was generated, and e1 is the cached value at the reception of the request. An example message flow is shown in {{echo-figure-event}}.
 
@@ -183,19 +187,27 @@ Client   Server
    |       |
    |<------+        Code: 4.01 (Unauthorized)
    |  4.01 |       Token: 0x41
-   |       |        Echo: 0x436F6D69632053616E73 (e0)
+   |       |        Echo: 0x05 (e0 = 5, number of total lock
+   |       |                            operations performed)
    |       |
-   +------>| e1     Code: 0.03 (PUT)
+   | ...   | No alterations happen to the lock state, e1 has the
+   |       | same value e1 = 5.
+   |       |
+   +------>|        Code: 0.03 (PUT)
    |  PUT  |       Token: 0x42
    |       |    Uri-Path: lock
-   |       |        Echo: 0x436F6D69632053616E73 (e0)
+   |       |        Echo: 0x05
    |       |     Payload: 0 (Unlock)
+   |       |
+   |       | Compare e1 = e0 => permitted.
    |       |
    |<------+        Code: 2.04 (Changed)
    |  2.04 |       Token: 0x42
+   |       |        Echo: 0x06 (e2 = 6, to allow later locking
+   |       |                            without more round-trips)
    |       |
 ~~~~~~~~~~
-{: #echo-figure-event title="Example Message Flow for Event-Based Freshness" artwork-align="center"}
+{: #echo-figure-event title="Example Message Flow for Event-Based Freshness using the 'Persistent Counter' constructiojn of Appendix A" artwork-align="center"}
 
 When used to serve freshness requirements (including client aliveness and state synchronizing), the Echo option value MUST be integrity protected between the intended endpoints, e.g. using DTLS, TLS, or an OSCORE Inner option ({{RFC8613}}). When used to demonstrate reachability at a claimed network address, the Echo option SHOULD contain the client's network address, but MAY be unprotected.
 
