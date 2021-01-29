@@ -606,6 +606,9 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 \[ The editor is asked to remove this section before publication. \]
 
+* Changes since draft-ietf-core-echo-request-tag-11 (addressing GenART, TSVART, OpsDir comments)
+
+    * Give more concrete example values in figures 2 and 3 (based on the appendix suggestions), highlighting the differences between the figures by telling how they are processed in the examples.
 
 * Changes since draft-ietf-core-echo-request-tag-10 (Barry's comments)
 
