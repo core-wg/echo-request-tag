@@ -592,6 +592,11 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 \[ The editor is asked to remove this section before publication. \]
 
+* Changes since draft-ietf-core-echo-request-tag-11 (addressing GenART, TSVART, OpsDir comments)
+
+    * Figure with option summary: E/U columns removed (for duplicate headers and generally not contributing)
+    * MAY capitalization changed for consistency.
+    * Editorial changes (IV acronym expanded, s/can not/cannot/g)
 
 * Changes since draft-ietf-core-echo-request-tag-10 (Barry's comments)
 
