@@ -81,6 +81,12 @@ Like {{RFC7252}}, this document is relying on the Representational State Transfe
 
 Unless otherwise specified, the terms "client" and "server" refer to "CoAP client" and "CoAP server", respectively, as defined in {{RFC7252}}. The term "origin server" is used as in {{RFC7252}}. The term "origin client" is used in this document to denote the client from which a request originates; to distinguish from clients in proxies.
 
+A message's "freshness" is a measure of when a message was sent on a time scale of the recipient.
+A server that receives a request can either verify that the request is fresh
+or determine that it cannot be verified that the request is fresh.
+What is considered a fresh message is application dependent;
+examplary uses are "no more than one hour ago" or "after this server's last reboot".
+
 The terms "payload" and "body" of a message are used as in {{RFC7959}}.  The complete interchange of a request and a response body is called a (REST) "operation". An operation fragmented using {{RFC7959}} is called a "block-wise operation". A block-wise operation which is fragmenting the request body is called a "block-wise request operation".  A block-wise operation which is fragmenting the response body is called a "block-wise response operation".
 
 Two request messages are said to be "matchable" if they occur between the same endpoint pair, have the same code, and have the same set of options, with the exception that elective NoCacheKey options and options involved in block-wise transfer (Block1, Block2 and Request-Tag) need not be the same.
@@ -594,6 +600,7 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 * Changes since draft-ietf-core-echo-request-tag-11 (addressing GenART, TSVART, OpsDir comments)
 
+    * Added a definition for "freshness"
     * Figure with option summary: E/U columns removed (for duplicate headers and generally not contributing)
     * MAY capitalization changed for consistency.
     * Editorial changes (IV acronym expanded, s/can not/cannot/g)
