@@ -43,7 +43,7 @@ informative:
   RFC8446:
   I-D.ietf-core-oscore-groupcomm:
   I-D.mattsson-core-coap-actuators:
-  I-D.ietf-core-stateless:
+  RFC8974:
   REST:
     target: https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf
     title: "Architectural Styles and the Design of Network-based Software Architectures"
@@ -417,7 +417,7 @@ appending a Request-Tag value unique to the client
 can satisfy the requirements on the proxy that come from the presence of a block option.
 
 This is particularly useful to proxies that strive for stateless operation
-as described in {{?I-D.ietf-core-stateless}} Section 4.
+as described in {{?RFC8974}} Section 4.
 
 The precise classification of cases in which such a Request-Tag option is sufficient
 is not trivial, especially when both request and response body are fragmented,
@@ -528,7 +528,7 @@ In all other cases, a sequence number approach is RECOMMENDED as per {{token}}.
 
 Tokens that cannot be reused need to be handled appropriately. This could be solved by increasing the Token as soon as the currently used Token cannot be reused, or by keeping a list of all blacklisted Tokens.
 
-When the Token (or part of the Token) contains a sequence number, the encoding of the sequence number has to be chosen in a way to avoid any collisions. This is especially true when the Token contains more information than just the sequence number, e.g. serialized state as in {{I-D.ietf-core-stateless}}.
+When the Token (or part of the Token) contains a sequence number, the encoding of the sequence number has to be chosen in a way to avoid any collisions. This is especially true when the Token contains more information than just the sequence number, e.g. serialized state as in {{?RFC8974}}.
 
 # Privacy Considerations {#priv-cons}
 
@@ -625,6 +625,7 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
     * Figure with option summary: E/U columns removed (for duplicate headers and generally not contributing)
     * MAY capitalization changed for consistency.
     * Editorial changes (IV acronym expanded, s/can not/cannot/g)
+    * Draft ietf-core-stateless has become RFC8974
 
 * Changes since draft-ietf-core-echo-request-tag-10 (Barry's comments)
 
