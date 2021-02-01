@@ -1,11 +1,10 @@
-# Echo and Request-Tag
+# CoAP: Echo, Request-Tag, and Token Processing
 
-This is the working area for the IETF [CORE Working Group](https://datatracker.ietf.org/wg/core/documents/) Internet-Draft, "Echo and Request-Tag".
+This is the working area for the IETF [CORE Working Group](https://datatracker.ietf.org/wg/core/documents/) Internet-Draft, "CoAP: Echo, Request-Tag, and Token Processing".
 
-* [Editor's Copy](https://core-wg.github.io/echo-request-tag/#go.draft-ietf-core-echo-request-tag.html) [![Build Status](https://travis-ci.org/core-wg/echo-request-tag.svg?branch=master)](https://travis-ci.org/core-wg/echo-request-tag)
+* [Editor's Copy](https://core-wg.github.io/echo-request-tag/#go.draft-ietf-core-echo-request-tag.html)
 * [Working Group Draft](https://tools.ietf.org/html/draft-ietf-core-echo-request-tag)
 * [Compare Editor's Copy to Working Group Draft](https://core-wg.github.io/echo-request-tag/#go.draft-ietf-core-echo-request-tag.diff)
-
 
 ## Building the Draft
 
@@ -21,4 +20,5 @@ This requires that you have the necessary software installed.  See
 
 ## Contributing
 
-See the [guidelines for contributions](https://github.com/core-wg/echo-request-tag/blob/master/CONTRIBUTING.md).
+See the
+[guidelines for contributions](https://github.com/core-wg/echo-request-tag/blob/master/CONTRIBUTING.md).
