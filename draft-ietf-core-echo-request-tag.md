@@ -243,9 +243,15 @@ The CoAP server side of CoAP-to-HTTP proxies MAY request freshness, especially i
     *  In the presence of a proxy, a server will not be able to distinguish
 different origin client endpoints. Following from the recommendation above, a proxy that sends large responses to unauthenticated peers SHOULD mitigate amplification attacks. The proxy SHOULD use Echo to verify origin reachability as described in {{echo-proc}}. The proxy MAY forward idempotent requests immediately to have a cached result available when the client's Echoed request arrives.
 
-    * Amplification mitigation should be used when the response would be more than three times the size of the request,
-      considering the complete frame on the wire as it is typically sent across the Internet.
-      In practice, this allows UDP data of at least 152 Bytes without further checks.
+    * Amplification mitigation is a trade-off between giving leverage to an attacker and causing overheads.
+      An amplification factor of 3 (i.e., don't send more than three times the number of bytes received until the peer's address is confirmed)
+      is considered acceptable for unconstrained applications {{?I-D.ietf-quic-transport}}.
+
+      When that limit is applied and no further context is available,
+      a safe default is sending initial responses no larger than 136 Bytes in CoAP serialization.
+      (The number is assuming a 14 + 40 + 8 Bytes Ethernet, IP and UDP header
+      with 4 Bytes added for the CoAP header. Triple that minus the non-CoAP headers gives the 136 Bytes).
+      Given the token also takes up space in the request, responding with 132 Bytes after the token is safe as well.
 
     * When an Echo response is sent to mitigate amplification,
       it MUST be sent as a piggybacked or Non-confirmable response,
@@ -610,8 +616,10 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 \[ The editor is asked to remove this section before publication. \]
 
+
 * Changes since draft-ietf-core-echo-request-tag-11 (addressing GenART, TSVART, OpsDir comments)
 
+    * Explain the size permissible for responses before amplification mitigation by referring to the QUIC draft for an OK factor, and giving the remaining numbers that led to it. The actual number is reduced from 152 to 136 because the more conservative case of the attacker not sending a token is considered now.
     * Added a definition for "freshness"
     * Give more concrete example values in figures 2 and 3 (based on the appendix suggestions), highlighting the differences between the figures by telling how they are processed in the examples.
     * Figure with option summary: E/U columns removed (for duplicate headers and generally not contributing)
