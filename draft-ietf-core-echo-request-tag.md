@@ -212,7 +212,7 @@ Client   Server
    |       |                            without more round-trips)
    |       |
 ~~~~~~~~~~
-{: #echo-figure-event title="Example Message Flow for Event-Based Freshness using the 'Persistent Counter' constructiojn of Appendix A" artwork-align="center"}
+{: #echo-figure-event title="Example Message Flow for Event-Based Freshness using the 'Persistent Counter' construction of Appendix A" artwork-align="center"}
 
 When used to serve freshness requirements (including client aliveness and state synchronizing), the Echo option value MUST be integrity protected between the intended endpoints, e.g. using DTLS, TLS, or an OSCORE Inner option ({{RFC8613}}). When used to demonstrate reachability at a claimed network address, the Echo option SHOULD contain the client's network address, but MAY be unprotected.
 
