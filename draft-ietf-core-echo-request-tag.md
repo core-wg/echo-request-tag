@@ -526,7 +526,7 @@ In some setups, Tokens can be reused without the above constraints, as a differe
 
 In all other cases, a sequence number approach is RECOMMENDED as per {{token}}.
 
-Tokens that cannot be reused need to be handled appropriately. This could be solved by increasing the Token as soon as the currently used Token cannot be reused, or by keeping a list of all blacklisted Tokens.
+Tokens that cannot be reused need to be handled appropriately. This could be solved by increasing the Token as soon as the currently used Token cannot be reused, or by keeping a list of all deny-listed Tokens.
 
 When the Token (or part of the Token) contains a sequence number, the encoding of the sequence number has to be chosen in a way to avoid any collisions. This is especially true when the Token contains more information than just the sequence number, e.g. serialized state as in {{?RFC8974}}.
 
@@ -673,7 +673,7 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
     * Request tag: Explicitly state when a tag needs to be set
     * Request tag: Clarification about permissibility of leaving the option absent
     * Security considerations: wall clock time -> system time (and remove inaccurate explanations)
-    * Token reuse: describe blacklisting in a more implementation-independent way
+    * Token reuse: describe deny-listing in a more implementation-independent way
 
 * Changes since draft-ietf-core-echo-request-tag-06:
 
