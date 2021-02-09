@@ -259,6 +259,13 @@ different origin client endpoints. Following from the recommendation above, a pr
 
 4. A server may want to use the request freshness provided by the Echo to verify the aliveness of a client. Note that in a deployment with hop-by-hop security and proxies, the server can only verify aliveness of the closest proxy.
 
+
+## Updated Amplification Mitigation Requirements for Servers
+
+This section updates the amplification mitigation requirements for servers in {{RFC7252}} to recommend use of the Echo option to mitigate amplification attacks. The requirements for clients are not updated. Amplification mitigation requirements for servers in ection 11.3 of {{RFC7252}} is updated by adding the following text:
+
+TODO: Move text from bullet 3 above.
+
 # Protecting Message Bodies using Request Tags # {#request-tag}
 
 ## Fragmented Message Body Integrity {#body-int}
