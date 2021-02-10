@@ -262,9 +262,11 @@ different origin client endpoints. Following from the recommendation above, a pr
 
 ## Updated Amplification Mitigation Requirements for Servers
 
-This section updates the amplification mitigation requirements for servers in {{RFC7252}} to recommend use of the Echo option to mitigate amplification attacks. The requirements for clients are not updated. Amplification mitigation requirements for servers in ection 11.3 of {{RFC7252}} is updated by adding the following text:
+This section updates the amplification mitigation requirements for servers in {{RFC7252}} to recommend use of the Echo option to mitigate amplification attacks. The requirements for clients are not updated. Amplification mitigation requirements for servers in Section 11.3 of {{RFC7252}} is updated by adding the following text:
 
-TODO: Move text from bullet 3 above.
+A CoAP server SHOULD mitigate potential amplification attacks by responding to unauthenticated clients with 4.01 Unauthorized including an Echo option, as described in Section 2.4 of [[this document]].
+
+TODO: Move text from bullet 3 above. Do we need to write more than this?
 
 # Protecting Message Bodies using Request Tags # {#request-tag}
 
