@@ -243,7 +243,7 @@ The CoAP server side of CoAP-to-HTTP proxies MAY request freshness, especially i
     *  In the presence of a proxy, a server will not be able to distinguish
 different origin client endpoints. Following from the recommendation above, a proxy that sends large responses to unauthenticated peers SHOULD mitigate amplification attacks. The proxy SHOULD use Echo to verify origin reachability as described in {{echo-proc}}. The proxy MAY forward idempotent requests immediately to have a cached result available when the client's Echoed request arrives.
 
-    * Amplification mitigation is a trade-off between giving leverage to an attacker and causing overheads.
+    * Amplification mitigation is a trade-off between giving leverage to an attacker and causing overhead.
       An amplification factor of 3 (i.e., don't send more than three times the number of bytes received until the peer's address is confirmed)
       is considered acceptable for unconstrained applications {{?I-D.ietf-quic-transport}}.
 
@@ -620,6 +620,7 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
     * Replace "blacklist" terminology with "deny-list"
     * Remove duplicate statement from Echo introduction.
+    * Editorial fixes (overheads -> overhead)
 
 * Changes since draft-ietf-core-echo-request-tag-11 (addressing GenART, TSVART, OpsDir comments)
 
