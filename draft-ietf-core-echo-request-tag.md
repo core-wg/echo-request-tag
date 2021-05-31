@@ -616,6 +616,10 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 \[ The editor is asked to remove this section before publication. \]
 
+* Changes since draft-ietf-core-echo-request-tag-12 (addressing comments from Martin Duke)
+
+    * Replace "blacklist" terminology with "deny-list"
+    * Remove duplicate statement from Echo introduction.
 
 * Changes since draft-ietf-core-echo-request-tag-11 (addressing GenART, TSVART, OpsDir comments)
 
