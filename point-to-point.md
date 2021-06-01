@@ -1,31 +1,48 @@
 ## Roman Danyliw No Objection
 Comment (2021-02-17)
 
-> Thank you for writing this mitigation for draft-mattsson-core-coap-actuators.
-> 
 > ** Section 5.  Per “As each pseudorandom number most only be used once …”, how will that be possible when echo values as small are 1-byte are possible?
-> 
+
+Not all applications of Echo depend on pseudorandom numbers. Where they do not,
+their construction can ensure that only unique 1-byte values are used.until
+these are exhausted.
+
+See also GENERIC-SHORT-ECHO
+
 > ** Section 5.
 > However, this may not be an issue if the
 >    communication is integrity protected against third parties and the
 >    client is trusted not misusing this capability.  
 > 
 > -- Why is the use of integrity presented as only a possibility here?  Didn’t Section 2.3 require it when assuring the freshness requirement – “When used to serve freshness requirements including client aliveness and state synchronizing), the Echo option value MUST be integrity protected between the intended endpoints ...”
-> 
+
+@@@
+
 > -- Would it be clearer here to say that this is mitigation against an on-path attacker, not against rogue/compromised clients?
-> 
+
+@@@
+
 > ** Appendix A helpfully tries to lay out recommendations.  A few comments:
 > 
 > -- all of the recommendations here have option values much larger than the permitted minimum of 1-byte.  In addition to the recommendations, could the circumstances of the lower bound also be discussed
-> 
+
+Item 3 of appendix A can be as short as 1 byte (until it overflows to 2), with
+a concrete example linked, and includes a requirement for its applicability.
+
 > -- it would be helpful to explicitly state which methods apply to the specific use cases (client aliveness, request freshness, state synchronization, network  address reachability).  For example, method 3 (persistent counter) notes that it can be used for state synchronization but not client aliveness
+
+@@@
 
 ## Martin Duke No Objection
 Comment (2021-02-05)
 
 > 5.1 This is optional, but please replace "blacklisted" with "deny-listed".
-> 
+
+Changed in -13.
+
 > 6. What is a "preemptive" echo value?
+
+@@@
 
 ## Benjamin Kaduk No Objection
 Comment (2021-02-17)
@@ -44,7 +61,11 @@ Comment (2021-02-17)
 > discussion of different use cases, but not much about the tradeoffs
 > along the spectrum, and no discussion at all about the strongest
 > properties that it is possible to obtain with this mechanism.
-> 
+
+@@@ spectrum sounds good, with usable-once a form of event-based
+
+(also addresses Roman's "helpful to explicitly state")
+
 > In several places we mention that the Echo option enables a server to
 > "synchronize state", which to me is a confusing or misleading
 > characterization -- as I understand it, both additional (application)
@@ -68,13 +89,17 @@ Comment (2021-02-17)
 > but in general the sequential counter might be placing too strong a
 > requirement on the value, and the considerations of
 > draft-gont-numeric-ids-sec-considerations seem relevant.
-> 
+
+@@@ (may coincide in spectrum with "client is authority")
+
 > I think it would also be enlightening to have a comparison between the
 > anti-replay/freshness properties provided by the optional DTLS replay
 > protection mechanism and the Echo option.  I know they have differences,
 > but I think there is also some commonality, and giving readers guidance
 > on whether one vs the other suffices or both are needed could be useful.
-> 
+
+@@@
+
 > Section 2.3
 > 
 >    Upon receiving a 4.01 Unauthorized response with the Echo option, the
@@ -85,7 +110,16 @@ Comment (2021-02-17)
 > later in this document are needed in order for this "resend the original
 > request" to be safe" ... I am not sure if it needs to be called out here
 > specifically, though.]
-> 
+
+If the client does not increment the token, it would be susceptible to the 4.01
+response being reinjected, so it may try again -- but as it is not incrementing
+tokens, the server processes the request only once anyway (but the client is
+left ignorant of its success).
+
+So yes there are some light implications (and more severe ones in corner
+cases), but the trouble from token reuse is so much bigger than this one case
+that pointing it out specifically would probably distract more than help.
+
 > > The cache values MUST be different for all practical purposes.
 > 
 > Since we're at least advocating using crypto to enforce this property, I
@@ -215,7 +249,14 @@ Comment (2021-02-17)
 >    results in the new message not being part of the old operation.
 > 
 > Where are those "some circumstances" enumerated?
-> 
+
+This could precisely this could say "if the client can recycle the request tag"
+-- but that has not been introduced at this point, and more importantly the
+paragraph is about server behavior (examplifying how "equal request tags"
+doesn't necessarily mean "same operation").
+
+@@@ is there any place where this can be picked up later in the applications section?
+
 > Section 3.5.1
 > 
 >       If any future security mechanisms allow a block-wise transfer to
@@ -267,7 +308,9 @@ Comment (2021-02-17)
 >    suggested in [RFC7959] Section 2.4 last paragraph.
 > 
 > (Per above, Section 2.5?)
-> 
+
+@@@
+
 > Section 3.6
 > 
 >    The Request-Tag option is repeatable because this easily allows
@@ -281,7 +324,14 @@ Comment (2021-02-17)
 > https://tools.ietf.org/html/rfc7252#section-5.4.5 and this document
 > whether the order of repeated Request-Tag options was significant.
 > Some clarification might be helpful.
-> 
+
+The order of CoAP options is significant in the information model (and if any
+doubt on this arises, core-corr-clar would be the place to to dispell them).
+
+As Request-Tag has no own semantics, intermediaries can put theirs in the front
+or back (or not use repeatability at all), but as implementers can pick any, I
+don't see much to point out.
+
 > Section 3.7
 > 
 >    That approach would have been difficult to roll out reliably on DTLS
@@ -298,7 +348,13 @@ Comment (2021-02-17)
 > request if the sequence number is larger than the sequence number of the
 > current/previous blockwise request.  IIUC that would reject the
 > "withheld first block" as being too old.
-> 
+
+Enforcing that means that not only state about ongoing block-wise operations is
+kept (which is about as much state as can be tolerated), but that in addition
+also state about block-wise transfers that are not pursued any more would need
+to be kept -- and that's too much to ask (as it'd be per-client times
+per-resource information).
+
 > Section 3.8
 > 
 >                     and MUST NOT use the same ETag value for different
@@ -308,7 +364,9 @@ Comment (2021-02-17)
 > requirement, but I couldn't find an equivalent statement in a quick
 > review of RFC 7252.  (It's definitely correct that this is required
 > behavior to get the protection in question.)
-> 
+
+Neither was one found in RFC 7959.
+
 > Section 4.1
 > 
 >    In HTTPS, this type of binding is always assured by the ordered and
@@ -376,7 +434,9 @@ Comment (2021-02-17)
 > "preemptive Echo values"; it might be worth a bit more exposition that
 > these are ones piggybacked on non-4.01 responses (assuming that's
 > correct, of course).
-> 
+
+It is; @@@
+
 > Section 8.1
 > 
 > I note that DTLS 1.3 is in IETF Last Call.  I did not notice anything in
@@ -436,59 +496,52 @@ Comment (2021-02-17)
 > available for similar cost that provide the needed properties it seems
 > more robust to suggest their use in place of the persistent counter.
 
+@@@
+
 ## Erik Kline No Objection
 Comment (2021-02-15)
 
-> [[ nits ]]
-> 
-> [ section 2.4 ]
-> 
 > * "causing overheads" -> "causing overhead"
+
+Changed in -13.
 
 ## Murray Kucherawy No Objection
 Comment (2021-02-18)
 
 > There are several SHOULDs (e.g., near the top of page 8, and again at the end of Section 2.3) that left me wondering why an implementer would do something other than what it says.  Since SHOULD offers a choice, some advice would be helpful here.  Otherwise, maybe those ought to be MUSTs.  I suggest giving them all a once-over to see if any such advice would be helpful to include.
-> 
-> ## Warren Kumari No Objection
-> Comment (2021-02-17)
-> 
-> Much thanks to Juergen Schoenwaelder for the OpsDir review, and the authors for addressing the comments...
-> 
-> It's a good and easy read.
+
+@@@
 
 ## Éric Vyncke No Objection
 Comment (2021-02-16)
 
-> Thank you for the work put into this document. 
-> 
-> Please find below some non-blocking COMMENT points (but replies would be appreciated).
-> 
-> Eliot Lear (in copy) has also reviewed the document as IoT directorate reviewer at:
-> https://datatracker.ietf.org/doc/review-ietf-core-echo-request-tag-12-iotdir-telechat-lear-2021-02-05/ 
-> So, please address/reply to his comment.
-> 
-> I hope that this helps to improve the document,
-> 
-> Regards,
-> 
-> -éric
-> 
-> == COMMENTS ==
-> 
 > -- Section 2.2 --
 > "The Echo option value is a challenge from the server to the client..." Just wondering whether "echo" is the right choice for the option as it is too close to ICMP_ECHO_REQUEST, why not "challenge" ?
-> 
+
+The name needs to work well both for the use in the request and in the
+response; "Echo" works for both (in the imperative mood in the request, and the
+indicative mood in the response).
+
+The overlap with the ICMP Echo mechanism was not originally intended, but the
+*are* parallels not only in word but also in semantics ("show that you are
+there by sending back to me what I send you"), so they are somewhat fitting --
+and in the protocol stack it's far enough from ICMP that actual mixups are
+considered unlikely.
+
 > I would have expected some statements related to non-idempotent requests (generic statement) and then specific examples such as actuators.
-> 
+
+@@@
+
 > -- Section 2.2.1 --
 > Are the authors confident enough to state a minimum length of 1 octet ? If the intent of the document is to prevent replay attack, then I wonder whether one octet is enough... Unsure whether Section 5 (security considerations) addresses this issue correctly.
+
+See GENERIC-SHORT-ECHO
 
 ## Eliot Lear
 for IoTdir
 
-> All in all, a very nice piece of work.  I'm not reviewing for other than IoT issues.
-> 
+Already answered in https://mailarchive.ietf.org/arch/msg/core/N9ykCh-20wF2O_S_MKJX5gBslH4
+
 > An issue in Section 2.2.1 (you decide if it's minor or major or really just a question):
 > 
 > I do not understand why the Echo option requires opaque data, and why this should not be standardized, as it seems that the behavior you are seeking is standardized.   As you give two example methods in the draft, why not reserve a few extra bits to specify which method is in use?  This would also allow you to drop the necessary callback routines in libraries.
@@ -496,3 +549,7 @@ for IoTdir
 > Nit:
 > 
 > The last sentence in 2.2: is this meant to be limited to OSCORE or all uses of DTLS?  I found the inner/outer text confusing, and that a diagram might actually help.
+
+## Brought up by multiple reviewers
+
+### GENERIC-SHORT-ECHO
