@@ -238,7 +238,7 @@ The CoAP server side of CoAP-to-HTTP proxies MAY request freshness, especially i
     * A device joining a CoAP group communication {{RFC7390}} protected with OSCORE {{I-D.ietf-core-oscore-groupcomm}} may be required to initially verify freshness and synchronize state or time with a client by using the Echo option in a unicast response to a multicast request. The client receiving the response with the Echo option includes the Echo value in a subsequent unicast request to the responding server.
 
 
-3. A server that sends large responses to unauthenticated peers SHOULD mitigate amplification attacks such as described in Section 11.3 of {{RFC7252}} (where an attacker would put a victim's address in the source address of a CoAP request). The RECOMMENDED way to do this is to ask a client to Echo its request to verify its source address. This needs to be done only once per peer and limits the range of potential victims from the general Internet to endpoints that have been previously in contact with the server. For this application, the Echo option can be used in messages that are not integrity protected, for example during discovery.
+3. A server that sends large responses to unauthenticated peers SHOULD mitigate amplification attacks such as described in Section 11.3 of {{RFC7252}} (where an attacker would put a victim's address in the source address of a CoAP request). A new way to do this is to ask a client to Echo its request to verify its source address. This needs to be done only once per peer and limits the range of potential victims from the general Internet to endpoints that have been previously in contact with the server. For this application, the Echo option can be used in messages that are not integrity protected, for example during discovery.
 
     *  In the presence of a proxy, a server will not be able to distinguish
 different origin client endpoints. Following from the recommendation above, a proxy that sends large responses to unauthenticated peers SHOULD mitigate amplification attacks. The proxy SHOULD use Echo to verify origin reachability as described in {{echo-proc}}. The proxy MAY forward idempotent requests immediately to have a cached result available when the client's Echoed request arrives.
@@ -258,6 +258,13 @@ different origin client endpoints. Following from the recommendation above, a pr
       never as a separate one (which would cause amplification due to retransmission).
 
 4. A server may want to use the request freshness provided by the Echo to verify the aliveness of a client. Note that in a deployment with hop-by-hop security and proxies, the server can only verify aliveness of the closest proxy.
+
+
+## Updated Amplification Mitigation Requirements for Servers
+
+This section updates the amplification mitigation requirements for servers in {{RFC7252}} to recommend use of the Echo option to mitigate amplification attacks. The requirements for clients are not updated. Section 11.3 of {{RFC7252}} is updated by adding the following text:
+
+A CoAP server SHOULD mitigate potential amplification attacks by responding to unauthenticated clients with 4.01 Unauthorized including an Echo option, as described in {{echo-app}} item 3 of [[this document]].
 
 # Protecting Message Bodies using Request Tags # {#request-tag}
 
