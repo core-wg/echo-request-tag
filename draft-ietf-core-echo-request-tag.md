@@ -245,7 +245,7 @@ different origin client endpoints. Following from the recommendation above, a pr
 
     * Amplification mitigation is a trade-off between giving leverage to an attacker and causing overhead.
       An amplification factor of 3 (i.e., don't send more than three times the number of bytes received until the peer's address is confirmed)
-      is considered acceptable for unconstrained applications {{?I-D.ietf-quic-transport}}.
+      is considered acceptable for unconstrained applications in {{?RFC9000}} Section 8.
 
       When that limit is applied and no further context is available,
       a safe default is sending initial responses no larger than 136 Bytes in CoAP serialization.
@@ -628,6 +628,8 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
     * Replace "blacklist" terminology with "deny-list"
     * Remove duplicate statement from Echo introduction.
     * Editorial fixes (overheads -> overhead)
+    * Reference updates:
+      * QUIC is now RFC9000; precise section given amplification reference.
 
 * Changes since draft-ietf-core-echo-request-tag-11 (addressing GenART, TSVART, OpsDir comments)
 
