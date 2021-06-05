@@ -65,6 +65,10 @@ This document specifies enhancements to the Constrained Application Protocol (Co
 
 The initial Constrained Application Protocol (CoAP) suite of specifications ({{RFC7252}}, {{RFC7641}}, and {{RFC7959}}) was designed with the assumption that security could be provided on a separate layer, in particular by using DTLS ({{RFC6347}}). However, for some use cases, additional functionality or extra processing is needed to support secure CoAP operations. This document specifies security enhancements to the Constrained Application Protocol (CoAP).
 
+[ Note to RFC editor: If C321 gets published before C280,
+then the {{RFC6347}} references can be upgraded to draft-ietf-tls-dtls13-43 without the need for further changes;
+the reference is to 6347 here because that was the stable DTLS reference when the document was last touched by the authors. ]
+
 This document specifies two CoAP options, the Echo option and the Request-Tag option: The Echo option enables a CoAP server to verify the freshness of a request, synchronize state, or force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match message fragments belonging to the same request, fragmented using the CoAP block-wise Transfer mechanism, which mitigates attacks and enables concurrent block-wise operations. These options in themselves do not replace the need for a security protocol; they specify the format and processing of data which, when integrity protected using e.g. DTLS ({{RFC6347}}), TLS ({{RFC8446}}), or OSCORE ({{RFC8613}}), provide the additional security features.
 
 This document updates {{RFC7252}} with a recommendation that servers use the Echo option to mitigate amplification attacks.
@@ -630,6 +634,7 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
     * Editorial fixes (overheads -> overhead)
     * Reference updates:
       * QUIC is now RFC9000; precise section given amplification reference.
+      * Add note for RFC editor that RFC6347 can be upgraded to DTLS 1.3 if C321 overtakes C280
 
 * Changes since draft-ietf-core-echo-request-tag-11 (addressing GenART, TSVART, OpsDir comments)
 

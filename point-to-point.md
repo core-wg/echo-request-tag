@@ -445,7 +445,9 @@ It is; @@@
 > order of these documents.  It would be good for the authors to confirm
 > that at their leisure, so as to not be rushed into a decision if/when
 > the RFC Editor asks during their processing.
-> 
+
+DTLS 1.3. works just as fine, a note to the editor has been added.
+
 > Section 8.2
 > 
 > I note that draft-mattsson-core-coap-actuators is referenced from
