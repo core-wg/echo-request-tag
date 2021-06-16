@@ -259,6 +259,70 @@ different origin client endpoints. Following from the recommendation above, a pr
 
 4. A server may want to use the request freshness provided by the Echo to verify the aliveness of a client. Note that in a deployment with hop-by-hop security and proxies, the server can only verify aliveness of the closest proxy.
 
+## Characterization of Echo Applications
+
+Use cases for the Echo option
+can be characterized by several criteria that help determine the required properties of the Echo value.
+These criteria apply both to those listed in {{echo-app}} and any novel applications.
+They provide rationale for the statements in the former, and guidance for the latter.
+
+### Time versus Event Based Freshness
+
+The property a client demonstrates by sending an Echo value is that the request was sent
+after a certain point in time,
+or after some event happened on the server.
+
+When events are counted,
+they form something that can be used as a monotonic but very non-uniform time line.
+With highly regular events and low-resolution time,
+the distinction between time and event based freshness can be blurred:
+"No longer than a month ago" is similar to "since the last full moon".
+
+In an extreme form of event based freshness,
+the server can place an event whenever an Echo value is used.
+This makes the Echo value effectively single-use.
+
+Event and time based freshness can be combined in a single Echo value,
+e.g. by encrypting a timestamp with a key that changes with every event
+to obtain "usable once but only for 5 minutes"-style semantics.
+
+### Source of Truth
+
+The information about the client extracted by the server from the request Echo value
+has different sources of truth depending on the application.
+Understanding this helps the server implementer decide the necessary protection of the Echo value.
+
+If all that the server extracts is information which the client is the sole source of truth for,
+(which is another way of saying that the server has to trust the client on that one),
+then the server can issue Echo values that do not need to be protected on their own.
+(They still need to be covered by the security protocol that covers the rest of the message,
+but the Echo value can be just short enough to be unique between this server and client).
+
+For example,
+the client's OSCORE sender sequence number (as used in {{RFC8613}} Appendix B.1.2) is such information.
+<!-- and I don't really know any other example -->
+
+In most other cases,
+there are properties extracted of which the server is the authority
+("The request must not be older than five minutes" is counted on the server's clock, not the client's)
+or which even involve the network
+(as when performing amplification mitigation).
+In these cases, the Echo value itself needs to be protected against forgery by the client,
+e.g. by using a sufficiently large random value or a MAC as described in {{echo-state}} items 1 and 2.
+
+For some applications,
+the server may be able to trust the client to also serve as a source of truth
+(e.g. when using time based freshness purely to mitigate request delay attacks);
+these need careful case-by-case evaluation.
+
+To issue Echo values without own protection,
+the server needs to trust the client to never produce requests with attacker controlled Echo values.
+The provisions of {{echo-proc}} (saying that an Echo value may only be sent as received from the same server)
+allow that.
+
+Note that a single Echo value can be used for multiple purposes
+(e.g. to get both the sequence number information and perform amplification mitigation);
+then, the stricter requirements apply.
 
 ## Updated Amplification Mitigation Requirements for Servers
 
