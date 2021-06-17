@@ -627,7 +627,9 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
     * Replace "blacklist" terminology with "deny-list"
     * Remove duplicate statement from Echo introduction.
-    * Editorial fixes (overheads -> overhead)
+    * Editorial fixes
+      * Rewording of a confusing sentence in amplification mitigation
+      * overheads -> overhead
 
 * Changes since draft-ietf-core-echo-request-tag-11 (addressing GenART, TSVART, OpsDir comments)
 
