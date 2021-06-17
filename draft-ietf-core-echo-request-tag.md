@@ -42,7 +42,7 @@ informative:
   RFC8323:
   RFC8446:
   I-D.ietf-core-oscore-groupcomm:
-  I-D.mattsson-core-coap-actuators:
+  I-D.mattsson-core-coap-attacks:
   RFC8974:
   REST:
     target: https://www.ics.uci.edu/~fielding/pubs/dissertation/fielding_dissertation.pdf
@@ -64,6 +64,10 @@ This document specifies enhancements to the Constrained Application Protocol (Co
 # Introduction {#intro}
 
 The initial Constrained Application Protocol (CoAP) suite of specifications ({{RFC7252}}, {{RFC7641}}, and {{RFC7959}}) was designed with the assumption that security could be provided on a separate layer, in particular by using DTLS ({{RFC6347}}). However, for some use cases, additional functionality or extra processing is needed to support secure CoAP operations. This document specifies security enhancements to the Constrained Application Protocol (CoAP).
+
+[ Note to RFC editor: If C321 gets published before C280,
+then the {{RFC6347}} references can be upgraded to draft-ietf-tls-dtls13-43 without the need for further changes;
+the reference is to 6347 here because that was the stable DTLS reference when the document was last touched by the authors. ]
 
 This document specifies two CoAP options, the Echo option and the Request-Tag option: The Echo option enables a CoAP server to verify the freshness of a request, synchronize state, or force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match message fragments belonging to the same request, fragmented using the CoAP block-wise Transfer mechanism, which mitigates attacks and enables concurrent block-wise operations. These options in themselves do not replace the need for a security protocol; they specify the format and processing of data which, when integrity protected using e.g. DTLS ({{RFC6347}}), TLS ({{RFC8446}}), or OSCORE ({{RFC8613}}), provide the additional security features.
 
@@ -101,7 +105,7 @@ The Echo and Request-Tag options are defined in this document.
 
 ## Request Freshness {#req-fresh}
 
-A CoAP server receiving a request is in general not able to verify when the request was sent by the CoAP client. This remains true even if the request was protected with a security protocol, such as DTLS. This makes CoAP requests vulnerable to certain delay attacks which are particularly perilous in the case of actuators ({{I-D.mattsson-core-coap-actuators}}). Some attacks can be mitigated by establishing fresh session keys, e.g. performing a DTLS handshake for each request, but in general this is not a solution suitable for constrained environments, for example, due to increased message overhead and latency. Additionally, if there are proxies, fresh DTLS session keys between server and proxy does not say anything about when the client made the request. In a general hop-by-hop setting, freshness may need to be verified in each hop.
+A CoAP server receiving a request is in general not able to verify when the request was sent by the CoAP client. This remains true even if the request was protected with a security protocol, such as DTLS. This makes CoAP requests vulnerable to certain delay attacks which are particularly perilous in the case of actuators ({{I-D.mattsson-core-coap-attacks}}). Some attacks can be mitigated by establishing fresh session keys, e.g. performing a DTLS handshake for each request, but in general this is not a solution suitable for constrained environments, for example, due to increased message overhead and latency. Additionally, if there are proxies, fresh DTLS session keys between server and proxy does not say anything about when the client made the request. In a general hop-by-hop setting, freshness may need to be verified in each hop.
 
 A straightforward mitigation of potential delayed requests is that the CoAP server rejects a request the first time it appears and asks the CoAP client to prove that it intended to make the request at this point in time.
 
@@ -245,7 +249,7 @@ different origin client endpoints. Following from the recommendation above, a pr
 
     * Amplification mitigation is a trade-off between giving leverage to an attacker and causing overhead.
       An amplification factor of 3 (i.e., don't send more than three times the number of bytes received until the peer's address is confirmed)
-      is considered acceptable for unconstrained applications {{?I-D.ietf-quic-transport}}.
+      is considered acceptable for unconstrained applications in {{?RFC9000}} Section 8.
 
       When that limit is applied and no further context is available,
       a safe default is sending initial responses no larger than 136 Bytes in CoAP serialization.
@@ -272,7 +276,7 @@ A CoAP server SHOULD mitigate potential amplification attacks by responding to u
 
 CoAP was designed to work over unreliable transports, such as UDP, and include a lightweight reliability feature to handle messages which are lost or arrive out of order. In order for a security protocol to support CoAP operations over unreliable transports, it must allow out-of-order delivery of messages using e.g. a sliding replay window such as described in Section 4.1.2.6 of DTLS ({{RFC6347}}).
 
-The block-wise transfer mechanism {{RFC7959}} extends CoAP by defining the transfer of a large resource representation (CoAP message body) as a sequence of blocks (CoAP message payloads). The mechanism uses a pair of CoAP options, Block1 and Block2, pertaining to the request and response payload, respectively. The block-wise functionality does not support the detection of interchanged blocks between different message bodies to the same resource having the same block number. This remains true even when CoAP is used together with a security protocol such as DTLS or OSCORE, within the replay window ({{I-D.mattsson-core-coap-actuators}}), which is a vulnerability of CoAP when using RFC7959.
+The block-wise transfer mechanism {{RFC7959}} extends CoAP by defining the transfer of a large resource representation (CoAP message body) as a sequence of blocks (CoAP message payloads). The mechanism uses a pair of CoAP options, Block1 and Block2, pertaining to the request and response payload, respectively. The block-wise functionality does not support the detection of interchanged blocks between different message bodies to the same resource having the same block number. This remains true even when CoAP is used together with a security protocol such as DTLS or OSCORE, within the replay window ({{I-D.mattsson-core-coap-attacks}}), which is a vulnerability of CoAP when using RFC7959.
 
 A straightforward mitigation of mixing up blocks from different messages is to use unique identifiers for different message bodies, which would provide equivalent protection to the case where the complete body fits into a single payload. The ETag option {{RFC7252}}, set by the CoAP server, identifies a response body fragmented using the Block2 option.
 
@@ -370,7 +374,7 @@ The Request-Tag option MUST NOT be present in response messages.
 
 ### Body Integrity Based on Payload Integrity {#body-integrity}
 
-When a client fragments a request body into multiple message payloads, even if the individual messages are integrity protected, it is still possible for an attacker to maliciously replace a later operation's blocks with an earlier operation's blocks (see Section 2.5 of {{I-D.mattsson-core-coap-actuators}}). Therefore, the integrity protection of each block does not extend to the operation's request body.
+When a client fragments a request body into multiple message payloads, even if the individual messages are integrity protected, it is still possible for an attacker to maliciously replace a later operation's blocks with an earlier operation's blocks (see Section 2.5 of {{I-D.mattsson-core-coap-attacks}}). Therefore, the integrity protection of each block does not extend to the operation's request body.
 
 In order to gain that protection, use the Request-Tag mechanism as follows:
 
@@ -454,7 +458,7 @@ if their fragments' order corresponded to the sequence numbers.
 
 That approach would have been difficult to roll out reliably on DTLS
 where many implementations do not expose sequence numbers,
-and would still not prevent attacks like in {{I-D.mattsson-core-coap-actuators}} Section 2.5.2.
+and would still not prevent attacks like in {{I-D.mattsson-core-coap-attacks}} Section 2.5.2.
 
 ## Block2 / ETag Processing # {#etag}
 
@@ -475,7 +479,7 @@ and MUST NOT use the same ETag value for different representations of a resource
 
 ## Request-Response Binding {#req-resp-bind}
 
-A fundamental requirement of secure REST operations is that the client can bind a response to a particular request. If this is not ensured, a client may erroneously associate the wrong response to a request. The wrong response may be an old response for the same resource or a response for a completely different resource (see e.g. Section 2.3 of {{I-D.mattsson-core-coap-actuators}}). For example, a request for the alarm status "GET /status" may be associated to a prior response "on", instead of the correct response "off".
+A fundamental requirement of secure REST operations is that the client can bind a response to a particular request. If this is not ensured, a client may erroneously associate the wrong response to a request. The wrong response may be an old response for the same resource or a response for a completely different resource (see e.g. Section 2.3 of {{I-D.mattsson-core-coap-attacks}}). For example, a request for the alarm status "GET /status" may be associated to a prior response "on", instead of the correct response "off".
 
 In HTTPS, this type of binding is always assured by the ordered and reliable delivery as well as mandating that the server sends responses in the same order that the requests were received. The same is not true for CoAP where the server (or an attacker) can return responses in any order and where there can be any number of responses to a request (see e.g. {{RFC7641}}). In CoAP, concurrent requests are differentiated by their Token. Note that the CoAP Message ID cannot be used for this purpose since those are typically different for REST request and corresponding response in case of "separate response", see Section 2.2 of {{RFC7252}}.
 
@@ -627,6 +631,9 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
     * Replace "blacklist" terminology with "deny-list"
     * Remove duplicate statement from Echo introduction.
+    * Reference updates:
+      * QUIC is now RFC9000; precise section given as amplification reference.
+      * Add note for RFC editor that RFC6347 can be upgraded to DTLS 1.3 if C321 overtakes C280
     * Editorial fixes
       * Rewording of a confusing sentence in amplification mitigation
       * overheads -> overhead

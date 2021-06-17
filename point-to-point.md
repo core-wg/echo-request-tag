@@ -445,14 +445,19 @@ It is; @@@
 > order of these documents.  It would be good for the authors to confirm
 > that at their leisure, so as to not be rushed into a decision if/when
 > the RFC Editor asks during their processing.
-> 
+
+DTLS 1.3. works just as fine, a note to the editor has been added.
+
 > Section 8.2
 > 
 > I note that draft-mattsson-core-coap-actuators is referenced from
 > several locations (for useful additional discussion, to be clear), but
 > it is only an individual draft that expired almost two years ago.  Is
 > there any likelihood that it will ever progress to an RFC?
-> 
+
+Work on the document has been taken up again as
+draft-mattsson-core-coap-attacks-00, the references are updated.
+
 > One might argue that "SHOULD use a 425 Too Early response" is enough to
 > promote RFC 8470 to being a normative reference (see
 > https://www.ietf.org/about/groups/iesg/statements/normative-informative-references/).
