@@ -689,6 +689,7 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 * Changes since draft-ietf-core-echo-request-tag-12 (addressing comments from Martin Duke)
 
+    * Add subsection "Characterization of Echo Applications". .
     * Replace "blacklist" terminology with "deny-list"
     * Remove duplicate statement from Echo introduction.
     * Editorial fixes (overheads -> overhead)
