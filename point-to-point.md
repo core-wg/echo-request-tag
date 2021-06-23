@@ -576,5 +576,5 @@ we derive when using guessable Echo values is OK, and when not.
 @@@ In the remaining texts, the ambiguous points were clarified (often pointing
 at the new distinctions). In particular, the security considerations used to
 conflate the topic of "source of truth" with the Counter implementation --
-while these generally do coincide, the new text is more precise and refers @@@
+while these generally do coincide, the new text is more precise and refers
 back to the new section.
