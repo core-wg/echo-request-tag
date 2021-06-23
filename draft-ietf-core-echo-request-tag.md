@@ -292,7 +292,7 @@ to obtain "usable once but only for 5 minutes"-style semantics.
 
 ### Source of Truth
 
-The information about the client extracted by the server from the request Echo value
+The information extracted by the server from the request Echo value
 has different sources of truth depending on the application.
 Understanding this helps the server implementer decide the necessary protection of the Echo value.
 
@@ -323,6 +323,7 @@ To issue Echo values without own protection,
 the server needs to trust the client to never produce requests with attacker controlled Echo values.
 The provisions of {{echo-proc}} (saying that an Echo value may only be sent as received from the same server)
 allow that.
+The requirement stated there for the client to treat the Echo value as opaque holds for these application like for all others.
 
 Note that a single Echo value can be used for multiple purposes
 (e.g. to get both the sequence number information and perform amplification mitigation);
