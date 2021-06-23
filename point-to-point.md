@@ -560,7 +560,7 @@ Already answered in https://mailarchive.ietf.org/arch/msg/core/N9ykCh-20wF2O_S_M
 ### GENERIC-SHORT-ECHO
 
 The explanations as to the required properties of Echo values were
-inconsistent: Sectiojn 2.3 "Echo Processing" required that the server MUST be
+inconsistent: Section 2.3 "Echo Processing" required that the server MUST be
 able to verify that the Echo value is genuine, but at the same time the
 permitted minimal length and the example in Appendix A item 3 indicated that
 this would not always be the case.
