@@ -15,12 +15,10 @@ See also GENERIC-SHORT-ECHO
 >    client is trusted not misusing this capability.  
 > 
 > -- Why is the use of integrity presented as only a possibility here?  Didn’t Section 2.3 require it when assuring the freshness requirement – “When used to serve freshness requirements including client aliveness and state synchronizing), the Echo option value MUST be integrity protected between the intended endpoints ...”
-
-@@@
-
 > -- Would it be clearer here to say that this is mitigation against an on-path attacker, not against rogue/compromised clients?
 
-@@@
+In the course of the GENERIC-SHORT-ECHO changes, this has been made more
+precise using the concept of "source of truth" introduced there.
 
 > ** Appendix A helpfully tries to lay out recommendations.  A few comments:
 > 
