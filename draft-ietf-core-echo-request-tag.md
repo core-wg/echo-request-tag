@@ -297,10 +297,10 @@ has different sources of truth depending on the application.
 Understanding this helps the server implementer decide the necessary protection of the Echo value.
 
 If all that the server extracts is information which the client is the sole source of truth for,
-(which is another way of saying that the server has to trust the client on that one),
+(which is another way of saying that the server has to trust the client on whatever Echo is used for),
 then the server can issue Echo values that do not need to be protected on their own.
-(They still need to be covered by the security protocol that covers the rest of the message,
-but the Echo value can be just short enough to be unique between this server and client).
+They still need to be covered by the security protocol that covers the rest of the message,
+but the Echo value can be just short enough to be unique between this server and client.
 
 For example,
 the client's OSCORE sender sequence number (as used in {{RFC8613}} Appendix B.1.2) is such information.
