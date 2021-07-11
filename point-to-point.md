@@ -15,12 +15,10 @@ See also GENERIC-SHORT-ECHO
 >    client is trusted not misusing this capability.  
 > 
 > -- Why is the use of integrity presented as only a possibility here?  Didn’t Section 2.3 require it when assuring the freshness requirement – “When used to serve freshness requirements including client aliveness and state synchronizing), the Echo option value MUST be integrity protected between the intended endpoints ...”
-
-@@@
-
 > -- Would it be clearer here to say that this is mitigation against an on-path attacker, not against rogue/compromised clients?
 
-@@@
+In the course of the GENERIC-SHORT-ECHO changes, this has been made more
+precise using the concept of "source of truth" introduced there.
 
 > ** Appendix A helpfully tries to lay out recommendations.  A few comments:
 > 
@@ -558,3 +556,23 @@ Already answered in https://mailarchive.ietf.org/arch/msg/core/N9ykCh-20wF2O_S_M
 ## Brought up by multiple reviewers
 
 ### GENERIC-SHORT-ECHO
+
+The explanations as to the required properties of Echo values were
+inconsistent: Section 2.3 "Echo Processing" required that the server MUST be
+able to verify that the Echo value is genuine, but at the same time the
+permitted minimal length and the example in Appendix A item 3 indicated that
+this would not always be the case.
+
+In parallel, Ben Kaduk's review asked for elaboration on the spectrum of
+requirements -- of which some extremes call for verifiable Echo values, and
+others not.
+
+Consequently, a section "Characterization of Echo Applications" was added that
+discusses two aspects: "Source of truth" and "Time vs. Events". In the former,
+we derive when using guessable Echo values is OK, and when not.
+
+@@@ In the remaining texts, the ambiguous points were clarified (often pointing
+at the new distinctions). In particular, the security considerations used to
+conflate the topic of "source of truth" with the Counter implementation --
+while these generally do coincide, the new text is more precise and refers
+back to the new section.

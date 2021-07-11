@@ -263,6 +263,76 @@ different origin client endpoints. Following from the recommendation above, a pr
 
 4. A server may want to use the request freshness provided by the Echo to verify the aliveness of a client. Note that in a deployment with hop-by-hop security and proxies, the server can only verify aliveness of the closest proxy.
 
+## Characterization of Echo Applications
+
+Use cases for the Echo option
+can be characterized by several criteria that help determine the required properties of the Echo value.
+These criteria apply both to those listed in {{echo-app}} and any novel applications.
+They provide rationale for the statements in the former, and guidance for the latter.
+
+### Time versus Event Based Freshness
+
+The property a client demonstrates by sending an Echo value is that the request was sent
+after a certain point in time,
+or after some event happened on the server.
+
+When events are counted,
+they form something that can be used as a monotonic but very non-uniform time line.
+With highly regular events and low-resolution time,
+the distinction between time and event based freshness can be blurred:
+"No longer than a month ago" is similar to "since the last full moon".
+
+In an extreme form of event based freshness,
+the server can place an event whenever an Echo value is used.
+This makes the Echo value effectively single-use.
+
+Event and time based freshness can be combined in a single Echo value,
+e.g. by encrypting a timestamp with a key that changes with every event
+to obtain "usable once but only for 5 minutes"-style semantics.
+
+### Source of Truth
+
+The information extracted by the server from the request Echo value
+has different sources of truth depending on the application.
+Understanding this helps the server implementer decide the necessary protection of the Echo value.
+
+If all that the server extracts is information which the client is the sole source of truth for,
+(which is another way of saying that the server has to trust the client on whatever Echo is used for),
+then the server can issue Echo values that do not need to be protected on their own.
+They still need to be covered by the security protocol that covers the rest of the message,
+but the Echo value can be just short enough to be unique between this server and client.
+
+For example,
+the client's OSCORE sender sequence number (as used in {{RFC8613}} Appendix B.1.2) is such information.
+<!-- and I don't really know any other example -->
+
+In most other cases,
+there are properties extracted of which the server is the authority
+("The request must not be older than five minutes" is counted on the server's clock, not the client's)
+or which even involve the network
+(as when performing amplification mitigation).
+In these cases, the Echo value itself needs to be protected against forgery by the client,
+e.g. by using a sufficiently large random value or a MAC as described in {{echo-state}} items 1 and 2.
+
+For some applications,
+the server may be able to trust the client to also serve as a source of truth
+(e.g. when using time based freshness purely to mitigate request delay attacks);
+these need careful case-by-case evaluation.
+
+To issue Echo values without own protection,
+the server needs to trust the client to never produce requests with attacker controlled Echo values.
+The provisions of {{echo-proc}} (saying that an Echo value may only be sent as received from the same server)
+allow that.
+The requirement stated there for the client to treat the Echo value as opaque holds for these application like for all others.
+
+When the client is the sole source of truth,
+the server can still use time or events to issue new Echo values.
+Then, the request's Echo value not so much proves the indicated freshness to the server,
+but reflects the client's intention to indicate reception of responses containing that value when sending the later ones.
+
+Note that a single Echo value can be used for multiple purposes
+(e.g. to get both the sequence number information and perform amplification mitigation);
+then, the stricter requirements apply.
 
 ## Updated Amplification Mitigation Requirements for Servers
 
@@ -498,7 +568,7 @@ One easy way to accomplish this is to implement the Token (or part of the Token)
 
 # Security Considerations {#sec-cons}
 
-The freshness assertion of the Echo option comes from the client reproducing the same value of the Echo option in a request as in a previous response. If the Echo value is a large random number then there is a high probability that the request is generated after having seen the response. If the Echo value of the response can be guessed, e.g. if based on a small random number or a counter (see {{echo-state}}), then it is possible to compose a request with the right Echo value ahead of time. However, this may not be an issue if the communication is integrity protected against third parties and the client is trusted not misusing this capability. Echo values MUST be set by the CoAP server such that the risk associated with unintended reuse can be managed.
+The freshness assertion of the Echo option comes from the client reproducing the same value of the Echo option in a request as in a previous response. If the Echo value is a large random number then there is a high probability that the request is generated after having seen the response. If the Echo value of the response can be guessed, e.g. if based on a small random number or a counter (see {{echo-state}}), then it is possible to compose a request with the right Echo value ahead of time. Using guessable Echo values is only permissible in a narrow set of cases described in {{source-of-truth}}. Echo values MUST be set by the CoAP server such that the risk associated with unintended reuse can be managed.
 
 If uniqueness of the Echo value is based on randomness, then the availability of a secure pseudorandom number generator and truly random seeds are essential for the security of the Echo option. If no true random number generator is available, a truly random seed must be provided from an external source. As each pseudorandom number must only be used once, an implementation needs to get a new truly random seed after reboot, or continuously store state in nonvolatile memory. See ({{RFC8613}}, Appendix B.1.1) for issues and solution approaches for writing to nonvolatile memory.
 
@@ -506,7 +576,7 @@ A single active Echo value with 64 (pseudo-)random bits gives the same theoretic
 
 The security provided by the Echo and Request-Tag options depends on the security protocol used. CoAP and HTTP proxies require (D)TLS to be terminated at the proxies. The proxies are therefore able to manipulate, inject, delete, or reorder options or packets. The security claims in such architectures only hold under the assumption that all intermediaries are fully trusted and have not been compromised.
 
-Counter Echo values can only be used to show freshness relative to numbered events, and are the legitimate case for Echo values shorter than four bytes, which are not necessarily secret. They MUST NOT be used unless the request Echo values are integrity protected as per {{echo-proc}}.
+Echo values without the protection of randomness or a MAC are limited to cases when the client is the trusted source of all derived properties (as per {{source-of-truth}}). Using them needs per-application consideration of both the impact of a malicous client and of implementation errors in clients. These Echo values are the only legitimate case for Echo values shorter than four bytes, which are not necessarily secret. They MUST NOT be used unless the request Echo values are integrity protected as per {{echo-proc}}.
 
 Servers SHOULD use a monotonic clock to generate timestamps and compute round-trip times. Use of non-monotonic clocks is not secure as the server will accept expired Echo option values if the clock is moved backward. The server will also reject fresh Echo option values if the clock is moved forward. Non-monotonic clocks MAY be used as long as they have deviations that are acceptable given the freshness requirements. If the deviations from a monotonic clock are known, it may be possible to adjust the threshold accordingly.
 
@@ -593,6 +663,9 @@ Different mechanisms have different tradeoffs between the size of the Echo optio
       Server State: random value r, timestamp t0
 ~~~~~~~~~~
 
+  This method is suitable both for time and for event base freshness (e.g. by clearing the cache when an event occurs),
+  and independent of the source of truth.
+
 2\. Integrity Protected Timestamp. The Echo option value is an integrity protected timestamp. The timestamp can have different resolution and range. A 32-bit timestamp can e.g. give a resolution of 1 second with a range of 136 years. The (pseudo-)random secret key is generated by the server and not shared with any other party. The use of truncated HMAC-SHA-256 is RECOMMENDED. With a 32-bit timestamp and a 64-bit MAC, the size of the Echo option value is 12 bytes and the Server state is small and constant. The security against an attacker guessing echo values is given by the MAC length. If the server loses time continuity, e.g. due to reboot, the old key MUST be deleted and replaced by a new random secret key. Note that the privacy considerations in {{priv-cons}} may apply to the timestamp. Therefore, it might be important to encrypt it. Depending on the choice of encryption algorithms, this may require a nonce to be included in the Echo option value.
 
 ~~~~~~~~~~
@@ -600,12 +673,19 @@ Different mechanisms have different tradeoffs between the size of the Echo optio
       Server State: secret key k
 ~~~~~~~~~~
 
-3\. Persistent Counter. This is an event-based freshness method usable for state synchronization (for example after volatile state has been lost), and cannot be used for client aliveness. It requires that the client can be trusted to not spuriously produce Echo values. The Echo option value is a simple counter without integrity protection of its own, serialized in uint format. The counter is incremented in a persistent way every time the state that needs to be synchronized is changed (in the aforementioned example: when a reboot indicates that volatile state may have been lost). An example of how such a persistent counter can be implemented efficiently is the OSCORE server Sender Sequence Number mechanism described in Appendix B.1.1 of {{RFC8613}}.
+  This method is suitable both for time and for event based freshness (by the server remembering the time at which the event took place).
+  and independent of the source of truth.
+
+3\. Persistent Counter. This can be used in OSCORE for sequence number recovery per Appendix B.1.2 of {{RFC8613}}. The Echo option value is a simple counter without integrity protection of its own, serialized in uint format. The counter is incremented in a persistent way every time the state that needs to be synchronized is changed (in the aforementioned example: when a reboot indicates that volatile state may have been lost). An example of how such a persistent counter can be implemented efficiently is the OSCORE server Sender Sequence Number mechanism described in Appendix B.1.1 of {{RFC8613}}.
 
 ~~~~~~~~~~
       Echo option value: counter
       Server State: counter
 ~~~~~~~~~~
+
+  This method is suitable only if the client is the source of truth.
+  Consequently, it cannot be used to show client aliveness.
+  It provides statements from the client similar to event based freshness (but without a proof of freshness).
 
 Other mechanisms complying with the security and privacy considerations may be used. The use of encrypted timestamps in the Echo option increases security, but typically requires an IV (Initialization Vector) to be included in the Echo option value, which adds overhead and makes the specification of such a mechanism slightly more complicated than the two time-based mechanisms specified here.
 
@@ -629,6 +709,7 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 * Changes since draft-ietf-core-echo-request-tag-12 (addressing comments from Martin Duke)
 
+    * Add subsection "Characterization of Echo Applications". .
     * Replace "blacklist" terminology with "deny-list"
     * Remove duplicate statement from Echo introduction.
     * Reference updates:
