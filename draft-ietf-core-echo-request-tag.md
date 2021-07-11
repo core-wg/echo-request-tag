@@ -458,7 +458,7 @@ In order to gain that protection, use the Request-Tag mechanism as follows:
 
 * The client MUST NOT regard a block-wise request operation as concluded unless all of the messages the client previously sent in the operation have been confirmed by the message integrity protection mechanism, or the client can determine that the server would not consider the messages to be valid if they were replayed.
 
-  Typically, in OSCORE, these confirmations can result either from the client receiving an OSCORE response message matching the request (an empty ACK is insufficient), or because the message's sequence number is old enough to be outside the server's receive window.
+  When security services are provied by OSCORE, these confirmations typically result either from the client receiving an OSCORE response message matching the request (an empty ACK is insufficient), or because the message's sequence number is old enough to be outside the server's receive window.
 
   In DTLS, this can only be confirmed if the request message was not retransmitted, and was responded to.
 

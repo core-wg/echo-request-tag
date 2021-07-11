@@ -285,12 +285,16 @@ now.
 >       protection mechanism, [...]
 > 
 > nit: confirmed as what?  Delivered?
-> 
+
+@@@ (and more @@@ because back when we wrote this we were unaware that replay protection is not even mandatory)
+
 >       Typically, in OSCORE, these confirmations can result either from
 > 
 > nit: I suggest "When security services are provided by OSCORE, these
 > confirmations typically result from"
-> 
+
+Good change, done.
+
 >       In DTLS, this can only be confirmed if the request message was not
 >       retransmitted, and was responded to.
 > 
