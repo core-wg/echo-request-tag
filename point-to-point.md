@@ -274,7 +274,11 @@ doesn't necessarily mean "same operation").
 > 
 > (editorial?) when I read this I feel like it's missing a clause --
 > consider those messages for the purposes of what operation?
-> 
+
+"MUST consider messages matchable if they were sent to..." makes this clearer
+now.
+
+
 >    *  The client MUST NOT regard a block-wise request operation as
 >       concluded unless all of the messages the client previously sent in
 >       the operation have been confirmed by the message integrity
