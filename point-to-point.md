@@ -41,7 +41,14 @@ Changed in -13.
 
 > 6. What is a "preemptive" echo value?
 
-@@@
+They are Echo values sent with successful responses. Rather than going into
+details here, a reference to Resource Directory  has been added, where there is
+both a more detailed description and an example of them.
+
+(It may sound odd to refer to a dependent document for this term, but
+explaining a full setup in which preemptive Echo values can make sense is a
+verbose thing, and RD already does all the setup because they have an
+application. The documents are already part of the same cluster).
 
 ## Benjamin Kaduk No Objection
 Comment (2021-02-17)
