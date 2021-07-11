@@ -460,7 +460,7 @@ In order to gain that protection, use the Request-Tag mechanism as follows:
 
   When security services are provied by OSCORE, these confirmations typically result either from the client receiving an OSCORE response message matching the request (an empty ACK is insufficient), or because the message's sequence number is old enough to be outside the server's receive window.
 
-  In DTLS, this can only be confirmed if the request message was not retransmitted, and was responded to.
+  In DTLS, this can only be confirmed if the request message was not retransmitted, was responded to, and the server performs replay protection.
 
 <!-- pending see thread "ERT and OSCORE" -->
 Authors of other documents (e.g. applications of {{RFC8613}}) are invited to mandate this behavior for clients that execute block-wise interactions over secured transports. In this way, the server can rely on a conforming client to set the Request-Tag option when required, and thereby conclude on the integrity of the assembled body.
