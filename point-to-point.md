@@ -29,7 +29,8 @@ a concrete example linked, and includes a requirement for its applicability.
 
 > -- it would be helpful to explicitly state which methods apply to the specific use cases (client aliveness, request freshness, state synchronization, network  address reachability).  For example, method 3 (persistent counter) notes that it can be used for state synchronization but not client aliveness
 
-@@@
+These are now tied together by the Characterization chapter introduced in
+GENERIC-SHORT-ECHO.
 
 ## Martin Duke No Objection
 Comment (2021-02-05)
@@ -60,7 +61,9 @@ Comment (2021-02-17)
 > along the spectrum, and no discussion at all about the strongest
 > properties that it is possible to obtain with this mechanism.
 
-@@@ spectrum sounds good, with usable-once a form of event-based
+This spectrum, with the axes kind-of-freshness and source-of-truth, is now
+described in a new Characterization of Echo Applications subsection, which
+includes limited-time-single-use as a combined form of kind-of-freshness.
 
 (also addresses Roman's "helpful to explicitly state")
 
