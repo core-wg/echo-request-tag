@@ -617,6 +617,14 @@ Implementations SHOULD NOT put any privacy-sensitive information in the Echo or 
 
 Like HTTP cookies, the Echo option could potentially be abused as a tracking mechanism that identifies a client across requests. This is especially true for preemptive Echo values (i.e., Echo values sent with successful responses; see {{?I-D.ietf-core-resource-directory}} Section 5.3.4 for an example). Servers MUST NOT use the Echo option to correlate requests for other purposes than freshness and reachability. Clients only send Echo values to the same server from which the values were received. Compared to HTTP, CoAP clients are often authenticated and non-mobile, and servers can therefore often correlate requests based on the security context, the client credentials, or the network address. Especially when the Echo option increases a server’s ability to correlate requests, clients MAY discard all preemptive Echo values.
 
+Publicly visible generated identifiers,
+even when opaque (as all defined in this document are),
+can leak information as described in {{?I-D.irtf-pearg-numeric-ids-generation}}.
+To avoid effects described there, the absent Request-Tag option should be recycled as much as possible.
+(That is generally possible as long as a security mechanism is in place -- even in the case of OSCORE outer block-wise transfers, as the OSCORE option's variation ensures that no matchable requests are created by different clients).
+When an unprotected Echo option is used to demonstrate reachability,
+the recommended mechanism @@@ of {{echo-proc}} keeps the effects to a minimum.
+
 # IANA Considerations {#iana}
 
 IANA is requested to add the following option numbers to the "CoAP Option Numbers" registry defined by {{RFC7252}}:

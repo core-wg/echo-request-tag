@@ -98,7 +98,13 @@ includes limited-time-single-use as a combined form of kind-of-freshness.
 > requirement on the value, and the considerations of
 > draft-gont-numeric-ids-sec-considerations seem relevant.
 
-@@@ (may coincide in spectrum with "client is authority")
+Under the threat model of pearg-numeric-ids-generation, relevant identifiers
+are outer Request-Tag and outer Echo values of OSCORE (as inner and DTLS
+protected ones are protected by message integrity, and Token rules are only
+updated for DTLS where it is protected as well).
+
+For the remaining cases, a paragraph has been added to the privacy
+considerations section.
 
 > I think it would also be enlightening to have a comparison between the
 > anti-replay/freshness properties provided by the optional DTLS replay
@@ -502,7 +508,14 @@ should suffice.
 > ("use of a sequence number" and "a sequence number approach" also appear
 > in §5.1, if this is changed.)
 
-@@@
+These recommendations are for secured transports without request-response
+binding, i.e. DTLS. As the identifiers are protected by the DTLS integrity
+protection, they are outside the scope of the threat model described in
+numeric-ids-generation. (On the other hand, the nontrivial, randomized token
+recommended for non-TLS cases, and this document makes no updates for them.)
+
+The concepts of numeric-ids did result in additions to the privacy
+considerations for outer Echo and Request-Tag values.
 
 > Section 5
 > 
