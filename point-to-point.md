@@ -302,7 +302,20 @@ Good change, done.
 > -- DTLS does include a native retransmission layer, but only for DTLS
 > handshake messages, so this phrasing is needlessly ambiguous as to
 > whether it is the CoAP request that got retransmitted.
-> 
+
+The point about retransmission is on CoAP here; made more explicit in the
+rephrasing.
+
+The line was also changed to include the necessity for the server to perform
+replay protection (which until the RD review I was unaware was even optional).
+The over-all statement (which leaves the door open for request tag recycling in
+DTLS) is left open, even though this new constraint is making it *even* harder
+to be sure -- but the situations in which that could previously done were
+already pretty niche, and in a setup where the application can alreay know what
+got ACKed and what got retransmitted, it is not out of the question that it
+knows the server well enough to assert that it has replay protection active as
+well.
+
 >    Authors of other documents (e.g. applications of [RFC8613]) are
 >    invited to mandate this behavior for clients that execute block-wise
 >    interactions over secured transports.  In this way, the server can
