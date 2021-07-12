@@ -248,6 +248,7 @@ The CoAP server side of CoAP-to-HTTP proxies MAY request freshness, especially i
 
 
 3. A server that sends a large response to an unauthenticated peer SHOULD mitigate amplification attacks such as described in Section 11.3 of {{RFC7252}} to address, for example, the case where an attacker puts a victim's address in the source address of a CoAP request. One way to do this is that the server responds to the alleged source address of the request with an Echo option in short response message (e.g. 4.01 Unauthorized), thereby requesting the client to verify its source address. This needs to be done only once per endpoint and limits the range of potential victims from the general Internet to endpoints that have been previously in contact with the server. For this application, the Echo option can be used in messages that are not integrity protected, for example during discovery.
+  (This is formally recommended in {{ampl-mit}}).
 
     *  In the presence of a proxy, a server will not be able to distinguish
 different origin client endpoints. Following from the recommendation above, a proxy that sends large responses to unauthenticated peers SHOULD mitigate amplification attacks. The proxy SHOULD use Echo to verify origin reachability as described in {{echo-proc}}. The proxy MAY forward idempotent requests immediately to have a cached result available when the client's repeated request arrives.
@@ -339,7 +340,7 @@ Note that a single Echo value can be used for multiple purposes
 (e.g. to get both the sequence number information and perform amplification mitigation);
 then, the stricter requirements apply.
 
-## Updated Amplification Mitigation Requirements for Servers
+## Updated Amplification Mitigation Requirements for Servers {#ampl-mit}
 
 This section updates the amplification mitigation requirements for servers in {{RFC7252}} to recommend use of the Echo option to mitigate amplification attacks. The requirements for clients are not updated. Section 11.3 of {{RFC7252}} is updated by adding the following text:
 
