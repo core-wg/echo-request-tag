@@ -41,14 +41,9 @@ Changed in -13.
 
 > 6. What is a "preemptive" echo value?
 
-They are Echo values sent with successful responses. Rather than going into
-details here, a reference to Resource Directory  has been added, where there is
-both a more detailed description and an example of them.
-
-(It may sound odd to refer to a dependent document for this term, but
-explaining a full setup in which preemptive Echo values can make sense is a
-verbose thing, and RD already does all the setup because they have an
-application. The documents are already part of the same cluster).
+They are Echo values sent with successful responses. The term is defined now at
+first use, and one more place where it could have been used added now that it's
+introduced properly.
 
 ## Benjamin Kaduk No Objection
 Comment (2021-02-17)
@@ -569,7 +564,7 @@ Changed simillarly ("keeling a list of all Tokens unsuitable for reuse").
 > these are ones piggybacked on non-4.01 responses (assuming that's
 > correct, of course).
 
-It is; @@@
+It is, and now properly introduced.
 
 > Section 8.1
 > 
