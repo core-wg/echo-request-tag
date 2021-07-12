@@ -18,7 +18,7 @@ See also GENERIC-SHORT-ECHO
 > -- Would it be clearer here to say that this is mitigation against an on-path attacker, not against rogue/compromised clients?
 
 In the course of the GENERIC-SHORT-ECHO changes, this has been made more
-precise using the concept of "source of truth" introduced there.
+precise using the concept of "authority over synchronized property" introduced there.
 
 > ** Appendix A helpfully tries to lay out recommendations.  A few comments:
 > 
@@ -63,7 +63,7 @@ Comment (2021-02-17)
 > along the spectrum, and no discussion at all about the strongest
 > properties that it is possible to obtain with this mechanism.
 
-This spectrum, with the axes kind-of-freshness and source-of-truth, is now
+This spectrum, with the axes kind-of-freshness and authority-over-synchronized-property, is now
 described in a new Characterization of Echo Applications subsection, which
 includes limited-time-single-use as a combined form of kind-of-freshness.
 
@@ -225,9 +225,9 @@ Changed.
 > (A similar consideration would apply to the group communication example,
 > though it might be a little harder to write clearly.)
 
-The "source of truth" concept intoduced in response to the toplevel comment
+The "authority over synchronized property" concept intoduced in response to the toplevel comment
 (GENERIC-SHORT-ECHO) covers most of this. Thus, also the time synchronization
-given can be valid here -- provided the client is a recognize source of truth
+given can be valid here -- provided the client is a recognize authority
 for it. Which, in a group case, it will likely not be; thus, removing the
 example from there. (Also upgrading the "see" to an "as specified" to softly
 indicate that this is not done easily).
@@ -635,7 +635,7 @@ say; changed.
 > available for similar cost that provide the needed properties it seems
 > more robust to suggest their use in place of the persistent counter.
 
-The additions of GENERIC-SHORT-ECHO, especially on "source of truth", should
+The additions of GENERIC-SHORT-ECHO, especially on "authority over synchronized property", should
 help in describing this and limiting any ill-effects.
 
 If the client is *not* trusted, we're fast into the order of magnitude of
@@ -715,11 +715,11 @@ requirements -- of which some extremes call for verifiable Echo values, and
 others not.
 
 Consequently, a section "Characterization of Echo Applications" was added that
-discusses two aspects: "Source of truth" and "Time vs. Events". In the former,
+discusses two aspects: "authority over synchronized property" and "Time vs. Events". In the former,
 we derive when using guessable Echo values is OK, and when not.
 
 @@@ In the remaining texts, the ambiguous points were clarified (often pointing
 at the new distinctions). In particular, the security considerations used to
-conflate the topic of "source of truth" with the Counter implementation --
+conflate the topic of "authority over synchronized property" with the Counter implementation --
 while these generally do coincide, the new text is more precise and refers
 back to the new section.
