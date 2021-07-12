@@ -568,9 +568,9 @@ One easy way to accomplish this is to implement the Token (or part of the Token)
 
 # Security Considerations {#sec-cons}
 
-The freshness assertion of the Echo option comes from the client reproducing the same value of the Echo option in a request as in a previous response. If the Echo value is a large random number then there is a high probability that the request is generated after having seen the response. If the Echo value of the response can be guessed, e.g. if based on a small random number or a counter (see {{echo-state}}), then it is possible to compose a request with the right Echo value ahead of time. Using guessable Echo values is only permissible in a narrow set of cases described in {{source-of-truth}}. Echo values MUST be set by the CoAP server such that the risk associated with unintended reuse can be managed.
+The freshness assertion of the Echo option comes from the client reproducing the same value of the Echo option in a request as it received in a previous response. If the Echo value is a large random number then there is a high probability that the request is generated after having seen the response. If the Echo value of the response can be guessed, e.g. if based on a small random number or a counter (see {{echo-state}}), then it is possible to compose a request with the right Echo value ahead of time. Using guessable Echo values is only permissible in a narrow set of cases described in {{source-of-truth}}. Echo values MUST be set by the CoAP server such that the risk associated with unintended reuse can be managed.
 
-If uniqueness of the Echo value is based on randomness, then the availability of a secure pseudorandom number generator and truly random seeds are essential for the security of the Echo option. If no true random number generator is available, a truly random seed must be provided from an external source. As each pseudorandom number must only be used once, an implementation needs to get a new truly random seed after reboot, or continuously store state in nonvolatile memory. See ({{RFC8613}}, Appendix B.1.1) for issues and solution approaches for writing to nonvolatile memory.
+If uniqueness of the Echo value is based on randomness, then the availability of a secure pseudorandom number generator and truly random seeds are essential for the security of the Echo option. If no true random number generator is available, a truly random seed must be provided from an external source. As each pseudorandom number must only be used once, an implementation needs to get a new truly random seed after reboot, or continuously store state in nonvolatile memory. See ({{RFC8613}}, Appendix B.1.1) for issues and approaches for writing to nonvolatile memory.
 
 A single active Echo value with 64 (pseudo-)random bits gives the same theoretical security level as a 64-bit MAC (as used in e.g. AES_128_CCM_8). If a random unique Echo value is intended, the Echo option value SHOULD contain 64 (pseudo-)random bits that are not predictable for any other party than the server. A server MAY use different security levels for different uses cases (client aliveness, request freshness, state synchronization, network address reachability, etc.).
 
@@ -582,7 +582,7 @@ Servers SHOULD use a monotonic clock to generate timestamps and compute round-tr
 
 An attacker may be able to affect the server's system time in various ways such as setting up a fake NTP server or broadcasting false time signals to radio-controlled clocks.
 
-For the purpose of generating timestamps for Echo a server MAY set a timer at reboot and use the time since reboot, in a unit such that  different requests arrive at different times. Servers MAY intermittently reset the timer and MAY generate a random offset applied to all timestamps. When resetting the timer, the server MUST reject all Echo values that were created before the reset.
+For the purpose of generating timestamps for Echo a server MAY set a timer at reboot and use the time since reboot, choosing the granularity such that  different requests arrive at different times. Servers MAY intermittently reset the timer and MAY generate a random offset applied to all timestamps. When resetting the timer, the server MUST reject all Echo values that were created before the reset.
 
 Servers that use the List of Cached Random Values and Timestamps method described in {{echo-state}} may be vulnerable to resource exhaustion attacks. One way to minimize state is to use the Integrity Protected Timestamp method described in {{echo-state}}.
 
@@ -607,7 +607,7 @@ In some setups, Tokens can be reused without the above constraints, as a differe
 
 In all other cases, a sequence number approach is RECOMMENDED as per {{token}}.
 
-Tokens that cannot be reused need to be handled appropriately. This could be solved by increasing the Token as soon as the currently used Token cannot be reused, or by keeping a list of all deny-listed Tokens.
+Tokens that cannot be reused need to be handled appropriately. This could be solved by increasing the Token as soon as the currently used Token cannot be reused, or by keeping a list of all Tokens unsuitable for reuse.
 
 When the Token (or part of the Token) contains a sequence number, the encoding of the sequence number has to be chosen in a way to avoid any collisions. This is especially true when the Token contains more information than just the sequence number, e.g. serialized state as in {{?RFC8974}}.
 

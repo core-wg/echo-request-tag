@@ -512,7 +512,7 @@ should suffice.
 > 
 > nit/editorial: I suggest s/as in/as it received in/
 
-@@@
+Applied.
 
 >                               However, this may not be an issue if the
 >    communication is integrity protected against third parties and the
@@ -520,14 +520,14 @@ should suffice.
 > 
 > nit: s/trusted not misusing/trusted to not misuse/
 
-@@@
+Fell out of use anyway due to the changes around GENERIC-SHORT-ECHO.
 
 >                         See ([RFC8613], Appendix B.1.1) for issues and
 >    solution approaches for writing to nonvolatile memory.
 > 
 > nit: redundant word in "solution approaches"?
 
-@@@
+Yes, changed (was probably "Lösungsansatz" in my head...).
 
 >    For the purpose of generating timestamps for Echo a server MAY set a
 >    timer at reboot and use the time since reboot, in a unit such that
@@ -535,7 +535,8 @@ should suffice.
 > 
 > Something about this sentence confuses me, possibly around "in a unit".
 
-@@@
+"choosing the granularity such that". (Which may not be necessary for all
+applications, but is convenient when using both time and events).
 
 > Section 5.1
 > 
@@ -546,7 +547,7 @@ should suffice.
 > 
 > editorial: perhaps "unsafe to reuse" is more clear than "blacklisted"?
 
-@@@
+Changed simillarly ("keeling a list of all Tokens unsuitable for reuse").
 
 > Section 6
 > 
