@@ -346,8 +346,6 @@ This could precisely this could say "if the client can recycle the request tag"
 paragraph is about server behavior (examplifying how "equal request tags"
 doesn't necessarily mean "same operation").
 
-@@@ is there any place where this can be picked up later in the applications section?
-
 > Section 3.5.1
 > 
 >       If any future security mechanisms allow a block-wise transfer to
