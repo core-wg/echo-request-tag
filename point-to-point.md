@@ -632,7 +632,18 @@ draft-mattsson-core-coap-attacks-00, the references are updated.
 > available for similar cost that provide the needed properties it seems
 > more robust to suggest their use in place of the persistent counter.
 
-@@@
+The additions of GENERIC-SHORT-ECHO, especially on "source of truth", should
+help in describing this and limiting any ill-effects.
+
+If the client is *not* trusted, we're fast into the order of magnitude of
+64-bit MACs; anything less might just give a false sense of security. Where
+these are transported regularly (as in [RD]), that quickly adds up in total
+bytes on the air. Thes cases *do* need good analysis, and it is hoped that with
+the new text the tools for this are there, but when the result is that trusting
+the client on this freshness is fine, then a counter should be too and has the
+least cost.
+
+[RD]: https://www.ietf.org/archive/id/draft-ietf-core-resource-directory-28.html#name-request-freshness
 
 ## Erik Kline No Objection
 Comment (2021-02-15)
