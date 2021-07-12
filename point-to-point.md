@@ -220,12 +220,17 @@ Changed.
 > that the protocol specified in RFC 8613 includes a mechanism for
 > resynchronizing the partial IV state, that uses the Echo option in a
 > specific controlled protocol interaction.
-
-@@@
-
+>
 > (A similar consideration would apply to the group communication example,
 > though it might be a little harder to write clearly.)
-> 
+
+The "source of truth" concept intoduced in response to the toplevel comment
+(GENERIC-SHORT-ECHO) covers most of this. Thus, also the time synchronization
+given can be valid here -- provided the client is a recognize source of truth
+for it. Which, in a group case, it will likely not be; thus, removing the
+example from there. (Also upgrading the "see" to an "as specified" to softly
+indicate that this is not done easily).
+
 >    3.  A server that sends large responses to unauthenticated peers
 >        SHOULD mitigate amplification attacks such as described in
 >        Section 11.3 of [RFC7252] (where an attacker would put a victim's
