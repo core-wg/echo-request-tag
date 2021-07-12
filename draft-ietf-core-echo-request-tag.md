@@ -371,7 +371,7 @@ A CoAP server SHOULD mitigate potential amplification attacks by responding to u
 
 ## Fragmented Message Body Integrity {#body-int}
 
-CoAP was designed to work over unreliable transports, such as UDP, and include a lightweight reliability feature to handle messages which are lost or arrive out of order. In order for a security protocol to support CoAP operations over unreliable transports, it must allow out-of-order delivery of messages using e.g. a sliding replay window such as described in Section 4.1.2.6 of DTLS ({{RFC6347}}).
+CoAP was designed to work over unreliable transports, such as UDP, and include a lightweight reliability feature to handle messages which are lost or arrive out of order. In order for a security protocol to support CoAP operations over unreliable transports, it must allow out-of-order delivery of messages.
 
 The block-wise transfer mechanism {{RFC7959}} extends CoAP by defining the transfer of a large resource representation (CoAP message body) as a sequence of blocks (CoAP message payloads). The mechanism uses a pair of CoAP options, Block1 and Block2, pertaining to the request and response payload, respectively. The block-wise functionality does not support the detection of interchanged blocks between different message bodies to the same resource having the same block number. This remains true even when CoAP is used together with a security protocol such as DTLS or OSCORE, within the replay window ({{I-D.mattsson-core-coap-attacks}}), which is a vulnerability of CoAP when using RFC7959.
 
@@ -483,7 +483,7 @@ In order to gain that protection, use the Request-Tag mechanism as follows:
   after an endpoint's details (like the IP address) have changed, then
   the client MUST consider messages matchable if they were sent to *any* endpoint address using the new operation's security context.
 
-* The client MUST NOT regard a block-wise request operation as concluded unless all of the messages the client previously sent in the operation have been confirmed by the message integrity protection mechanism, or the client can determine that the server would not consider the messages to be valid if they were replayed.
+* The client MUST NOT regard a block-wise request operation as concluded unless all of the messages the client has sent in the operation would not be considered to be valid by the server if they were replayed.
 
   When security services are provied by OSCORE, these confirmations typically result either from the client receiving an OSCORE response message matching the request (an empty ACK is insufficient), or because the message's sequence number is old enough to be outside the server's receive window.
 
@@ -499,6 +499,13 @@ On applications where all the state is in the application
 (e.g. because rather than POSTing a large representation to a collection in a stateful block-wise transfer,
 a collection item is created first, then written to once and available when written completely),
 clients need not concern themselves with body integrity and thus the Request-Tag.
+
+Body integrity is largely independent from replay protection:
+When no replay protection is available (which is optional in DTLS),
+a full block-wise exchange may be replayed,
+but by adhering to the above, no blocks will be mixed up.
+<!-- the other direction was covered already, see core-coap-attacks -->
+The only link between body integrity and replay protection is that without replay protection, recycling is not possible.
 
 ### Multiple Concurrent Block-wise Operations
 
@@ -729,7 +736,7 @@ Other mechanisms complying with the security and privacy considerations may be u
 
 # Request-Tag Message Size Impact
 
-In absence of concurrent operations, the Request-Tag mechanism for body integrity ({{body-integrity}}) incurs no overhead if no messages are lost (more precisely: in OSCORE, if no operations are aborted due to repeated transmission failure; in DTLS, if no packets are lost),
+In absence of concurrent operations, the Request-Tag mechanism for body integrity ({{body-integrity}}) incurs no overhead if no messages are lost (more precisely: in OSCORE, if no operations are aborted due to repeated transmission failure; in DTLS, if no packets are lost and replay protection is active),
 or when block-wise request operations happen rarely (in OSCORE, if there is always only one request block-wise operation in the replay window).
 
 In those situations, no message has any Request-Tag option set, and that can be recycled indefinitely.

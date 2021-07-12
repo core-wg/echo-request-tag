@@ -115,7 +115,13 @@ considerations section.
 > but I think there is also some commonality, and giving readers guidance
 > on whether one vs the other suffices or both are needed could be useful.
 
-@@@
+Such a comparison was attempted, but found to be tied too deeply into
+core-coap-attacks; an issue has been opened at
+https://github.com/EricssonResearch/coap-actuators/issues/8.
+
+That comment did inspire a paragraph on the relationship between Request-Tag
+and replay protection, which did get more interesting when the document was
+adapted in awareness of DTLS's option to not use replay protection at all.
 
 > Section 2.3
 > 
@@ -303,7 +309,8 @@ Changed as above.
 > delivery of messages (not necessarily including replay detection), so
 > the clause about the sliding window is not needed. here.
 
-@@@
+Indeed. Realizing that DTLS can be used with replay protection off made this
+half-sentence go away and caused some follow-up adaptions.
 
 > Section 3.2
 > 
@@ -362,7 +369,10 @@ now.
 > 
 > nit: confirmed as what?  Delivered?
 
-@@@ (and more @@@ because back when we wrote this we were unaware that replay protection is not even mandatory)
+With the DTLS replay window realization, this would have become unwieldly, and
+thus was simplified to the "when the client knows the server won't accept it"
+that was already there. What that means in practice is spelled out for OSCORE
+and DTLS in the following paragraphs anyway.
 
 >       Typically, in OSCORE, these confirmations can result either from
 > 
