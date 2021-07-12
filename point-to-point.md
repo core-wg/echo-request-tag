@@ -207,7 +207,7 @@ Indeed; removed.
 > Also, disambiguating the final "it" seems like it would be worthwhile,
 > just in case, since this is rather important to get right.
 
-@@@
+Changed.
 
 >        *  If a server reboots during operation it may need to
 >           synchronize state or time before continuing the interaction.
