@@ -89,7 +89,7 @@ A message's "freshness" is a measure of when a message was sent on a time scale 
 A server that receives a request can either verify that the request is fresh
 or determine that it cannot be verified that the request is fresh.
 What is considered a fresh message is application dependent;
-examplary uses are "no more than one hour ago" or "after this server's last reboot".
+exemplary uses are "no more than one hour ago" or "after this server's last reboot".
 
 The terms "payload" and "body" of a message are used as in {{RFC7959}}.  The complete interchange of a request and a response body is called a (REST) "operation". An operation fragmented using {{RFC7959}} is called a "block-wise operation". A block-wise operation which is fragmenting the request body is called a "block-wise request operation".  A block-wise operation which is fragmenting the response body is called a "block-wise response operation".
 
@@ -255,7 +255,7 @@ and the Echo option to be protected by it.
     * A device joining a CoAP group communication {{RFC7390}} protected with OSCORE {{I-D.ietf-core-oscore-groupcomm}} may be required to initially synchronize its replay window state with a client by using the Echo option in a unicast response to a multicast request. The client receiving the response with the Echo option includes the Echo value in a subsequent unicast request to the responding server.
 
 
-3. An attacker can perform a denial-of-service attack by putting a victim's address in the source address of a CoAP request and sending the request to a resource with a large amplification factor. The amplification factor is the ratio between the size of the request and the total size of the reponse(s) to that request. A server that provides a large amplification factor to an unauthenticated peer SHOULD mitigate amplification attacks as described in Section 11.3 of {{RFC7252}}. One way to mitigate such attacks is that the server responds to the alleged source address of the request with an Echo option in short response message (e.g. 4.01 Unauthorized), thereby requesting the client to verify its source address. This needs to be done only once per endpoint and limits the range of potential victims from the general Internet to endpoints that have been previously in contact with the server. For this application, the Echo option can be used in messages that are not integrity protected, for example during discovery. (This is formally recommended in {{ampl-mit}}).
+3. An attacker can perform a denial-of-service attack by putting a victim's address in the source address of a CoAP request and sending the request to a resource with a large amplification factor. The amplification factor is the ratio between the size of the request and the total size of the response(s) to that request. A server that provides a large amplification factor to an unauthenticated peer SHOULD mitigate amplification attacks as described in Section 11.3 of {{RFC7252}}. One way to mitigate such attacks is that the server responds to the alleged source address of the request with an Echo option in short response message (e.g. 4.01 Unauthorized), thereby requesting the client to verify its source address. This needs to be done only once per endpoint and limits the range of potential victims from the general Internet to endpoints that have been previously in contact with the server. For this application, the Echo option can be used in messages that are not integrity protected, for example during discovery. (This is formally recommended in {{ampl-mit}}).
 
     *  In the presence of a proxy, a server will not be able to distinguish different origin client endpoints. Following from the recommendation above, a proxy that provides a large amplification factor to unauthenticated peers SHOULD mitigate amplification attacks. The proxy SHOULD use Echo to verify origin reachability as described in {{echo-proc}}. The proxy MAY forward safe requests immediately to have a cached result available when the client's repeated request arrives.
 
@@ -484,7 +484,7 @@ In order to gain that protection, use the Request-Tag mechanism as follows:
 
 * The client MUST NOT regard a block-wise request operation as concluded unless all of the messages the client has sent in the operation would not be considered to be valid by the server if they were replayed.
 
-  When security services are provied by OSCORE, these confirmations typically result either from the client receiving an OSCORE response message matching the request (an empty ACK is insufficient), or because the message's sequence number is old enough to be outside the server's receive window.
+  When security services are provided by OSCORE, these confirmations typically result either from the client receiving an OSCORE response message matching the request (an empty ACK is insufficient), or because the message's sequence number is old enough to be outside the server's receive window.
 
   When security services are provided by DTLS, this can only be confirmed if there was no CoAP retransmission of the request, the request was responded to, and the server performs replay protection.
 
@@ -609,7 +609,7 @@ A single active Echo value with 64 (pseudo-)random bits gives the same theoretic
 
 The security provided by the Echo and Request-Tag options depends on the security protocol used. CoAP and HTTP proxies require (D)TLS to be terminated at the proxies. The proxies are therefore able to manipulate, inject, delete, or reorder options or packets. The security claims in such architectures only hold under the assumption that all intermediaries are fully trusted and have not been compromised.
 
-Echo values without the protection of randomness or a MAC are limited to cases when the client is the trusted source of all derived properties (as per {{source-of-truth}}). Using them needs per-application consideration of both the impact of a malicous client and of implementation errors in clients. These Echo values are the only legitimate case for Echo values shorter than four bytes, which are not necessarily secret. They MUST NOT be used unless the request Echo values are integrity protected as per {{echo-proc}}.
+Echo values without the protection of randomness or a MAC are limited to cases when the client is the trusted source of all derived properties (as per {{source-of-truth}}). Using them needs per-application consideration of both the impact of a malicious client and of implementation errors in clients. These Echo values are the only legitimate case for Echo values shorter than four bytes, which are not necessarily secret. They MUST NOT be used unless the request Echo values are integrity protected as per {{echo-proc}}.
 
 Servers SHOULD use a monotonic clock to generate timestamps and compute round-trip times. Use of non-monotonic clocks is not secure as the server will accept expired Echo option values if the clock is moved backward. The server will also reject fresh Echo option values if the clock is moved forward. Non-monotonic clocks MAY be used as long as they have deviations that are acceptable given the freshness requirements. If the deviations from a monotonic clock are known, it may be possible to adjust the threshold accordingly.
 
@@ -714,7 +714,7 @@ Different mechanisms have different tradeoffs between the size of the Echo optio
       Server State: secret key k
 ~~~~~~~~~~
 
-  This method is suitable both for time and for event based freshness (by the server remembering the time at which the event took place).
+  This method is suitable both for time and for event based freshness (by the server remembering the time at which the event took place),
   and independent of the client authority.
 
   If this method is used to additionally obtain network reachability of the client,
