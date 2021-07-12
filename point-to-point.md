@@ -244,7 +244,9 @@ indicate that this is not done easily).
 > ourselves to saying that the Echo option is what is echoed, divorced
 > from the containing request/response.
 
-@@@
+It kind of makes sense, but (with the current terminology) would really need
+terminology introduction. This particular occurrence has been cleared up in
+unrelated edits already; the later is changed.
 
 >                                       This needs to be done only once
 >        per peer [...]
@@ -262,7 +264,7 @@ indicate that this is not done easily).
 > 
 > (The "Echoed request" phrasing again.)
 
-@@@
+Changed as above.
 
 > Section 3.1
 > 
