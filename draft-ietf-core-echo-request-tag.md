@@ -300,13 +300,13 @@ Event and time based freshness can be combined in a single Echo value,
 e.g. by encrypting a timestamp with a key that changes with every event
 to obtain "usable once but only for 5 minutes"-style semantics.
 
-### Authority over synchronized property {#source-of-truth}
+### Authority over used information {#source-of-truth}
 
 The information extracted by the server from the request Echo value
 has different sources of truth depending on the application.
 Understanding who or what is the authoritative source of that information helps the server implementer decide the necessary protection of the Echo value.
 
-If all that the server extracts is information which the client is the sole authority for,
+If all that the server extracts is information which the client is authorized to provide arbitrarily,
 (which is another way of saying that the server has to trust the client on whatever Echo is used for),
 then the server can issue Echo values that do not need to be protected on their own.
 They still need to be covered by the security protocol that covers the rest of the message,
@@ -314,7 +314,6 @@ but the Echo value can be just short enough to be unique between this server and
 
 For example,
 the client's OSCORE sender sequence number (as used in {{RFC8613}} Appendix B.1.2) is such information.
-<!-- and I don't really know any other example -->
 
 In most other cases,
 there are properties extracted of which the server is the authority
@@ -328,6 +327,7 @@ For some applications,
 the server may be able to trust the client to also act as the authority
 (e.g. when using time based freshness purely to mitigate request delay attacks);
 these need careful case-by-case evaluation.
+<!-- RD's registration state is an example; RD may need to provide that evaluation now. -->
 
 To issue Echo values without own protection,
 the server needs to trust the client to never produce requests with attacker controlled Echo values.
