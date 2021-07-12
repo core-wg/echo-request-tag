@@ -258,7 +258,7 @@ and the Echo option to be protected by it.
   (This is formally recommended in {{ampl-mit}}).
 
     *  In the presence of a proxy, a server will not be able to distinguish
-different origin client endpoints. Following from the recommendation above, a proxy that sends large responses to unauthenticated peers SHOULD mitigate amplification attacks. The proxy SHOULD use Echo to verify origin reachability as described in {{echo-proc}}. The proxy MAY forward idempotent requests immediately to have a cached result available when the client's repeated request arrives.
+different origin client endpoints. Following from the recommendation above, a proxy that sends large responses to unauthenticated peers SHOULD mitigate amplification attacks. The proxy SHOULD use Echo to verify origin reachability as described in {{echo-proc}}. The proxy MAY forward safe requests immediately to have a cached result available when the client's repeated request arrives.
 
     * Amplification mitigation is a trade-off between giving leverage to an attacker and causing overhead.
       An amplification factor of 3 (i.e., don't send more than three times the number of bytes received until the peer's address is confirmed)
