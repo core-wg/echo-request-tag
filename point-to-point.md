@@ -693,7 +693,14 @@ considered unlikely.
 
 > I would have expected some statements related to non-idempotent requests (generic statement) and then specific examples such as actuators.
 
-@@@
+Nothing about Echo needs to distinguish between idempotent and non-idempotent
+requests. (There was one mention, but that should have said "safe").
+
+If anything, there could be a distinction between safe and non-safe requests,
+because the former can't realistically have freshness requirements. But as some
+of the state synchronization uses don't look at the request but more general
+properties of the endpoint (like the replay window recovery), making statements
+in that direction would likely cause more confusion than clarity.
 
 > -- Section 2.2.1 --
 > Are the authors confident enough to state a minimum length of 1 octet ? If the intent of the document is to prevent replay attack, then I wonder whether one octet is enough... Unsure whether Section 5 (security considerations) addresses this issue correctly.
