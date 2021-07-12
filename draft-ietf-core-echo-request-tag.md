@@ -344,6 +344,20 @@ Note that a single Echo value can be used for multiple purposes
 (e.g. to get both the sequence number information and perform amplification mitigation);
 then, the stricter requirements apply.
 
+### Protection by a Security Protocol
+
+Using Echo almost needs to be used in combination with a security protocol for meaningful results in almost all applications.
+
+When the information extracted by the server
+is only about a part of the system outside of any security protocol,
+the Echo option can also be used without a security protocol
+(in case of OSCORE, as an outer option).
+
+The only known application satisfying this requirement is network address reachability,
+where it is used both by servers (e.g. during setup of a security context)
+and proxies (which do not necessarily have a security association with their clients)
+for amplification mitigation.
+
 ## Updated Amplification Mitigation Requirements for Servers {#ampl-mit}
 
 This section updates the amplification mitigation requirements for servers in {{RFC7252}} to recommend use of the Echo option to mitigate amplification attacks. The requirements for clients are not updated. Section 11.3 of {{RFC7252}} is updated by adding the following text:
