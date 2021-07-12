@@ -137,7 +137,9 @@ that pointing it out specifically would probably distract more than help.
 > I don't think the example of this in Figure 3 meets the requirements,
 > though, since the echo option value is just a counter that is easily
 > spoofable.
-> 
+
+@@@
+
 >    [...] When used to demonstrate
 >    reachability at a claimed network address, the Echo option SHOULD
 >    contain the client's network address, but MAY be unprotected.
@@ -145,7 +147,9 @@ that pointing it out specifically would probably distract more than help.
 > What does "contain" mean, here?  Plaintext?  That seems potentially
 > problematic; using it as an input to the MAC that is not transmitted (as
 > I mention later) is more conventional, in my understanding.
-> 
+
+@@@
+
 >                              The CoAP client side of HTTP-to-CoAP
 >    proxies SHOULD respond to Echo challenges themselves if they know
 >    from the recent establishing of the connection that the HTTP request
@@ -158,7 +162,9 @@ that pointing it out specifically would probably distract more than help.
 > 
 > Where is the MUST-level requirement to actually ensure freshness (by
 > whatever mechanism is available/appropriate)?
-> 
+
+@@@
+
 > Section 2.4
 > 
 >        *  The same Echo value may be used for multiple actuation
@@ -172,7 +178,9 @@ that pointing it out specifically would probably distract more than help.
 > keep sending the echo option, send a particular request to the server
 > that we are talking about checking the freshness of", with the final
 > request not very correlated to the issuance event.
-> 
+
+@@@
+
 >    2.  A server may use the Echo option to synchronize properties (such
 >        as state or time) with a requesting client.  A server MUST NOT
 >        synchronize a property with a client which is not the authority
@@ -183,7 +191,9 @@ that pointing it out specifically would probably distract more than help.
 > 
 > Also, disambiguating the final "it" seems like it would be worthwhile,
 > just in case, since this is rather important to get right.
-> 
+
+@@@
+
 >        *  If a server reboots during operation it may need to
 >           synchronize state or time before continuing the interaction.
 >           For example, with OSCORE it is possible to reuse a partly
@@ -195,7 +205,9 @@ that pointing it out specifically would probably distract more than help.
 > that the protocol specified in RFC 8613 includes a mechanism for
 > resynchronizing the partial IV state, that uses the Echo option in a
 > specific controlled protocol interaction.
-> 
+
+@@@
+
 > (A similar consideration would apply to the group communication example,
 > though it might be a little harder to write clearly.)
 > 
@@ -211,7 +223,9 @@ that pointing it out specifically would probably distract more than help.
 > rest of the document (bar one other instance noted below) we restrain
 > ourselves to saying that the Echo option is what is echoed, divorced
 > from the containing request/response.
-> 
+
+@@@
+
 >                                       This needs to be done only once
 >        per peer [...]
 > 
@@ -219,13 +233,17 @@ that pointing it out specifically would probably distract more than help.
 > (security) association, or the identity (if any) associated with that
 > security association, or IP address (and port?), or something else?
 > How long can/should the reachability information be cached for?
-> 
+
+@@@
+
 >           reachability as described in Section 2.3.  The proxy MAY
 >           forward idempotent requests immediately to have a cached
 >           result available when the client's Echoed request arrives.
 > 
 > (The "Echoed request" phrasing again.)
-> 
+
+@@@
+
 > Section 3.1
 > 
 >                                            In order for a security
@@ -422,7 +440,9 @@ Neither was one found in RFC 7959.
 > I believe this description applies to HTTP/1.1 over TLS, but not to
 > HTTP/2 or HTTP/3 (both of which provide other mechanisms for reliably
 > binding requests and responses in the form of stream IDs).
-> 
+
+@@@
+
 > Section 4.2
 > 
 >    One easy way to accomplish this is to implement the Token (or part of
@@ -439,7 +459,9 @@ Neither was one found in RFC 7959.
 > intended to guard against spoofing of responses).
 > ("use of a sequence number" and "a sequence number approach" also appear
 > in §5.1, if this is changed.)
-> 
+
+@@@
+
 > Section 5
 > 
 >    The freshness assertion of the Echo option comes from the client
@@ -447,24 +469,32 @@ Neither was one found in RFC 7959.
 >    previous response.  [...]
 > 
 > nit/editorial: I suggest s/as in/as it received in/
-> 
+
+@@@
+
 >                               However, this may not be an issue if the
 >    communication is integrity protected against third parties and the
 >    client is trusted not misusing this capability.  [...]
 > 
 > nit: s/trusted not misusing/trusted to not misuse/
-> 
+
+@@@
+
 >                         See ([RFC8613], Appendix B.1.1) for issues and
 >    solution approaches for writing to nonvolatile memory.
 > 
 > nit: redundant word in "solution approaches"?
-> 
+
+@@@
+
 >    For the purpose of generating timestamps for Echo a server MAY set a
 >    timer at reboot and use the time since reboot, in a unit such that
 >    different requests arrive at different times.  [...]
 > 
 > Something about this sentence confuses me, possibly around "in a unit".
-> 
+
+@@@
+
 > Section 5.1
 > 
 >    Tokens that cannot be reused need to be handled appropriately.  This
@@ -473,7 +503,9 @@ Neither was one found in RFC 7959.
 >    Tokens.
 > 
 > editorial: perhaps "unsafe to reuse" is more clear than "blacklisted"?
-> 
+
+@@@
+
 > Section 6
 > 
 > This seems to be the first (and only) place where we use the term
@@ -533,7 +565,9 @@ draft-mattsson-core-coap-attacks-00, the references are updated.
 > additional contextual information under the MAC would be valuable (to
 > prevent an echo option value received on one connection from being
 > usable on a different one)?
-> 
+
+@@@
+
 >    3.  Persistent Counter.  This is an event-based freshness method
 >    usable for state synchronization (for example after volatile state
 >    has been lost), and cannot be used for client aliveness.  It requires
