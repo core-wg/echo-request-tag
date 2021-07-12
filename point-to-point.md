@@ -85,7 +85,15 @@ includes limited-time-single-use as a combined form of kind-of-freshness.
 > the primary list of what is possible and mention it in a separate
 > sentence as something that can be constructed using the functionality
 > that the Echo option provides.
-> 
+
+State synchronization is indeed something that can be done with freshness; text
+was tweaked to make that more visible. It's still mentioned often together
+with freshness, as it is a very important class of use cases. That the state is
+not carried inside the Echo option is now emphasised in the applications list.
+
+On the topic of authority, this is now covered in the characterization of Echo
+applications (see also GENERIC-SHORT-ECHO).
+
 > There are a couple places where we recommend (implicitly or explicitly)
 > a sequential counter in contexts that might otherwise use a randomized
 > value.  I think I mention them all in my section-by-section comments,
