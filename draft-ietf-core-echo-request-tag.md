@@ -348,7 +348,7 @@ then, the stricter requirements apply.
 
 ### Protection by a Security Protocol
 
-Using Echo almost needs to be used in combination with a security protocol for meaningful results in almost all applications.
+For meaningful results, the Echo option needs to be used in combination with a security protocol in almost all applications.
 
 When the information extracted by the server
 is only about a part of the system outside of any security protocol,
