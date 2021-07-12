@@ -170,7 +170,15 @@ GENERIC-SHORT-ECHO).
 > Where is the MUST-level requirement to actually ensure freshness (by
 > whatever mechanism is available/appropriate)?
 
-@@@
+That was indeed missing; the "they SHOULD respond with" was intended to leave
+room for other methods of obtaining freshness, not to just ignore the issue and
+respond to the Echo challenge unchecked. A "MUST NOT repeat an unsafe request
+and [SHOULD]" was added.
+
+(The exception for safe methods allows filling caches, similar to how item 3.1
+of the Applications of the Echo Option section describes CoAP-CoAP proxies that
+forward to their client interface though they reject on their server
+interface).
 
 > Section 2.4
 > 
