@@ -231,7 +231,7 @@ The CoAP server side of CoAP-to-HTTP proxies MAY request freshness, especially i
 
 1. Actuation requests often require freshness guarantees to avoid accidental or malicious delayed actuator actions. In general, all non-safe methods (e.g. POST, PUT, DELETE) may require freshness guarantees for secure operation.
 
-    * The same Echo value may be used for multiple actuation requests to the same server, as long as the total round-trip time since the Echo option value was generated is below the freshness threshold.
+    * The same Echo value may be used for multiple actuation requests to the same server, as long as the total time since the Echo option value was generated is below the freshness threshold.
 
     * For actuator applications with low delay tolerance, to avoid additional round-trips for multiple requests in rapid sequence, the server may include the Echo option with a new value even in a successful response to a request, irrespectively of whether the request contained an Echo option or not. The client then uses the Echo option with the new value in the next actuation request, and the server compares the receive time accordingly.
 

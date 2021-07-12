@@ -194,7 +194,7 @@ interface).
 > that we are talking about checking the freshness of", with the final
 > request not very correlated to the issuance event.
 
-@@@
+Indeed; removed.
 
 >    2.  A server may use the Echo option to synchronize properties (such
 >        as state or time) with a requesting client.  A server MUST NOT
