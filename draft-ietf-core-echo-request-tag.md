@@ -751,17 +751,9 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 \[ The editor is asked to remove this section before publication. \]
 
-* Changes since draft-ietf-core-echo-request-tag-12 (addressing comments from Martin Duke)
+* Changes since draft-ietf-core-echo-request-tag-12 (addressing comments from IESG review)
 
-    * Add subsection "Characterization of Echo Applications". .
-    * Replace "blacklist" terminology with "deny-list"
-    * Remove duplicate statement from Echo introduction.
-    * Reference updates:
-      * QUIC is now RFC9000; precise section given as amplification reference.
-      * Add note for RFC editor that RFC6347 can be upgraded to DTLS 1.3 if C321 overtakes C280
-    * Editorial fixes
-      * Rewording of a confusing sentence in amplification mitigation
-      * overheads -> overhead
+  See CoRE point-to-point responses at <https://github.com/core-wg/echo-request-tag/blob/master/point-to-point.md> and on CoRE mailing list.
 
 * Changes since draft-ietf-core-echo-request-tag-11 (addressing GenART, TSVART, OpsDir comments)
 
