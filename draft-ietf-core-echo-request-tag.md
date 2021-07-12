@@ -69,7 +69,7 @@ The initial Constrained Application Protocol (CoAP) suite of specifications ({{R
 then the {{RFC6347}} references can be upgraded to draft-ietf-tls-dtls13-43 without the need for further changes;
 the reference is to 6347 here because that was the stable DTLS reference when the document was last touched by the authors. ]
 
-This document specifies two CoAP options, the Echo option and the Request-Tag option: The Echo option enables a CoAP server to verify the freshness of a request, which can be used to synchronize state, or to force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match message fragments belonging to the same request, fragmented using the CoAP block-wise Transfer mechanism, which mitigates attacks and enables concurrent block-wise operations. These options in themselves do not replace the need for a security protocol; they specify the format and processing of data which, when integrity protected using e.g. DTLS ({{RFC6347}}), TLS ({{RFC8446}}), or OSCORE ({{RFC8613}}), provide the additional security features.
+This document specifies two CoAP options, the Echo option and the Request-Tag option: The Echo option enables a CoAP server to verify the freshness of a request, which can be used to synchronize state, or to force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match message fragments belonging to the same request, fragmented using the CoAP block-wise transfer mechanism, which mitigates attacks and enables concurrent block-wise operations. These options in themselves do not replace the need for a security protocol; they specify the format and processing of data which, when integrity protected using e.g. DTLS ({{RFC6347}}), TLS ({{RFC8446}}), or OSCORE ({{RFC8613}}), provide the additional security features.
 
 This document updates {{RFC7252}} with a recommendation that servers use the Echo option to mitigate amplification attacks.
 
@@ -302,7 +302,7 @@ Event and time based freshness can be combined in a single Echo value,
 e.g. by encrypting a timestamp with a key that changes with every event
 to obtain "usable once but only for 5 minutes"-style semantics.
 
-### Authority over used information {#source-of-truth}
+### Authority over Used Information {#source-of-truth}
 
 The information extracted by the server from the request Echo value
 has different sources of truth depending on the application.
@@ -352,11 +352,11 @@ For meaningful results, the Echo option needs to be used in combination with a s
 
 When the information extracted by the server
 is only about a part of the system outside of any security protocol,
-the Echo option can also be used without a security protocol
+then the Echo option can also be used without a security protocol
 (in case of OSCORE, as an outer option).
 
 The only known application satisfying this requirement is network address reachability,
-where it is used both by servers (e.g. during setup of a security context)
+where unprotected Echo values are used both by servers (e.g. during setup of a security context)
 and proxies (which do not necessarily have a security association with their clients)
 for amplification mitigation.
 
@@ -370,7 +370,7 @@ A CoAP server SHOULD mitigate potential amplification attacks by responding to u
 
 ## Fragmented Message Body Integrity {#body-int}
 
-CoAP was designed to work over unreliable transports, such as UDP, and include a lightweight reliability feature to handle messages which are lost or arrive out of order. In order for a security protocol to support CoAP operations over unreliable transports, it must allow out-of-order delivery of messages.
+CoAP was designed to work over unreliable transports, such as UDP, and includes a lightweight reliability feature to handle messages which are lost or arrive out of order. In order for a security protocol to support CoAP operations over unreliable transports, it must allow out-of-order delivery of messages.
 
 The block-wise transfer mechanism {{RFC7959}} extends CoAP by defining the transfer of a large resource representation (CoAP message body) as a sequence of blocks (CoAP message payloads). The mechanism uses a pair of CoAP options, Block1 and Block2, pertaining to the request and response payload, respectively. The block-wise functionality does not support the detection of interchanged blocks between different message bodies to the same resource having the same block number. This remains true even when CoAP is used together with a security protocol such as DTLS or OSCORE, within the replay window ({{I-D.mattsson-core-coap-attacks}}), which is a vulnerability of CoAP when using RFC7959.
 
@@ -482,7 +482,7 @@ In order to gain that protection, use the Request-Tag mechanism as follows:
   after an endpoint's details (like the IP address) have changed, then
   the client MUST consider messages matchable if they were sent to *any* endpoint address using the new operation's security context.
 
-* The client MUST NOT regard a block-wise request operation as concluded unless all of the messages the client has sent in the operation would not be considered to be valid by the server if they were replayed.
+* The client MUST NOT regard a block-wise request operation as concluded unless all of the messages the client has sent in the operation would be regarded as invalid by the server if they were replayed.
 
   When security services are provided by OSCORE, these confirmations typically result either from the client receiving an OSCORE response message matching the request (an empty ACK is insufficient), or because the message's sequence number is old enough to be outside the server's receive window.
 
@@ -500,9 +500,9 @@ a collection item is created first, then written to once and available when writ
 clients need not concern themselves with body integrity and thus the Request-Tag.
 
 Body integrity is largely independent from replay protection:
-When no replay protection is available (which is optional in DTLS),
-a full block-wise exchange may be replayed,
-but by adhering to the above, no blocks will be mixed up.
+When no replay protection is available (it is optional in DTLS),
+a full block-wise operation may be replayed,
+but by adhering to the above, no operations will be mixed up.
 <!-- the other direction was covered already, see core-coap-attacks -->
 The only link between body integrity and replay protection is that without replay protection, recycling is not possible.
 
@@ -654,7 +654,7 @@ Publicly visible generated identifiers,
 even when opaque (as all defined in this document are),
 can leak information as described in {{?I-D.irtf-pearg-numeric-ids-generation}}.
 To avoid effects described there, the absent Request-Tag option should be recycled as much as possible.
-(That is generally possible as long as a security mechanism is in place -- even in the case of OSCORE outer block-wise transfers, as the OSCORE option's variation ensures that no matchable requests are created by different clients).
+(That is generally possible as long as a security mechanism is in place – even in the case of OSCORE outer block-wise transfers, as the OSCORE option's variation ensures that no matchable requests are created by different clients).
 When an unprotected Echo option is used to demonstrate reachability,
 the recommended mechanism of {{echo-proc}} keeps the effects to a minimum.
 
@@ -720,7 +720,7 @@ Different mechanisms have different tradeoffs between the size of the Echo optio
   If this method is used to additionally obtain network reachability of the client,
   the server MUST use the client's network address too, e.g. as in `MAC(k, t0, apparent network address)`.
 
-3\. Persistent Counter. This can be used in OSCORE for sequence number recovery per Appendix B.1.2 of {{RFC8613}}. The Echo option value is a simple counter without integrity protection of its own, serialized in uint format. The counter is incremented in a persistent way every time the state that needs to be synchronized is changed (in the aforementioned example: when a reboot indicates that volatile state may have been lost). An example of how such a persistent counter can be implemented efficiently is the OSCORE server Sender Sequence Number mechanism described in Appendix B.1.1 of {{RFC8613}}.
+3\. Persistent Counter. This can be used in OSCORE for sequence number recovery per Appendix B.1.2 of {{RFC8613}}. The Echo option value is a simple counter without integrity protection of its own, serialized in uint format. The counter is incremented in a persistent way every time the state that needs to be synchronized is changed (in the B.1.2 case: when a reboot indicates that volatile state may have been lost). An example of how such a persistent counter can be implemented efficiently is the OSCORE server Sender Sequence Number mechanism described in Appendix B.1.1 of {{RFC8613}}.
 
 ~~~~~~~~~~
       Echo option value: counter
@@ -731,7 +731,7 @@ Different mechanisms have different tradeoffs between the size of the Echo optio
   Consequently, it cannot be used to show client aliveness.
   It provides statements from the client similar to event based freshness (but without a proof of freshness).
 
-Other mechanisms complying with the security and privacy considerations may be used. The use of encrypted timestamps in the Echo option increases security, but typically requires an IV (Initialization Vector) to be included in the Echo option value, which adds overhead and makes the specification of such a mechanism slightly more complicated than the two time-based mechanisms specified here.
+Other mechanisms complying with the security and privacy considerations may be used. The use of encrypted timestamps in the Echo option increases security, but typically requires an IV (Initialization Vector) to be included in the Echo option value, which adds overhead and makes the specification of such a mechanism slightly more complicated than what is described here.
 
 # Request-Tag Message Size Impact
 
