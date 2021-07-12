@@ -479,7 +479,11 @@ Neither was one found in RFC 7959.
 > HTTP/2 or HTTP/3 (both of which provide other mechanisms for reliably
 > binding requests and responses in the form of stream IDs).
 
-@@@
+Changed to refer to HTTP/1.1. Covering what /2 and /3 do might be interesting
+comparison material, but given we're just tweaking the Token mechanism here
+(and not introducing it anew, which would warrant the detailed related-work
+comparison over the setting-the-mental-frame reference to HTTP/1.1), that
+should suffice.
 
 > Section 4.2
 > 
