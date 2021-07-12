@@ -628,7 +628,12 @@ say; changed.
 > prevent an echo option value received on one connection from being
 > usable on a different one)?
 
-@@@
+There is one -- demonstrating network reachability. It's not a common case
+(often the large responses are from GETs that don't need freshness anyway), but
+educational in the sense that it helps fill the continuum between
+MAC-the-address (RECOMMENDED for reachability) and time-and-MAC-of-time
+(RECOMMENDED for freshness) to guide the reader towards understanding the whole
+and not just coding down the recipes. Added.
 
 >    3.  Persistent Counter.  This is an event-based freshness method
 >    usable for state synchronization (for example after volatile state

@@ -711,6 +711,9 @@ Different mechanisms have different tradeoffs between the size of the Echo optio
   This method is suitable both for time and for event based freshness (by the server remembering the time at which the event took place).
   and independent of the client authority.
 
+  If this method is used to additionally obtain network reachability of the client,
+  the server MUST use the client's network address too, e.g. as in `MAC(k, t0, apparent network address)`.
+
 3\. Persistent Counter. This can be used in OSCORE for sequence number recovery per Appendix B.1.2 of {{RFC8613}}. The Echo option value is a simple counter without integrity protection of its own, serialized in uint format. The counter is incremented in a persistent way every time the state that needs to be synchronized is changed (in the aforementioned example: when a reboot indicates that volatile state may have been lost). An example of how such a persistent counter can be implemented efficiently is the OSCORE server Sender Sequence Number mechanism described in Appendix B.1.1 of {{RFC8613}}.
 
 ~~~~~~~~~~
