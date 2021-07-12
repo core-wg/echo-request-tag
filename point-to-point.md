@@ -140,7 +140,12 @@ Good term, taken.
 > though, since the echo option value is just a counter that is easily
 > spoofable.
 
-@@@
+It does meet the particular requirement of the above paragraph ("different
+except with negligible probability") as it is just counting up (where after 255
+events it'd overflow to two bytes and further).
+
+For the general requirements, these should now be clearer (see
+GENERIC-SHORT-ECHO).
 
 >    [...] When used to demonstrate
 >    reachability at a claimed network address, the Echo option SHOULD
