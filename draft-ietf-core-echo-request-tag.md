@@ -153,7 +153,7 @@ A client MUST only send Echo values to endpoints it received them from (where as
 
 Upon receiving a request with the Echo option, the server determines if the request is required to be fresh. If not, the Echo option MAY be ignored. If the request is required to be fresh and the server cannot verify the freshness of the request in some other way, the server MUST use the Echo option to verify that the request is fresh. If the server cannot verify that the request is fresh, the request is not processed further, and an error message MAY be sent. The error message SHOULD include a new Echo option.
 
-One way for the server to verify freshness is to bind the Echo value to a specific point in time and verify that the request is not older than a certain threshold T. The server can verify this by checking that (t1 - t0) < T, where t1 is the request receive time and t0 is the time when the Echo option value was generated. An example message flow is shown in {{echo-figure-time}}.
+One way for the server to verify freshness is to bind the Echo value to a specific point in time and verify that the request is not older than a certain threshold T. The server can verify this by checking that (t1 - t0) < T, where t1 is the request receive time and t0 is the time when the Echo option value was generated. An example message flow over DTLS is shown {{echo-figure-time}}.
 
 ~~~~~~~~~~
 Client   Server
@@ -183,7 +183,7 @@ Client   Server
 ~~~~~~~~~~
 {: #echo-figure-time title="Example Message Flow for Time-Based Freshness using the 'Integrity Protected Timestamp' construction of Appendix A" artwork-align="center"}
 
-Another way for the server to verify freshness is to maintain a cache of values associated to events. The size of the cache is defined by the application. In the following we assume the cache size is 1, in which case freshness is defined as no new event has taken place. At each event a new value is written into the cache. The cache values MUST be different except with negligible probability. The server verifies freshness by checking that e0 equals e1, where e0 is the cached value when the Echo option value was generated, and e1 is the cached value at the reception of the request. An example message flow is shown in {{echo-figure-event}}.
+Another way for the server to verify freshness is to maintain a cache of values associated to events. The size of the cache is defined by the application. In the following we assume the cache size is 1, in which case freshness is defined as no new event has taken place. At each event a new value is written into the cache. The cache values MUST be different except with negligible probability. The server verifies freshness by checking that e0 equals e1, where e0 is the cached value when the Echo option value was generated, and e1 is the cached value at the reception of the request. An example message flow over DTLS is shown in {{echo-figure-event}}.
 
 
 ~~~~~~~~~~
@@ -233,6 +233,10 @@ The CoAP server side of CoAP-to-HTTP proxies MAY request freshness, especially i
 
 
 ## Applications of the Echo Option {#echo-app}
+
+Unless otherwise noted,
+all these applications require a security protocol to be used,
+and the Echo option to be protected by it.
 
 1. Actuation requests often require freshness guarantees to avoid accidental or malicious delayed actuator actions. In general, all non-safe methods (e.g. POST, PUT, DELETE) may require freshness guarantees for secure operation.
 
