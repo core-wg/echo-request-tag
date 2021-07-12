@@ -161,7 +161,7 @@ GENERIC-SHORT-ECHO).
 > problematic; using it as an input to the MAC that is not transmitted (as
 > I mention later) is more conventional, in my understanding.
 
-@@@
+That's what it should have said in the first place; fixed.
 
 >                              The CoAP client side of HTTP-to-CoAP
 >    proxies SHOULD respond to Echo challenges themselves if they know
