@@ -256,7 +256,23 @@ unrelated edits already; the later is changed.
 > security association, or IP address (and port?), or something else?
 > How long can/should the reachability information be cached for?
 
-@@@
+Different strategies are valid here, and to be honest it may need some
+additional deployment experience to give hard and fast criteria here.
+
+The distinction only starts to matter when an attacker finds a potential
+amplification helper that already is in legitimate contact with its victim.
+Picking "the endpoint" as peer definition (which is host and port on both
+sides, plus the security association), as that curbs the attack at least in the
+case in which the amplification-helper-to-be does the OSCORE itself, and will
+then be suspicious of unprotected requests for large responses from the
+attacker.
+
+There is some wiggle room in the interpretation of endpoint, especially in
+layered setups (I like to think of a CoAP library as a proxy that translates
+CoAP-over-API to CoAP-over-transport), and some room for optimization (if the
+unsecured endpoint is good, no need to check for reachability of the secured
+equivalent), but that at last *will* need the deployment experience to be
+gathered over the next months and years to see what is practical.
 
 >           reachability as described in Section 2.3.  The proxy MAY
 >           forward idempotent requests immediately to have a cached
