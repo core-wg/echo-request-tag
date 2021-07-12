@@ -133,7 +133,9 @@ that pointing it out specifically would probably distract more than help.
 > Since we're at least advocating using crypto to enforce this property, I
 > think that "execpt with negligible probability" would be a more
 > conventional expression than "for all practical purposes".
-> 
+
+Good term, taken.
+
 > I don't think the example of this in Figure 3 meets the requirements,
 > though, since the echo option value is just a counter that is easily
 > spoofable.

@@ -183,7 +183,7 @@ Client   Server
 ~~~~~~~~~~
 {: #echo-figure-time title="Example Message Flow for Time-Based Freshness using the 'Integrity Protected Timestamp' construction of Appendix A" artwork-align="center"}
 
-Another way for the server to verify freshness is to maintain a cache of values associated to events. The size of the cache is defined by the application. In the following we assume the cache size is 1, in which case freshness is defined as no new event has taken place. At each event a new value is written into the cache. The cache values MUST be different for all practical purposes. The server verifies freshness by checking that e0 equals e1, where e0 is the cached value when the Echo option value was generated, and e1 is the cached value at the reception of the request. An example message flow is shown in {{echo-figure-event}}.
+Another way for the server to verify freshness is to maintain a cache of values associated to events. The size of the cache is defined by the application. In the following we assume the cache size is 1, in which case freshness is defined as no new event has taken place. At each event a new value is written into the cache. The cache values MUST be different except with negligible probability. The server verifies freshness by checking that e0 equals e1, where e0 is the cached value when the Echo option value was generated, and e1 is the cached value at the reception of the request. An example message flow is shown in {{echo-figure-event}}.
 
 
 ~~~~~~~~~~
