@@ -237,7 +237,9 @@ that pointing it out specifically would probably distract more than help.
 > My understanding is that the requirement is only to allow out-of-order
 > delivery of messages (not necessarily including replay detection), so
 > the clause about the sliding window is not needed. here.
-> 
+
+@@@
+
 > Section 3.2
 > 
 >    In essence, it is an implementation of the "proxy-safe elective
@@ -247,7 +249,16 @@ that pointing it out specifically would probably distract more than help.
 > The referenced section of RFC 7959 covers Block2 operation, but my
 > understanding is that the Block1 operation (covered in Section 2.5 of
 > that same document) would be a more applicable reference.
-> 
+
+Section 2.4 is where the cited suggestion is made. This is the relevant
+reference because there it is made clear that "the resource" to which block
+operations are keyed is the cache key and not the URI.
+
+Section 2.5 explains the general Block1 phase behavior. Its last paragraph is
+on concurrent transfers, but does not add anything to the understanding of
+Request-Tag, whereas the 2.4 statements contain the justification for why this
+can work that way (which applies to Block1 and Block2 alike).
+
 > Section 3.3
 > 
 >                                          Also, a client that lost
@@ -344,7 +355,7 @@ Now clarified, and nit taken.
 > 
 > (Per above, Section 2.5?)
 
-@@@
+(Same response as above applies).
 
 > Section 3.6
 > 
