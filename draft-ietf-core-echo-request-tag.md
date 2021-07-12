@@ -147,7 +147,7 @@ If a certain request is required to be fresh, the request does not contain a fre
 
 The server may use request freshness provided by the Echo option to verify the aliveness of a client or to synchronize state. The server may also include the Echo option in a response to force a client to demonstrate reachability at its claimed network address. Note that the Echo option does not bind a request to any particular previous response, but provides an indication that the client had access to the previous response at the time when it created the request.
 
-Upon receiving a 4.01 Unauthorized response with the Echo option, the client SHOULD resend the original request with the addition of an Echo option with the received Echo option value. The client MAY send a different request compared to the original request. Upon receiving any other response with the Echo option, the client SHOULD echo the Echo option value in the next request to the server. The client MAY include the same Echo option value in several different requests to the server.
+Upon receiving a 4.01 Unauthorized response with the Echo option, the client SHOULD resend the original request with the addition of an Echo option with the received Echo option value. The client MAY send a different request compared to the original request. Upon receiving any other response with the Echo option, the client SHOULD echo the Echo option value in the next request to the server. The client MAY include the same Echo option value in several different requests to the server, or discard it at any time (especially to avoid tracking, see {{priv-cons}}).
 
 A client MUST only send Echo values to endpoints it received them from (where as defined in {{RFC7252}} Section 1.2, the security association is part of the endpoint). In OSCORE processing, that means sending Echo values from Outer options (or from non-OSCORE responses) back in Outer options, and those from Inner options in Inner options in the same security context.
 
@@ -218,7 +218,7 @@ Client   Server
 ~~~~~~~~~~
 {: #echo-figure-event title="Example Message Flow for Event-Based Freshness using the 'Persistent Counter' construction of Appendix A" artwork-align="center"}
 
-When used to serve freshness requirements (including client aliveness and state synchronizing), the Echo option value MUST be integrity protected between the intended endpoints, e.g. using DTLS, TLS, or an OSCORE Inner option ({{RFC8613}}). When used to demonstrate reachability at a claimed network address, the Echo option SHOULD be a MAC of the claimed address, but MAY be unprotected.
+When used to serve freshness requirements (including client aliveness and state synchronizing), the Echo option value MUST be integrity protected between the intended endpoints, e.g. using DTLS, TLS, or an OSCORE Inner option ({{RFC8613}}). When used to demonstrate reachability at a claimed network address, the Echo option SHOULD be a MAC of the claimed address, but MAY be unprotected. Combining different Echo applications can necessitate different choices, see {{echo-state}} item 2 for an example.
 
 An Echo option MAY be sent with a successful response,
 i.e., even though the request satisfied any freshness requirements on the operation.
@@ -229,7 +229,7 @@ A CoAP-to-CoAP proxy MAY set an Echo option on responses, both on forwarded ones
 If it does so, it MUST ensure that the client's request was generated (or is re-generated) after the Echo value used to send to the server was first seen.
 (In most cases, this means that the proxy needs to ask the client to repeat the request with a new Echo value.)
 
-The CoAP server side of CoAP-to-HTTP proxies MAY request freshness, especially if they have reason to assume that access may require it (e.g. because it is a PUT or POST); how this is determined is out of scope for this document. The CoAP client side of HTTP-to-CoAP proxies SHOULD respond to Echo challenges themselves if they know from the recent establishing of the connection that the HTTP request is fresh. Otherwise, they MUST NOT repeat an unsafe request and SHOULD respond with 503 Service Unavailable, Retry-After: 0 and terminate any underlying Keep-Alive connection. If the HTTP request arrived in Early Data, the proxy SHOULD use a 425 Too Early response instead (see {{!RFC8470}}). They MAY also use other mechanisms to establish freshness of the HTTP request that are not specified here.
+The CoAP server side of CoAP-to-HTTP proxies MAY request freshness, especially if they have reason to assume that access may require it (e.g. because it is a PUT or POST); how this is determined is out of scope for this document. The CoAP client side of HTTP-to-CoAP proxies MUST respond to Echo challenges itself if the proxy knows from the recent establishing of the connection that the HTTP request is fresh. Otherwise, it MUST NOT repeat an unsafe request and SHOULD respond with 503 Service Unavailable, Retry-After: 0 and terminate any underlying Keep-Alive connection. If the HTTP request arrived in Early Data, the proxy SHOULD use a 425 Too Early response instead (see {{!RFC8470}}). They MAY also use other mechanisms to establish freshness of the HTTP request that are not specified here.
 
 
 ## Applications of the Echo Option {#echo-app}

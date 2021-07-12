@@ -673,7 +673,26 @@ Comment (2021-02-18)
 
 > There are several SHOULDs (e.g., near the top of page 8, and again at the end of Section 2.3) that left me wondering why an implementer would do something other than what it says.  Since SHOULD offers a choice, some advice would be helpful here.  Otherwise, maybe those ought to be MUSTs.  I suggest giving them all a once-over to see if any such advice would be helpful to include.
 
-@@@
+Some categories of SHOULDs were identified that did not warrant any additions:
+
+* "You can do it differently and it wouldn't be wrong just weird (but maybe you
+  have good reasons we don't understand)": eg. 'MUST NOT process [...] further
+  and SHOULD send a 4.01 Unauthorized'. If the application has a successful
+  code in a content format that indicates "try again with whatever I'm
+  providing you here", that's technically fine and won't break things (which'd
+  justify a MUST). But it's not like we can give good reasons to do that other
+  than "someone decided to do it differently in that API", so there's nothing
+  good to say.
+
+* "If you have anything better, be my guest": In some places, there is no
+  current alternative but no reason to rule them out either. It's unlikely
+  there'll be an "Echo 2.0" that does the same just different, but a more
+  complex mechanism that provides freshness as bycatch would be a viable option
+  in some places.
+
+For others (eg. SHOULD use preemptive values, pointing to privacy
+considerations), options were given; one SHOULD is indeed a MUST (HTTP-to-CoAP
+proxies) as there's no other viable option.
 
 ## Éric Vyncke No Objection
 Comment (2021-02-16)
