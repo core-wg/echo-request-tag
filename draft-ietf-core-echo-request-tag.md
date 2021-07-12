@@ -463,7 +463,7 @@ In order to gain that protection, use the Request-Tag mechanism as follows:
   When security services are provided by DTLS, this can only be confirmed if there was no CoAP retransmission of the request, the request was responded to, and the server performs replay protection.
 
 <!-- pending see thread "ERT and OSCORE" -->
-Authors of other documents (e.g. applications of {{RFC8613}}) are invited to mandate this behavior for clients that execute block-wise interactions over secured transports. In this way, the server can rely on a conforming client to set the Request-Tag option when required, and thereby conclude on the integrity of the assembled body.
+Authors of other documents (e.g. applications of {{RFC8613}}) are invited to mandate this subsection's behavior for clients that execute block-wise interactions over secured transports. In this way, the server can rely on a conforming client to set the Request-Tag option when required, and thereby have confidence the integrity of the assembled body.
 
 Note that this mechanism is implicitly implemented when the security layer guarantees ordered delivery (e.g. CoAP over TLS {{RFC8323}}). This is because with each message, any earlier message cannot be replayed any more, so the client never needs to set the Request-Tag option unless it wants to perform concurrent operations.
 

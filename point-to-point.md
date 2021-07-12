@@ -330,7 +330,13 @@ well.
 > Also (nit), the phrasing "conclude on the integrity of" seems unusual to
 > me; I think the intent is more like "thereby have confidence in the
 > integrity of".
-> 
+
+The behavior is the whole subsection's. (Many such specifications WOULD
+PROBABLY also mandate a particular security mechanism, narrowing it down to one
+of the cases, but the intention is to use the abstract behavior)
+
+Now clarified, and nit taken.
+
 > Section 3.5.2
 > 
 >    For those cases, Request-Tag is the proxy-safe elective option
