@@ -590,7 +590,10 @@ draft-mattsson-core-coap-attacks-00, the references are updated.
 > One might argue that "SHOULD use a 425 Too Early response" is enough to
 > promote RFC 8470 to being a normative reference (see
 > https://www.ietf.org/about/groups/iesg/statements/normative-informative-references/).
-> 
+
+Given there is no way to indicate modularity here, yes, that's what the rules
+say; changed.
+
 > Section A
 > 
 >    2.  Integrity Protected Timestamp.  The Echo option value is an
