@@ -765,7 +765,7 @@ Consequently, a section "Characterization of Echo Applications" was added that
 discusses two aspects: "authority over synchronized property" and "Time vs. Events". In the former,
 we derive when using guessable Echo values is OK, and when not.
 
-@@@ In the remaining texts, the ambiguous points were clarified (often pointing
+In the remaining texts, the ambiguous points were clarified (often pointing
 at the new distinctions). In particular, the security considerations used to
 conflate the topic of "authority over synchronized property" with the Counter implementation --
 while these generally do coincide, the new text is more precise and refers
