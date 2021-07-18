@@ -756,15 +756,39 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
   See CoRE point-to-point responses at <https://github.com/core-wg/echo-request-tag/blob/master/point-to-point.md> and on CoRE mailing list.
 
-    * Add subsection "Characterization of Echo Applications". .
-    * Replace "blacklist" terminology with "deny-list"
-    * Remove duplicate statement from Echo introduction.
+    * Add subsection "Characterization of Echo Applications".
+      * Changes in applications and appendices to use the newly introduced terms.
+      * In particular, some of the legitimization for using short Echo values was drawn from the applications being event based; the concept of the client being the "Authority over [the] Used Information" now legitimizes these more precisely.
+    * Add subsection "Updated Amplification Mitigation Requirements for Servers". It contains the normative text updating RFC 7252 w/rt recommended mitigation methods, which previously happened in passing.
+    * Amplification mitigation:
+      * Increase precision: Reachability check is performed once per endpoint (was: peer).
+      * State that amplification factor applies to the sum of all (previously: "the size of the", implicitly, single) returned packets.
+      * Fix odd wording around how the Echo value would "contain" the claimed address: was meant to contain in a cryptographic sense, now clarified in that a MAC is recommended
+    * Define "preemptive Echo value" that was previously used without definition; another occurrence of the concept was simplified using the term.
+    * Add considerations for the use of DTLS without replay protection.
+    * Privacy considerations: Address concerns raised in various numeric-ids documents.
+    * Explicitly state expected security modes for Echo applications and examples.
+    * Fix of requirements for H-C proxies: They *MUST NOT* relay unsafe requests. (Previously, it only said that they SHOULD use a particular method, but not clearly that some method is mandated.)
+    * Clarify that state synchonization is an application of the freshness results in combination with some transported application data, and not an immediate result of using Echo alone.
+    * Add text to tie together applications and suggested mechanisms <!-- eg. 92070767 as I'm pretty sure I wouldn't find that when asked for it -->
+    * Restrict C-C proxy allowed behavior: Only safe requests (incorrectly said "idempotent") may be used to proactively populate the proxy's cache.
+    * Justify some "SHOULD"s by outlining justification for different behavior.
+      * Normatively require H-C proxies to process Echo if they're justified to do so, as no alternatives are available.
     * Reference updates:
       * QUIC is now RFC9000; precise section given as amplification reference.
       * Add note for RFC editor that RFC6347 can be upgraded to DTLS 1.3 if C321 overtakes C280
+      * Follow the core-coap-actuators to core-coap-attacks update
+      * RFC8470 reference is now normative (as using what's defined there has been RECOMMENDED already)
     * Editorial fixes
-      * Rewording of a confusing sentence in amplification mitigation
-      * overheads -> overhead
+      * Rewording of confusing sentences in amplification mitigation and inner-/outer Echo values
+      * Replace "blacklist" terminology with "deny-list" where left after other changes
+      * Removed sloppy use of Echo as a verb
+      * Minor clarifications
+      * Remove duplicate statements
+      * Typography and spelling fixes
+    * Fixes that are not editorial but minor
+      * Freshness is about time, of which round-trip time (specialization now removed) is only a part.
+      * Reference how HTTP *1.1* does it when explaining token requirements, as that's an easily and widely understood baseline.
 
 * Changes since draft-ietf-core-echo-request-tag-11 (addressing GenART, TSVART, OpsDir comments)
 
