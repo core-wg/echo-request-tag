@@ -762,7 +762,7 @@ requirements -- of which some extremes call for verifiable Echo values, and
 others not.
 
 Consequently, a section "Characterization of Echo Applications" was added that
-discusses two aspects: "authority over synchronized property" and "Time vs. Events". In the former,
+discusses three aspects: "authority over synchronized property", "Time vs. Events" and "applicable security protocools". In the former,
 we derive when using guessable Echo values is OK, and when not.
 
 In the remaining texts, the ambiguous points were clarified (often pointing
