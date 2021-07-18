@@ -1,0 +1,2556 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2021-03-21T00:58:50.436787+00:00",
+  "repo": "core-wg/echo-request-tag",
+  "labels": [
+    {
+      "name": "patch available",
+      "description": null,
+      "color": "1d76db"
+    },
+    {
+      "name": "mechanism",
+      "description": null,
+      "color": "d93f0b"
+    },
+    {
+      "name": "terminology",
+      "description": null,
+      "color": "fbca04"
+    },
+    {
+      "name": "readability",
+      "description": null,
+      "color": "ccccdd"
+    },
+    {
+      "name": "nit",
+      "description": "",
+      "color": "D4C5F9"
+    }
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "id": "MDU6SXNzdWUyMzc1MDQ3MDc=",
+      "title": "Repeat for non-protected applications",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/1",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [],
+      "body": "I'd consider toning down the \"Repeat option MUST be integrity\r\nprotected\" part. Off my head, amplification mitigation against fake\r\nsource addresses comes to my mind. (Eg. a public RD might, when a new\r\nclient first ask for a 1024+ byte message with a ~20 byte one, send\r\nRepeat to make sure it does not participate in NTP-style DDOS).",
+      "createdAt": "2017-06-21T11:40:26Z",
+      "updatedAt": "2017-06-23T05:06:34Z",
+      "closedAt": "2017-06-23T05:06:34Z",
+      "comments": [
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Agreed, make it SHOULD and a security consideration.",
+          "createdAt": "2017-06-21T11:46:57Z",
+          "updatedAt": "2017-06-21T11:46:57Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "I've made a change to reflect that in 7aca7f47. It's a little different, but I think it's more to the point:\r\n\r\n* It keeps the MUST but limits it to when Repeat is used to serve freshness\r\n* The DDOS mitigation is now phrased as a feature that refrences a security consideration of RFC7252 (it's not really a security issue with the request tag -- it's a security issue already existing and described there (and possibly in https://github.com/core-wg/oscoap/issues/138), Repeat just provides mitigation).\r\n\r\n@gselander, if that's fine with you please close the issue.",
+          "createdAt": "2017-06-22T14:39:54Z",
+          "updatedAt": "2017-06-22T14:39:54Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This is fine. Just one detail: In the application no. 4 you added in 7aca7f4 , the statement\r\n\"For this application, the Repeat option is used in messages that are not integrity protected.\"\r\nappear as applying to all applications. I changed that in e3e9474 . No further actions are needed.\r\n",
+          "createdAt": "2017-06-23T05:06:27Z",
+          "updatedAt": "2017-06-23T05:06:27Z"
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "id": "MDU6SXNzdWUyMzc1MDkwMjQ=",
+      "title": "Request-Tag: Check NoCacheKey",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/2",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [
+        "mechanism"
+      ],
+      "body": "As far as I understand, NoCacheKey becomes irrelevant if an option is both critical and unsafe (because it has to be *understood* by all parties anyway); nevertheless, it remains to decide whether the option should be part of the Cache Key, because that's part of the option number, and implementations will be glad if they can use the behavior implied by number.",
+      "createdAt": "2017-06-21T11:57:42Z",
+      "updatedAt": "2017-10-18T18:25:22Z",
+      "closedAt": "2017-10-18T18:25:22Z",
+      "comments": [
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Does this refer to Repeat or Request-Tag?\r\n\r\nRepeat, of course, is not useful for other requests, but may anyway potentially have a cache key to avoid cache hits in legacy proxies (like Object-Security).\r\n\r\nRequest-Tag probably should probably have the same properties as Block1.",
+          "createdAt": "2017-06-27T08:28:00Z",
+          "updatedAt": "2017-06-27T08:28:00Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "I opened the issue for Request-Tag, and yes, picking the option set of Block1 is a good idea.\r\n\r\nI hadn't thought about the options of Repeat before -- but thinking of it now, I think that Repeat option could well be NoCacheKey, because a cacheable response can be stored in a proxy and valid even if it was queried without one; but then, \"4.03 Repeat this\" responses would always need a Max-Age of 0.",
+          "createdAt": "2017-06-27T10:30:30Z",
+          "updatedAt": "2017-06-27T10:30:30Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Thinking it through, the Request-Tag option can't be forwarded in any fashion anyway, so whether it has the bit pattern of NoCacheKey is truly irrelevant. (Unlike Block1, which may be passed through with some consideration).\r\n\r\nThe properties of Request-Tag are already as those of Block1 are, and the properties of Repeat seem fine too.",
+          "createdAt": "2017-10-18T18:25:22Z",
+          "updatedAt": "2017-10-18T18:25:22Z"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "MDU6SXNzdWUyMzgwNDI3Nzg=",
+      "title": "Should we disallow Request-Tag without value?",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/3",
+      "state": "CLOSED",
+      "author": "gselander",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [
+        "mechanism"
+      ],
+      "body": "Reading \"Every message in which the Block1 option is set is considered to carry a Request-Tag . . . \" I wonder about the potential confusion between a message with the Block1 option without Request-Tag and a message with the Block1 option with empty Request-Tag option, i.e. no value. As I read it we allow Request-Tag without value (length 0). Then we have two \"special classes\" of Block1 options, for which equality needs to be tested. Or should we require at least 1 byte of value? ",
+      "createdAt": "2017-06-23T05:16:02Z",
+      "updatedAt": "2018-03-05T13:10:57Z",
+      "closedAt": "2018-03-05T13:10:57Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "That would add 1-2 bytes to each blockwise request operation, where a more comprehensible wording would allow zero overhead most of the time. I'll put in much more time expressing the idea in an easy to understand way before taking that length penalty.",
+          "createdAt": "2017-06-23T06:03:33Z",
+          "updatedAt": "2017-06-23T06:03:33Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm fine with this. Here is a proposal for new overall text:\r\n\r\n\"In order to reliably attribute any CoAP request with the Block1 option set to a specific request message body, the following notion of Request-Tag equality is applied:\r\n\r\n* CoAP requests with the Request-Tag option set have equal Request-Tag values if and only if their option lengths and option values are equal. \r\n   * In particular, CoAP requests with empty Request-Tag have equal Request-Tag values.\r\n\r\n* Absence of the Request-Tag option implies a value that is distinct from any value of a message with the Request-Tag option set, and equal to that of any other message without the Request-Tag option. \r\n\r\nIn this way every CoAP request in which the Block1 option is set is considered to carry a Request-Tag value that can be compared for equality with the value of any other such CoAP requests. \"\r\n",
+          "createdAt": "2017-06-29T10:58:35Z",
+          "updatedAt": "2017-06-29T10:58:35Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "I only really looked at this issue again after overhauling the value definition into a matchability definition (with latest clarification at 6e4017a3), do you think this is better understandable now?",
+          "createdAt": "2017-10-18T19:02:12Z",
+          "updatedAt": "2017-10-18T19:02:12Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Only looking at this now, I think this is easy to understand now. ",
+          "createdAt": "2018-03-05T13:10:57Z",
+          "updatedAt": "2018-03-05T13:10:57Z"
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "MDU6SXNzdWUyMzg3NzU0Mzk=",
+      "title": "Integrity protection of Repeat application 5",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/4",
+      "state": "CLOSED",
+      "author": "gselander",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "If I understand right, the protection here is against clients which make requests claiming to come from other clients. Maybe we should motivate why it is allowed to make these requests without security in the first place. Is the main application /.well-known/core?",
+      "createdAt": "2017-06-27T08:34:35Z",
+      "updatedAt": "2017-06-28T20:54:56Z",
+      "closedAt": "2017-06-28T20:54:56Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Yes, against clients with fake source addresses. (That is not explicitly spelled out in 7252 section 11.3, but the general attack is described there).\r\n\r\n.well-known/core is one application, another are resource directories. Another might be any security setup -- EDHOC messages 2 don't seem much larger than messages 2 from a glance over their contents; could an amplification attack be attempted against ACE servers?\r\n\r\nI've added a short summary of the attack in f07a67b8f8, and reduced the \"For this application, the Repeat option is used\" to \"can be used without integrity protection\" (because a party that has a security context can be an attacker just as well).\r\n\r\nPlease close if clarified sufficiently.",
+          "createdAt": "2017-06-27T11:08:29Z",
+          "updatedAt": "2017-06-27T11:08:29Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks, this is clear now.",
+          "createdAt": "2017-06-28T20:54:56Z",
+          "updatedAt": "2017-06-28T20:54:56Z"
+        }
+      ]
+    },
+    {
+      "number": 5,
+      "id": "MDU6SXNzdWUyMzk0Mjc4ODg=",
+      "title": "Characterization of Request-Tag",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/5",
+      "state": "CLOSED",
+      "author": "gselander",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Reading this part many times: \r\n\"It enables the receiving CoAP server to reliably assemble request payloads (blocks) to their message bodies when the individual payloads are integrity protected, and it enables the sending CoAP server to process simultaneous operations on a single resource if the server supports it.\"\r\n- some questions appear:\r\n\r\n-is \"reliable\" only a characterization of the first part?\r\n-is integrity protection only relevant to the first part?\r\n- Should it be \"sending CoAP server\"?\r\n\r\nIs the following text a potential replacement?\r\n\r\n\"It enables the receiving CoAP server supporting this option to reliably assemble request payloads (blocks) to their message bodies, and reliably process simultaneous blockwise request operations on a single resource. The requests MUST to be be integrity protected in order to protect against interchange of blocks between different message bodies.\"",
+      "createdAt": "2017-06-29T10:04:45Z",
+      "updatedAt": "2017-06-30T18:18:09Z",
+      "closedAt": "2017-06-30T18:18:09Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "I moved the server \"supporting this option\" because body protection actually even works for servers that don't support it, and lowercased the MUST (because it's introductory description and not the specifying part)",
+          "createdAt": "2017-06-30T18:15:53Z",
+          "updatedAt": "2017-06-30T18:15:53Z"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "MDU6SXNzdWUyMzk0NDE0NzM=",
+      "title": "Duplicate text on concurrent operations.",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/6",
+      "state": "CLOSED",
+      "author": "gselander",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "\"A CoAP client MUST set the Request-Tag option in the case of different concurrent blockwise request operations to the same resource. If the CoAP client is running a blockwise request operation without the Request-Tag, and wants to concurrently start another blockwise request operations to the same resource without cancelling the first, then the CoAP client MUST set the Request-Tag.\"\r\n\r\nThese sentences are quite similar. I think the second sentence is sufficient and the first can be removed.",
+      "createdAt": "2017-06-29T10:59:45Z",
+      "updatedAt": "2017-06-30T18:18:09Z",
+      "closedAt": "2017-06-30T18:18:09Z",
+      "comments": []
+    },
+    {
+      "number": 7,
+      "id": "MDU6SXNzdWUyMzk5NDIzNjE=",
+      "title": "Add line on what HTTP proxy should do",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/7",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [
+        "patch available"
+      ],
+      "body": "Like OSCOAP asked that new options declare themselves E or U, the HTTP mapping document asked for clarification what a cross proxy should do.\r\n\r\nLooks like both Repeat and Request-Tag are never expressed in HTTP, and that a cross proxy needs to repeat the request or run an operation with a Request-Tag just as a CoAP client; a CH proxy (CoAP server) needs to use its own discretion on when to ask for a Repeat.",
+      "createdAt": "2017-07-01T10:51:13Z",
+      "updatedAt": "2017-10-25T07:13:40Z",
+      "closedAt": "2017-10-25T07:13:40Z",
+      "comments": []
+    },
+    {
+      "number": 9,
+      "id": "MDU6SXNzdWUyNDc5NDA2Mjg=",
+      "title": "OSCOAP outer blockwise option, block1.",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/9",
+      "state": "CLOSED",
+      "author": "T0bbe",
+      "authorAssociation": "NONE",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [
+        "readability"
+      ],
+      "body": "Firstly, I am unsure if I should file this issue here or in the OSCOAP repo. \r\n\r\nWhat error message should the server send to the client if the client is missing the Request Tag when Block1 is set. (In the case of OSCOAP, with outer block options the Request Tag MUST be used. Thus  #3 cannot be applied to the OSCOAP case). \r\n\r\nSo which error message, to indicate to the client that it must use Request Tag?\r\n\r\nBest regards,\r\nTobias",
+      "createdAt": "2017-08-04T08:42:33Z",
+      "updatedAt": "2017-10-18T19:01:08Z",
+      "closedAt": "2017-10-18T19:01:08Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "The server does not need to check whether the tag is missing, and in some situations can't know. (For example, if the client decided to abandon an earlier blockwise request, it can continue with a Block1=0 for another request at the same resource and, if no messages were lost, use the absent Request-Tag option just fine.)\r\n\r\nThe server only checks to see if the to-be-processed blocks have matching tags, and either discards old blocks (as in the example above) or just sends 4.08 Request Entity Incomplete if a Block1!=0 exchange arrives that the server wants to process atomically but can't for lack of a Block1=0 exchange that has arrived with a compatible Request-Tag value.\r\n\r\nI'm leaving this open as I want to make this more obvious from the document's text.",
+          "createdAt": "2017-10-16T18:54:23Z",
+          "updatedAt": "2017-10-16T18:54:23Z"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "MDU6SXNzdWUyNjU4MDIwMDE=",
+      "title": "Make relation to Block1 more explicit",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/10",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [],
+      "body": "Request-Tag can only be used with Block1 in descriptive use; this needs to be much clearer from the option description.\r\n\r\n(Carried over from old issue tracker at <https://github.com/chrysn/request-tag/issues/3>)",
+      "createdAt": "2017-10-16T15:01:33Z",
+      "updatedAt": "2017-10-18T16:39:48Z",
+      "closedAt": "2017-10-18T16:39:48Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "should be quite clear now:\r\n\r\n    The Request-Tag option is only used in request messages, and only in conjunction with the Block1 option.",
+          "createdAt": "2017-10-18T16:39:48Z",
+          "updatedAt": "2017-10-18T16:39:48Z"
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "MDU6SXNzdWUyNjU4MDIxODQ=",
+      "title": "Cover DTLS use",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/11",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [],
+      "body": "* Can this work for DTLS too? (Yes, but no reuse because seqence numbers inaccessible)\r\n* DTLS windows can be unilaterally increased (so sequence number access would be pointloess)\r\n\r\n(Carried over from old issue tracker at <https://github.com/chrysn/request-tag/issues/2>.)",
+      "createdAt": "2017-10-16T15:02:06Z",
+      "updatedAt": "2017-10-30T08:30:38Z",
+      "closedAt": "2017-10-30T08:30:38Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "The current wording is agnostic of the security mechanism; if anything, this might need covering in the problem statement document.",
+          "createdAt": "2017-10-30T08:30:38Z",
+          "updatedAt": "2017-10-30T08:30:38Z"
+        }
+      ]
+    },
+    {
+      "number": 12,
+      "id": "MDU6SXNzdWUyNjU4MDI0Njc=",
+      "title": "Clarify simultaneous use of Request-Tag as inner and outer option",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/12",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [],
+      "body": "There exists doubt on whether the same option can be used both in OSCOAP inner and outer messages (like the block options), or whether distinct options are needed.\r\n\r\nThe Request-Discriminator to Request-Tag conversion of the draft itself is not complete yet, the text can't be used to back this, but jimsch, do you have comments on this already based on yesterday's call?\r\n\r\n(Carried over from old issue tracker at <https://github.com/chrysn/request-tag/issues/1>.)",
+      "createdAt": "2017-10-16T15:02:55Z",
+      "updatedAt": "2017-10-16T18:58:40Z",
+      "closedAt": "2017-10-16T18:58:40Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Judging from conversations in Berlin, a single Request-Tag for inner and outer seems to work.",
+          "createdAt": "2017-10-16T18:58:40Z",
+          "updatedAt": "2017-10-16T18:58:40Z"
+        }
+      ]
+    },
+    {
+      "number": 13,
+      "id": "MDU6SXNzdWUyNjU4NzA4OTc=",
+      "title": "Better name for Repeat option",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/13",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "gselander"
+      ],
+      "labels": [
+        "terminology"
+      ],
+      "body": "The Repeat option obviously needs renaming from the feedback we've gathered, but nobody suggested any better name.\r\n\r\nCandidates I'm collecting:\r\n* Challenge (quite generic term)\r\n* Echo (sticking with the current mental image but using a less laden term)\r\n* Cookie (in analogy to the DTLS handshake's Cookie, but people might not like the taste of dough and chocolate)\r\n* Freshness (indicates its purpose but not its mechanism, could be confused with a time value)\r\n* maybe a compositum of those, like Freshness-Challenge?\r\n\r\nMy personal favorite right now is Freshness-Challenge; @gselander, should we ask back about this on-list again, or just take another shot?",
+      "createdAt": "2017-10-16T18:35:13Z",
+      "updatedAt": "2017-10-25T04:50:42Z",
+      "closedAt": "2017-10-25T04:50:42Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "More candidates that have come up:\r\n\r\n* Fresh (see Freshness)\r\n* Nonce (IMO too easy to mix up with OSCOAP's partial IV)\r\n* Reiterate (I'd put that in a category with Echo)\r\n* Copy\r\n* Roger\r\n\r\nMy current personal favorite is Echo.",
+          "createdAt": "2017-10-24T16:05:26Z",
+          "updatedAt": "2017-10-24T16:05:26Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Fixed in ee28aee",
+          "createdAt": "2017-10-25T04:50:42Z",
+          "updatedAt": "2017-10-25T04:50:42Z"
+        }
+      ]
+    },
+    {
+      "number": 16,
+      "id": "MDU6SXNzdWUyNjkwNzgwMDg=",
+      "title": "Multiple requests within RTT<T",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/16",
+      "state": "CLOSED",
+      "author": "gselander",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Multiple requests withing the T-window may use the same Echo value.",
+      "createdAt": "2017-10-27T11:40:47Z",
+      "updatedAt": "2018-03-05T13:09:28Z",
+      "closedAt": "2018-03-05T13:09:28Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "a901baf4 adds \"The client MAY include the same Echo option value in several different requests to the server.\", is that sufficient to close this issue?",
+          "createdAt": "2018-03-05T13:07:22Z",
+          "updatedAt": "2018-03-05T13:07:22Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Yes, closing this issue now.",
+          "createdAt": "2018-03-05T13:09:28Z",
+          "updatedAt": "2018-03-05T13:09:28Z"
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "id": "MDU6SXNzdWUyNjkwNzkxNTM=",
+      "title": "Not necessary to cache Echo value",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/17",
+      "state": "CLOSED",
+      "author": "gselander",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The Echo value sent in a response needs to be reproduced when the request arrives, but not cached. We should change the description to emphasize this. We note in the appendix that the nonce may be an encrypted value, but even in other cases it need not necessarily be cached.",
+      "createdAt": "2017-10-27T11:45:19Z",
+      "updatedAt": "2018-03-05T13:12:04Z",
+      "closedAt": "2018-03-05T13:12:04Z",
+      "comments": [
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "This has been described for a while in the draft.",
+          "createdAt": "2018-03-05T13:12:04Z",
+          "updatedAt": "2018-03-05T13:12:04Z"
+        }
+      ]
+    },
+    {
+      "number": 18,
+      "id": "MDU6SXNzdWUyNjkwODA3Njg=",
+      "title": "Echo value must be unpredictable",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/18",
+      "state": "CLOSED",
+      "author": "gselander",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The value of the Echo needs to be unpredictable, it is not sufficient with random.",
+      "createdAt": "2017-10-27T11:51:49Z",
+      "updatedAt": "2018-03-05T09:03:42Z",
+      "closedAt": "2018-03-05T09:03:42Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Closed in a901baf4127: \"The Echo option value MUST contain 32 (pseudo-)random bits that are not predictable for any other party than the server, \u2026\"",
+          "createdAt": "2018-03-05T09:03:42Z",
+          "updatedAt": "2018-03-05T09:03:42Z"
+        }
+      ]
+    },
+    {
+      "number": 19,
+      "id": "MDU6SXNzdWUyNzM0NDc1ODI=",
+      "title": "'sent from and to the same end points *or* security associations'?",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/19",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "The current text on Request-Tag matchability requires being \"sent from and to the same end points (including security associations)\".\r\n\r\nOriginal block processing requires the endpoint (and implies same security context as per 7252 Endpoint definition) in \"the server collects further blocks from the same endpoint and plans to implement the request atomically\".\r\n\r\nThose documents did not foresee that a security context might span different transports (as OSCORE does). Can we do anything here to allow OSCORE inner-blockwise to utilize different transports for the first and following blocks? Like\r\n\r\n> sent from and to the same end points (including security context information), or from the same security context (in protocols where a security context can send messages over different underlying transports)\r\n\r\n\u2013 I just don't know if that's modifying 7959 more than we should. (Currently we do intend to update that RFC, but we might need to be more explicit then).\r\n\r\n(The application I'm having in mind right now is a large blob transfer that'd like to switch over to TCP after a few blocks because of long round-trip times).",
+      "createdAt": "2017-11-13T14:26:47Z",
+      "updatedAt": "2018-06-29T14:23:16Z",
+      "closedAt": "2018-06-29T14:23:16Z",
+      "comments": []
+    },
+    {
+      "number": 21,
+      "id": "MDU6SXNzdWUzMDE4MzE4NTM=",
+      "title": "Might need Request-Tag on Block2 follow-ups to keep streams apart",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/21",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [],
+      "body": "Going through RFC7959 Section 2.7 for implementation, I noticed that Block2 exchanges after a Block1 exchange do not carry a Block1 option any more.\r\n\r\nFor Request-Tag, this has no bearing on security (if two operations' results share an ETag, so be it), but it has one for simultaneous requests (\"what we suggest that OSCORE-unaware proxies should do to avoid large latencies\"): If a second operation leaves the Block1 phase while the first is still in Block2 phase, the requests arrive at the server indistinguishably (violating the \"MUST be performed sequentially\" part).\r\n\r\nThe most likely fix is that we simply set Request-Tag on Block1-follow-ups too, and extend the operation conclusion to the end of any Block2 phase. This entails some re-wording as to where it can be used, as we're borrowing much from Block1 now in the option description.",
+      "createdAt": "2018-03-02T16:49:21Z",
+      "updatedAt": "2018-03-05T21:50:13Z",
+      "closedAt": "2018-03-05T21:50:13Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Working through this, I'm becoming more aware of the circumstance that with the Partial IV now being encoded in the (Cache-Key) Object-Security field, the need to allow concurrent operations on the same resource goes away for the OSCORE application (proxies can now tunnel multiple outer-blockwise w/o help from the OSCORE).\r\n\r\nI'm going through 7959 once again to check my perception of how things work, but if it is correct, I'm tempted to move the simultaneous-operations application into an appendix (where it'd be OK if it's dropped altogether if the concept frightens people).",
+          "createdAt": "2018-03-05T13:45:30Z",
+          "updatedAt": "2018-03-05T13:45:30Z"
+        }
+      ]
+    },
+    {
+      "number": 28,
+      "id": "MDU6SXNzdWUzNDQ3Mzk3NjE=",
+      "title": "Update reference to lwig-coap",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/28",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [],
+      "body": "The text proposed into lwig-coap on atomic blockwise operations is now in lwig-coap-06; some points of this document need to be updated to reflect that, possibly some text can be removed.",
+      "createdAt": "2018-07-26T08:13:12Z",
+      "updatedAt": "2018-10-23T13:20:44Z",
+      "closedAt": "2018-10-23T13:20:44Z",
+      "comments": []
+    },
+    {
+      "number": 41,
+      "id": "MDU6SXNzdWU0NjY4OTU1NzY=",
+      "title": "Privacy considerations of Echo as Cookie",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/41",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "While not designed for that, the Echo option can be abused as mechanism like HTTP's Cookie (especially when preemptive Echo values are passed around), and I'm pretty sure we don't want that.\r\n\r\nWe should at least point that out somewhere, and say that servers MUST NOT abuse it (however to phrase that -- \"use Echo to correlate requests for other purposes than showing frechness and reachability\"?).\r\n\r\nFor actual mitigation, we could recommend (or even demand?) that clients only send preemptive Echo values on the same endpoint (5-tuple) on which they were received -- so that if their address changes, no Echo value will leak identity.",
+      "createdAt": "2019-07-11T13:32:56Z",
+      "updatedAt": "2019-09-12T09:59:29Z",
+      "closedAt": "2019-09-12T09:59:29Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "To still allow Echo in OSCORE groupcom (new server asks for Echo, client repeats it in next multicast, others ignore it), we could limit that mitigation to unauthenticated use cases (as the client has a known persistable identity with OSCORE anyway).",
+          "createdAt": "2019-07-11T13:39:14Z",
+          "updatedAt": "2019-07-11T13:39:14Z"
+        },
+        {
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "body": "Yes, this should definitely be a privacy consideration. ",
+          "createdAt": "2019-08-31T09:01:20Z",
+          "updatedAt": "2019-08-31T09:01:20Z"
+        },
+        {
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "body": "I wrote some initial text for the privacy consideration regarding this. Please revieew, modify and add things.\r\n\r\nShould we have any considerations for group OSCORE? of should we let draft-dijk-core-groupcomm-bis and group OSCORE discuss that. Echo Request is hopefully published before them.",
+          "createdAt": "2019-08-31T09:31:57Z",
+          "updatedAt": "2019-08-31T09:31:57Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think John refers to this commit: bcceb8a ",
+          "createdAt": "2019-09-03T13:25:04Z",
+          "updatedAt": "2019-09-03T13:25:04Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "I'm almost happy with it, the last word I'm unhappy with is being addressed in an upcoming commit that closes it by drawing on a solution to the \"the spec does not say anything regarding taking echo from (no-security, DTLS, [...]) and using it in (no-security, DTLS, [...])\" comment,",
+          "createdAt": "2019-09-11T12:54:39Z",
+          "updatedAt": "2019-09-11T12:54:39Z"
+        }
+      ]
+    },
+    {
+      "number": 43,
+      "id": "MDU6SXNzdWU0ODg0NTkwMzE=",
+      "title": "Security considerations of token reuse",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/43",
+      "state": "CLOSED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2019-09-03T08:19:20Z",
+      "updatedAt": "2019-11-01T14:24:44Z",
+      "closedAt": "2019-11-01T14:24:44Z",
+      "comments": [
+        {
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "body": "I tried to add security considerations for token reuse to the PR. Please review, this is not trivial.\r\n\r\n- Token reuse for DTLS seem hard if not impossible to do securely. I don't find Token reuse with DTLS possible to do securely..... am I missing something?\r\n- Token reuse for TLS without Observer and without Groups communication seems quite easy.\r\n- Do we need to say something about Group communication?\r\n- Do we need to say something about stateless tokens? I think the current requirements on integrity protection and replay protection protection in the stateless draft should be enough.",
+          "createdAt": "2019-09-03T10:31:53Z",
+          "updatedAt": "2019-09-03T10:31:53Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I think John refers to e49ff36",
+          "createdAt": "2019-09-03T13:33:02Z",
+          "updatedAt": "2019-09-03T13:33:02Z"
+        },
+        {
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "body": "Taken care of in the version -07",
+          "createdAt": "2019-11-01T14:24:44Z",
+          "updatedAt": "2019-11-01T14:24:44Z"
+        }
+      ]
+    },
+    {
+      "number": 44,
+      "id": "MDU6SXNzdWU0ODg0NjI3OTg=",
+      "title": "Editorial",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/44",
+      "state": "CLOSED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "\"Block-Wise\" vs. \"block-wise\" vs. \"blockwise\"\r\n\r\n\"Token\" vs. \"Token\"\r\nI think it should be Token.\r\n\r\n\"freshness tokens\"\r\nI think we should rewrite \"freshness tokens\" to that the word \"token\" is only used for the CoAP Token. ",
+      "createdAt": "2019-09-03T08:27:15Z",
+      "updatedAt": "2019-09-12T09:59:29Z",
+      "closedAt": "2019-09-12T09:59:29Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "The Token and block-wise have been addressed in your f9abfe02595c19a6f5d37f88a29cfafa59a3254a.\r\n\r\nAny candidates for \"freshness tokens\" replacement? \"freshness indicators\" maybe?",
+          "createdAt": "2019-09-11T12:31:04Z",
+          "updatedAt": "2019-09-11T12:31:04Z"
+        }
+      ]
+    },
+    {
+      "number": 46,
+      "id": "MDU6SXNzdWU0OTI3MTA2NjY=",
+      "title": "Outer/Inner Echo and aliveness: Clarify involved endpoints involved",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/46",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "(from today's telco) \"client aliveness\" questions lead to the question of who is the client, and from there to which endpoints are involved.\r\n\r\nFrom RFC7252's endpoint definition, the security association is part of it. So there are two endpoints involved, the hop-by-hop endpoint (which has no security, or possibly the security of a wrapping DTLS connection) and the end-to-end endpoint (which is OSCORE protected), which may or may not reside on the same host. Different positions of the Echo option relate to communication with different endpoints.\r\n\r\nIt'd be easier to describe the Echo option behavior if that distinction were made explicit in OSCORE, and I don't want to introduce too much of new concepts in here where they don't belong -- finding text to address that might be tricky.\r\n\r\n(Once words are found to describe that in the Echo text, we'll also have the words to talk about the independent alivenesses of the endpoints, and say that for cryptographically showing \"client aliveness\" (that's a term there), the aliveness of the inner endpoint must be shown).",
+      "createdAt": "2019-09-12T10:07:43Z",
+      "updatedAt": "2019-11-01T14:25:21Z",
+      "closedAt": "2019-11-01T14:25:21Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "I've written up #48 to address the issue we received comments on.\r\n\r\nOn the topic of endpoints, I found that the text already clearly separates the use case of \"client aliveness\" and \"network reachability\"; I've added a word on the aliveness being a cryptographic property and not just another word for the network address being in service, which is hopefully enough for the confusion that has arisen. No need to make things more complicated by pointing out the two server endpoints that are still around there: we never talk of properties that either can have (client aliveness is about the protected endpoint, network reachability is about the unprotected one).\r\n\r\nIf you're happy with #48, I think we can close this.",
+          "createdAt": "2019-09-16T11:26:02Z",
+          "updatedAt": "2019-09-16T11:26:02Z"
+        },
+        {
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "body": "Taken care of with #48 ",
+          "createdAt": "2019-11-01T14:25:21Z",
+          "updatedAt": "2019-11-01T14:25:21Z"
+        }
+      ]
+    },
+    {
+      "number": 54,
+      "id": "MDU6SXNzdWU1NzQ1NzA1NTQ=",
+      "title": "Conclude stateless proxy discussion",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/54",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [],
+      "body": "Context at https://mailarchive.ietf.org/arch/msg/core/pA1MIF4S0__mwvq3h2XLWybreWw\r\n\r\nprobable conclusion \"stateless proxies can only process Block1 cases trivially, everything else needs further exploration\"",
+      "createdAt": "2020-03-03T10:35:41Z",
+      "updatedAt": "2020-03-09T16:51:02Z",
+      "closedAt": "2020-03-09T16:51:02Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Not Our Problem thanks to https://mailarchive.ietf.org/arch/msg/core/IoIhwW6qUKmq85S2xMOjYUY5i0g, and put out of scope in https://github.com/core-wg/echo-request-tag/pull/59",
+          "createdAt": "2020-03-09T16:50:57Z",
+          "updatedAt": "2020-03-09T16:50:57Z"
+        }
+      ]
+    },
+    {
+      "number": 55,
+      "id": "MDU6SXNzdWU1NzQ1NzA4NTI=",
+      "title": "Verify Francescas review has completely been addressed",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/55",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [],
+      "body": "See https://mailarchive.ietf.org/arch/msg/core/nh_yDZwDU8LeDa8WxqbSMJkeG9Q",
+      "createdAt": "2020-03-03T10:36:14Z",
+      "updatedAt": "2020-03-03T13:23:59Z",
+      "closedAt": "2020-03-03T13:23:59Z",
+      "comments": []
+    },
+    {
+      "number": 56,
+      "id": "MDU6SXNzdWU1NzQ1ODQyNjY=",
+      "title": "Allow shorter Echo values",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/56",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [],
+      "body": "As previously discussed in private mail: For the OSCORE state recovery use case, putting a new sequence number in the Echo option is good enough, and that can be short.",
+      "createdAt": "2020-03-03T10:57:33Z",
+      "updatedAt": "2020-03-09T12:59:42Z",
+      "closedAt": "2020-03-09T12:59:42Z",
+      "comments": []
+    },
+    {
+      "number": 60,
+      "id": "MDU6SXNzdWU2MTg4NzE3OTQ=",
+      "title": "Comparison to other technologies: HTTP 425 Too Early",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/60",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [],
+      "body": "On the topic of drawing parallels to similar technologies, it might be worth pointing out that 4.01 Unauthorized with Echo is rather similar to HTTP's 425 Too Early code.",
+      "createdAt": "2020-05-15T10:39:07Z",
+      "updatedAt": "2020-07-13T15:11:31Z",
+      "closedAt": "2020-07-13T15:11:31Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "The upcoming commit addresses this as a cross proxy aspect; the general comparison was moved to amsuess-lwig-oscore.",
+          "createdAt": "2020-07-13T14:42:12Z",
+          "updatedAt": "2020-07-13T14:42:12Z"
+        }
+      ]
+    },
+    {
+      "number": 62,
+      "id": "MDU6SXNzdWU3NjAzNTI5OTU=",
+      "title": "freshness in terminology",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/62",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [
+        "patch available"
+      ],
+      "body": "From Ines' Genart review:\r\n\r\n> 1.- It would be nice to have the definition of Freshness into the terminology\r\n> section.\r\n\r\n@gselander and @emanjon, do you know of established references we could use there to avoid rolling our own definition?",
+      "createdAt": "2020-12-09T13:57:58Z",
+      "updatedAt": "2021-02-01T12:03:07Z",
+      "closedAt": "2021-02-01T12:03:07Z",
+      "comments": [
+        {
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "body": "Hi,\r\n\r\nGoogling a bit, I think we might need to define this ourselves. Found some papers and\r\npresentations taking about freshness, but they did not define it well. Found a very\r\nmathematical definition in some other paper that we do not want to use.\r\n\r\nI suggest something like this:\r\n\r\nFreshness is a measure of the time since time since the message was sent. What is\r\nconsidered a fresh message is application dependent. The Echo mechanism\r\nspecified in this document allow a server to calculate an upper bound for when\r\nthe message was encrypted. With this bound, the server can either verify that the\r\nmessage is fresh (fresher than some application defined limit) or determine that\r\nit cannot be verified that the message is fresh.\r\n\r\nCheers,\r\nJohn\r\n\r\n\r\nFrom: chrysn <notifications@github.com>\r\nReply to: core-wg/echo-request-tag <reply@reply.github.com>\r\nDate: Wednesday, 9 December 2020 at 14:58\r\nTo: core-wg/echo-request-tag <echo-request-tag@noreply.github.com>\r\nCc: John Mattsson <john.mattsson@ericsson.com>, Mention <mention@noreply.github.com>\r\nSubject: [core-wg/echo-request-tag] freshness in terminology (#62)\r\n\r\n\r\nFrom Ines' Genart review:\r\n\r\n1.- It would be nice to have the definition of Freshness into the terminology\r\nsection.\r\n\r\n@gselander<https://protect2.fireeye.com/v1/url?k=79f9b0db-266289db-79f9f040-86fc6812c361-99273a1895d4c91a&q=1&e=b1153373-59b1-4f19-a06a-e26fe15895c5&u=https%3A%2F%2Fgithub.com%2Fgselander> and @emanjon<https://protect2.fireeye.com/v1/url?k=65c0fd48-3a5bc448-65c0bdd3-86fc6812c361-01258d0fef835cdf&q=1&e=b1153373-59b1-4f19-a06a-e26fe15895c5&u=https%3A%2F%2Fgithub.com%2Femanjon>, do you know of established references we could use there to avoid rolling our own definition?\r\n\r\n\u2014\r\nYou are receiving this because you were mentioned.\r\nReply to this email directly, view it on GitHub<https://protect2.fireeye.com/v1/url?k=a6fa581b-f961611b-a6fa1880-86fc6812c361-d6df7ecda9c6adc5&q=1&e=b1153373-59b1-4f19-a06a-e26fe15895c5&u=https%3A%2F%2Fgithub.com%2Fcore-wg%2Fecho-request-tag%2Fissues%2F62>, or unsubscribe<https://protect2.fireeye.com/v1/url?k=a7433286-f8d80b86-a743721d-86fc6812c361-c0f7839c35a6dd00&q=1&e=b1153373-59b1-4f19-a06a-e26fe15895c5&u=https%3A%2F%2Fgithub.com%2Fnotifications%2Funsubscribe-auth%2FAFYXKYVXKT2XOUADB6FIRYLST567NANCNFSM4UTQZZUQ>.\r\n",
+          "createdAt": "2020-12-09T14:19:27Z",
+          "updatedAt": "2020-12-09T14:19:27Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Maybe we can slim that down and avoid talking of time too much (because yes it's time even in the event-based case, but a very odd discrete time, so might confuse people):\r\n\r\n> Freshness is a measure of when a message was sent. A server that receives a request can either verify that the request is fresh or determine that it cannot be verified that the request is fresh. What is considered a fresh message is application dependent; example definitions are \"no more than one hour ago\" or \"after this server's last reboot\".\r\n\r\nWould that work for you?",
+          "createdAt": "2020-12-09T14:38:38Z",
+          "updatedAt": "2020-12-09T14:38:38Z"
+        }
+      ]
+    },
+    {
+      "number": 63,
+      "id": "MDU6SXNzdWU3NjAzNjI5MjE=",
+      "title": "duplicate column \"U\"",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/63",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [],
+      "body": "From Ines' Genart review:\r\n\r\n> 2.- Figure 1 and Figure 4 have two columns named \"U\" (Unsafe), is that Ok?, or\r\n> should one of these columns be deleted/renamed?\r\n\r\nThat's indeed unfortunate; given tables of this format are common in\r\nCoRE, I'll be checking back for the best course of action (but either\r\nway it's to be fixed).",
+      "createdAt": "2020-12-09T14:09:56Z",
+      "updatedAt": "2021-01-29T16:12:15Z",
+      "closedAt": "2021-01-29T16:12:15Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "See thread around https://mailarchive.ietf.org/arch/msg/core/1xxDaI64EtNP5pDWKnX7RFeq1Sg\r\n\r\nIf that stays empty, I'll go for the `| O |` I proposed there.",
+          "createdAt": "2020-12-09T14:29:25Z",
+          "updatedAt": "2020-12-09T14:29:25Z"
+        }
+      ]
+    },
+    {
+      "number": 64,
+      "id": "MDU6SXNzdWU3NjA1MDg2MzE=",
+      "title": "Better wording for the 152 allowed bytes",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/64",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [
+        "patch available"
+      ],
+      "body": "In the response to https://datatracker.ietf.org/doc/review-ietf-core-echo-request-tag-11-opsdir-lc-schoenwaelder-2020-11-30/ I promised better wording for the 152 bytes -- but let's see whether anything gets back there first.\r\n\r\n---\r\n\r\n> - The number of 152 bytes mentioned in section 2.4:\r\n> \r\n>   3*152 would be 456 octets, I am not sure why this is the \"typical\r\n>   size of a frame on the wire sent across the Internet\". Either\r\n>   explain how you obtained this number of consider removing it in case\r\n>   it does depend on assumptions that are not guaranteed to be always\r\n>   true. One option could also be to simply drop this sentence.\r\n\r\nAs Carsten pointed out, this is the derived number from the \"three\r\ntimes\" part, also accounting for the remainder of the UDP packet.\r\n\r\nAssuming an attacker wants to maximize the amplification possible by the\r\nfactor 3, they will send\r\n\r\n* 14 octets Ethernet header\r\n* 40 octets IP header\r\n* 8 octets UDP header\r\n* 4 octets CoAP header\r\n* 8 octets of token\r\n\r\nallowsing the server to send \u03a3 * 3 = 222 octets. Subtracting everything\r\nin the response including the UDP header, that gives 160 octets of UDP\r\ndata. Given the token is variable length data of up to 8 octets the server\r\nimplementer can't easily take into account, that leaves 152 octets.\r\n(Granted, that last step doesn't follow from the wording, and I'm looing\r\nto sharpen that).\r\n\r\nHaving some hard number there (and I'm happy to use better ways to come\r\nup with one) is important because for generic server applications, the\r\ntransports may not be known and the implementer would have to make\r\nassumptions; we can't do much more, but at least ours get solid review.",
+      "createdAt": "2020-12-09T17:07:14Z",
+      "updatedAt": "2021-02-01T12:03:07Z",
+      "closedAt": "2021-02-01T12:03:07Z",
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "In the course of this, we'll also have to give a citation for the \"x 3\" (currently https://tools.ietf.org/html/draft-ietf-quic-transport-32#page-50)",
+          "createdAt": "2020-12-10T07:53:35Z",
+          "updatedAt": "2020-12-10T07:53:35Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Follow-up note to be factored into the resolution:\r\n\r\n> I have no strong opinion whether having a fixed number is good or bad,\r\n> I can see reaons both ways. But if the WG decides to include an\r\n> absolute number and you want people to implement that number, you\r\n> should in my view include the calculation (perhaps in a short\r\n> appendix) so that people recall how the number was determined. For\r\n> example, you assume IPv4 (and not IPv6), you assume Ethernet (and not\r\n> some other link layers or VLANs etc.). This may be OK but I think it\r\n> is fair to document the assumptions.",
+          "createdAt": "2020-12-10T08:58:59Z",
+          "updatedAt": "2020-12-10T08:58:59Z"
+        }
+      ]
+    },
+    {
+      "number": 65,
+      "id": "MDU6SXNzdWU3NjEwMTE4MTI=",
+      "title": "Better distinguish figures 2 and 3",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/65",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [
+        "patch available"
+      ],
+      "body": "From https://datatracker.ietf.org/doc/review-ietf-core-echo-request-tag-11-opsdir-lc-schoenwaelder-2020-11-30/ :\r\n\r\n> - The difference between Figure 2 and Figure 3 is rather subtle.\r\n> \r\n>   I actually diffed the figures to find it. My understanding is that\r\n>   it is really only the labels t0 and t1 and e0 and e1. One could\r\n>   perhaps change the figures to make it more explicit when t0 (e0)\r\n>   take place, perhaps also clarifying the text a bit. There is perhaps\r\n>   some confusion caused by the notion of time t0, t1, the notion of\r\n>   events e0, e1, and the notion of tag values labeled (t0) and (e0).\r\n>   The text says \"The server verifies freshness by checking that e0\r\n>   equals e1, where e0 is the cached value when the Echo option value\r\n>   was generated, and e1 is the cached value at the reception of the\r\n>   request.\" I found this confusing. It think what you are trying to\r\n>   say is that the tag value cached at event e0 is the same as the tag\r\n>   value received at event e1, no?\r\n\r\nThat's good input; we're going through a few versions among the authors\r\nfor the precise visual alignment and wording.\r\n\r\n---\r\n\r\nWhat I'd like to take away from that is to make the events more visible, use shorter Echo values (as event-based can use), and give concrete values both for time and events (given it's an example, and maybe even to use the event state in the echo value).",
+      "createdAt": "2020-12-10T08:09:21Z",
+      "updatedAt": "2021-02-01T12:03:06Z",
+      "closedAt": "2021-02-01T12:03:06Z",
+      "comments": []
+    },
+    {
+      "number": 69,
+      "id": "MDU6SXNzdWU4MDIzNjM5NDQ=",
+      "title": "Wording around inner options, outer options and DTLS",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/69",
+      "state": "OPEN",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [
+        "nit"
+      ],
+      "body": "From [Eliot's review](https://datatracker.ietf.org/doc/review-ietf-core-echo-request-tag-12-iotdir-telechat-lear-2021-02-05/):\r\n\r\n> > The last sentence in 2.2: is this meant to be limited to OSCORE or all uses of\r\n> > DTLS?  I found the inner/outer text confusing, and that a diagram might\r\n> > actually help.\r\n> \r\n> That sentence is merely illustrating the corner case exception, I'm\r\n> confident we can enhance readability here a bit by not referring to\r\n> DTLS. (It is general to DTLS in that in DTLS all proxies always see the\r\n> CoAP options; it says something about OSCORE is that (DTLS or not),\r\n> proxies see the outer options only).\r\n> \r\n> On the general inner/outer diagram ... hm, we could add something\r\n> for sure, but I'd be worried that it'd distract by putting focus on a\r\n> topic that really belongs to OSCORE. I'll leave an issue open in the\r\n> authors' tracker to revisit this when more reviews have come in.\r\n\r\nI think the sentence will read easier if it's more like \"Outer options are visible to proxies, and to other parties up to the point of encryption on any lower layer\". I don't think we'll need an illustration, but if we do, it could be tied to the text (rather than showing generic OSCORE stuff) by having an outer Echo option that \"verifies aliveness of the proxy\", and an inner option that \"provides synchronization of the authenticated peer\".",
+      "createdAt": "2021-02-05T17:59:16Z",
+      "updatedAt": "2021-02-05T17:59:19Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 70,
+      "id": "MDU6SXNzdWU4MDQ1NDk5MjE=",
+      "title": "updates [RFC7252] with a recommendation that servers use the Echo option",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/70",
+      "state": "OPEN",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "This is only mentioned in Abstract and intro. I think it need there needs to be some text in the body as well. The other Update has it's own subsection. \"4.2.  Updated Token Processing Requirements for Clients\"\r\n",
+      "createdAt": "2021-02-09T13:26:47Z",
+      "updatedAt": "2021-02-11T10:17:27Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I added text on server requirements in #71",
+          "createdAt": "2021-02-11T10:17:27Z",
+          "updatedAt": "2021-02-11T10:17:27Z"
+        }
+      ]
+    },
+    {
+      "number": 72,
+      "id": "MDU6SXNzdWU4MTU5MjMwNTA=",
+      "title": "Mitigate Observe amplification attacks.",
+      "url": "https://github.com/core-wg/echo-request-tag/issues/72",
+      "state": "OPEN",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "chrysn"
+      ],
+      "labels": [],
+      "body": "The current text only talks about large responses, not many responses.\r\n\r\n\"A server that sends large responses to unauthenticated peers SHOULD mitigate amplification attacks\"",
+      "createdAt": "2021-02-24T23:14:07Z",
+      "updatedAt": "2021-03-18T07:43:56Z",
+      "closedAt": null,
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Any document that allows multiple responses in the first place (Observe, Q-Block, groupcomm-proxy) emphasizes the dangers of unchecked operation -- but it doesn't hurt to do that here too. (We *do* already say that a single response needs to be piggy-backed or NON, for the same reason).",
+          "createdAt": "2021-03-18T07:43:56Z",
+          "updatedAt": "2021-03-18T07:43:56Z"
+        }
+      ]
+    }
+  ],
+  "pulls": [
+    {
+      "number": 8,
+      "id": "MDExOlB1bGxSZXF1ZXN0MTMzNjgwMjIy",
+      "title": "Update draft-amsuess-core-repeat-request-tag.md",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/8",
+      "state": "CLOSED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2017-08-02T11:02:39Z",
+      "updatedAt": "2017-10-30T08:47:27Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "8df3c1fec6607e2eb5a2d903a161efe4890be661",
+      "headRepository": null,
+      "headRefName": "patch-1",
+      "headRefOid": "76d5963e0299af1c668ed81e9c529cdfa4fbc34a",
+      "closedAt": "2017-10-30T08:47:27Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Closed in 3bed9681. (Not done automatically because the issue URI had clutter in it).",
+          "createdAt": "2017-10-30T08:47:27Z",
+          "updatedAt": "2017-10-30T08:47:27Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 14,
+      "id": "MDExOlB1bGxSZXF1ZXN0MTQ3MzYzNDYz",
+      "title": "Use 4.01 Unauthorized rather than 4.03 Forbidden",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/14",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "gselander"
+      ],
+      "labels": [],
+      "body": "As suggested by Carsten.\r\n\r\nThe semantics match Unauthorized pretty well: \"should not repeat the\r\nrequest without first improving its authentication status\"; like with\r\nthe WWW-Authenticate header in HTTP, the server gives a way how to do so\r\nin the response.\r\n\r\n[1]: https://tools.ietf.org/html/rfc7231#section-6.5.3",
+      "createdAt": "2017-10-18T17:30:14Z",
+      "updatedAt": "2017-10-25T07:25:14Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "b9b0aa231e1809953140413b571697a1f37a02e9",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "use-401",
+      "headRefOid": "50e25155bf515c02e02b6b3e3494fc575f60a00b",
+      "closedAt": "2017-10-25T07:25:06Z",
+      "mergedAt": "2017-10-25T07:25:06Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "50e25155bf515c02e02b6b3e3494fc575f60a00b"
+      },
+      "comments": [
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I'm fine with 4.01",
+          "createdAt": "2017-10-25T07:17:21Z",
+          "updatedAt": "2017-10-25T07:17:21Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 15,
+      "id": "MDExOlB1bGxSZXF1ZXN0MTQ3MzcxMDMw",
+      "title": "Echo: Add paragraph about proxy (CC, HC, CH) handling",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/15",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [
+        "gselander"
+      ],
+      "labels": [],
+      "body": "This opens up questions in https://github.com/core-wg/oscoap/pull/184...\r\n\r\nCloses: https://github.com/chrysn/repeat-request-tag/issues/7",
+      "createdAt": "2017-10-18T18:04:19Z",
+      "updatedAt": "2017-10-25T07:24:15Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "b9b0aa231e1809953140413b571697a1f37a02e9",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "repeat-proxy",
+      "headRefOid": "08f5d4c15ea25551a96aee1362935a710ba731de",
+      "closedAt": "2017-10-25T07:13:40Z",
+      "mergedAt": "2017-10-25T07:13:40Z",
+      "mergedBy": "gselander",
+      "mergeCommit": {
+        "oid": "caa1bd4735d66ab674b259aaaa61d873348451f0"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 20,
+      "id": "MDExOlB1bGxSZXF1ZXN0MTcxMzE3NzIy",
+      "title": "CoAP over TCP is now RFC8323",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/20",
+      "state": "CLOSED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Christian, can you give me write access? I would like to do some changes to the Echo parts.",
+      "createdAt": "2018-02-26T09:15:44Z",
+      "updatedAt": "2018-03-03T13:39:59Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "484ebfccae450c1086fe5e19bf094b77e93a51c1",
+      "headRepository": null,
+      "headRefName": "patch-2",
+      "headRefOid": "af427e657393c97f1b790b68459fcd9ee8221506",
+      "closedAt": "2018-03-03T13:39:59Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 22,
+      "id": "MDExOlB1bGxSZXF1ZXN0MTcyNjY3NzEx",
+      "title": "Suggested updates for draft-ietf-core-echo-request-tag-01",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/22",
+      "state": "MERGED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "I did quite a lot of changes to the Echo parts as discussed earlier. The Echo parts are now clearer updated in requirements and general processing, and example implementations for Token Option Values. I wrote a reasonably long security consideration chapter and added the missing IANA section. I added updated Token handling which requires some changes to abstract and introduction. Removed some definitions that were not used. I have not touched the Request-Tag parts except for maybe some editorials.",
+      "createdAt": "2018-03-03T13:39:33Z",
+      "updatedAt": "2018-03-05T13:14:54Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "484ebfccae450c1086fe5e19bf094b77e93a51c1",
+      "headRepository": null,
+      "headRefName": "patch-4",
+      "headRefOid": "a901baf4127c9dc3d45a7a001b65bb5110c6a5b7",
+      "closedAt": "2018-03-05T08:56:57Z",
+      "mergedAt": "2018-03-05T08:56:57Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "a901baf4127c9dc3d45a7a001b65bb5110c6a5b7"
+      },
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "I think you should already have write access to the repository; if you can't just push your changes, I'm afraid you'll have to ask Carsten to add you to the team at https://github.com/orgs/core-wg/teams/echo-request-tag.\r\n\r\nI'm merging this now to get things on, and am trying to add some fixes today still to upload this evening's state before the cut-off.\r\n\r\nA suggestion w/rt the pull request branches: could you just add commits rather than appending them (unless you're changing around in the same place)? That'd make it much easier to update one's mental model of the document.",
+          "createdAt": "2018-03-05T08:56:23Z",
+          "updatedAt": "2018-03-05T08:56:23Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "The terms \"blockwise request operation\" and \"blockwise response operation\" are used (the former frequently, the latter only once), so I've reverted the line that drops them to their previous state in 382c308f3.",
+          "createdAt": "2018-03-05T13:14:54Z",
+          "updatedAt": "2018-03-05T13:14:54Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 23,
+      "id": "MDExOlB1bGxSZXF1ZXN0MTcyOTU2Mjcy",
+      "title": "System time -> wall clock time",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/23",
+      "state": "MERGED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2018-03-05T19:01:52Z",
+      "updatedAt": "2018-03-05T22:03:35Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "382c308f3617473241bb9d605cdac283da452133",
+      "headRepository": null,
+      "headRefName": "patch-5",
+      "headRefOid": "eb02e65ca3036fd11485a372982be46d7591bedf",
+      "closedAt": "2018-03-05T22:03:35Z",
+      "mergedAt": "2018-03-05T22:03:35Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "eb02e65ca3036fd11485a372982be46d7591bedf"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 24,
+      "id": "MDExOlB1bGxSZXF1ZXN0MTcyOTU2NzI5",
+      "title": "time synchronization also for MAC",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/24",
+      "state": "MERGED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Moved text about time sync. Current placement may have given the idea that it only applied to ecrypted time stamps.",
+      "createdAt": "2018-03-05T19:03:50Z",
+      "updatedAt": "2018-03-05T22:03:35Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "382c308f3617473241bb9d605cdac283da452133",
+      "headRepository": null,
+      "headRefName": "patch-6",
+      "headRefOid": "ff0a73efc23803406ae8b9c4c01dfc38dc00e79d",
+      "closedAt": "2018-03-05T22:03:35Z",
+      "mergedAt": "2018-03-05T22:03:35Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "ff0a73efc23803406ae8b9c4c01dfc38dc00e79d"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 25,
+      "id": "MDExOlB1bGxSZXF1ZXN0MTczOTM1MjA2",
+      "title": "Ref Table 4 of {{RFC7252}}).",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/25",
+      "state": "MERGED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "This was an IESG comment on OSCORE. Also fix a nit",
+      "createdAt": "2018-03-09T07:16:01Z",
+      "updatedAt": "2018-03-18T09:33:54Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "04376999a2683476e7f76769ed6ea9bd5dca39c6",
+      "headRepository": null,
+      "headRefName": "patch-8",
+      "headRefOid": "96325302f6a513beae5f022016bdfa818aa16b5a",
+      "closedAt": "2018-03-18T09:33:54Z",
+      "mergedAt": "2018-03-18T09:33:54Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "96325302f6a513beae5f022016bdfa818aa16b5a"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 26,
+      "id": "MDExOlB1bGxSZXF1ZXN0MTczOTM1NTM3",
+      "title": "Fix contradicting text on time",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/26",
+      "state": "MERGED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2018-03-09T07:18:39Z",
+      "updatedAt": "2018-03-18T09:33:55Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "04376999a2683476e7f76769ed6ea9bd5dca39c6",
+      "headRepository": null,
+      "headRefName": "patch-9",
+      "headRefOid": "690d57ba0e752bd117459c7010e12489be6617af",
+      "closedAt": "2018-03-18T09:33:55Z",
+      "mergedAt": "2018-03-18T09:33:55Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "690d57ba0e752bd117459c7010e12489be6617af"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 27,
+      "id": "MDExOlB1bGxSZXF1ZXN0MTczOTYyMjA3",
+      "title": "Terminology text did not follow boilerplate",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/27",
+      "state": "MERGED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2018-03-09T09:54:36Z",
+      "updatedAt": "2018-03-18T09:33:55Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "04376999a2683476e7f76769ed6ea9bd5dca39c6",
+      "headRepository": null,
+      "headRefName": "patch-10",
+      "headRefOid": "41c98aada66743bede2170175876e440faa8f667",
+      "closedAt": "2018-03-18T09:33:55Z",
+      "mergedAt": "2018-03-18T09:33:55Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "41c98aada66743bede2170175876e440faa8f667"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 29,
+      "id": "MDExOlB1bGxSZXF1ZXN0MjIzMjYyODY3",
+      "title": "Same value different clients",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/29",
+      "state": "MERGED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "\"The server MAY include the same Echo option value in several different responses and to different clients.\"\r\n\r\nClarification based on Jim's review.",
+      "createdAt": "2018-10-16T14:01:54Z",
+      "updatedAt": "2018-10-16T14:42:46Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "0a9d8d9431be626af6b194e5cca3285b26718864",
+      "headRepository": null,
+      "headRefName": "patch-11",
+      "headRefOid": "13f44877800844281f33fa5419fb7c217b13ebae",
+      "closedAt": "2018-10-16T14:42:46Z",
+      "mergedAt": "2018-10-16T14:42:46Z",
+      "mergedBy": "gselander",
+      "mergeCommit": {
+        "oid": "5fc0852d6d9a28c4974f088e235ff64b23812e3a"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 30,
+      "id": "MDExOlB1bGxSZXF1ZXN0MjIzMjY2MDY0",
+      "title": "Time t0 and error rejection",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/30",
+      "state": "MERGED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Clarifications based on Jim's review.\r\n\r\n\"t0 is the time when the Echo option value was generated.\"\r\n\r\n\"If the server cannot verify that the Echo option value was generated by the server or the round-trip time is not below the threshold the request is not processed further, and an error message MAY be sent. The error message SHOULD include a new Echo option.\"",
+      "createdAt": "2018-10-16T14:10:21Z",
+      "updatedAt": "2018-10-16T14:42:31Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "0a9d8d9431be626af6b194e5cca3285b26718864",
+      "headRepository": null,
+      "headRefName": "patch-12",
+      "headRefOid": "68a52c67a3340108f2aeb4b613f64492a453ecbf",
+      "closedAt": "2018-10-16T14:42:31Z",
+      "mergedAt": "2018-10-16T14:42:31Z",
+      "mergedBy": "gselander",
+      "mergeCommit": {
+        "oid": "e6e13cae2578ae3b939347ae9a391733740c2a5b"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 31,
+      "id": "MDExOlB1bGxSZXF1ZXN0MjIzNjQ4NzY2",
+      "title": "Wide tables and continuity in appendix",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/31",
+      "state": "MERGED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "- Tables were to wide.\r\n\r\n- \"If the server loses time synchronization, e.g. due to reboot\"  was still in appendix",
+      "createdAt": "2018-10-17T15:24:24Z",
+      "updatedAt": "2018-10-18T08:32:33Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "bc3fcb963cc40dd71e6b1bceca4b6c8681947ec5",
+      "headRepository": null,
+      "headRefName": "patch-13",
+      "headRefOid": "5d42a4941f5814168b7c24368b6cdb7ef822bb32",
+      "closedAt": "2018-10-18T08:32:33Z",
+      "mergedAt": "2018-10-18T08:32:33Z",
+      "mergedBy": "gselander",
+      "mergeCommit": {
+        "oid": "3427e7d6883283ff62a2ebba46c165d6693da20f"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 32,
+      "id": "MDExOlB1bGxSZXF1ZXN0MjIzNjY3MDU1",
+      "title": "Some additons to 1.3",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/32",
+      "state": "MERGED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2018-10-17T16:13:43Z",
+      "updatedAt": "2018-10-18T08:38:08Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "bc3fcb963cc40dd71e6b1bceca4b6c8681947ec5",
+      "headRepository": null,
+      "headRefName": "patch-14",
+      "headRefOid": "448461044228f5a2cc22cd9b74f7c79e62af85cb",
+      "closedAt": "2018-10-18T08:38:08Z",
+      "mergedAt": "2018-10-18T08:38:08Z",
+      "mergedBy": "gselander",
+      "mergeCommit": {
+        "oid": "3be02e5dd9683284ae61320deb770a7cf9083f6b"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 33,
+      "id": "MDExOlB1bGxSZXF1ZXN0MjIzODU1Nzky",
+      "title": "mention attacker in section  1.3",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/33",
+      "state": "MERGED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2018-10-18T07:47:08Z",
+      "updatedAt": "2018-10-18T08:50:39Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "bc3fcb963cc40dd71e6b1bceca4b6c8681947ec5",
+      "headRepository": null,
+      "headRefName": "patch-15",
+      "headRefOid": "7163976191703d649da208293ed965344a2c7474",
+      "closedAt": "2018-10-18T08:50:39Z",
+      "mergedAt": "2018-10-18T08:50:39Z",
+      "mergedBy": "gselander",
+      "mergeCommit": {
+        "oid": "2466285fa4f3a38f56494e1bb12990277ca7f13a"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 34,
+      "id": "MDExOlB1bGxSZXF1ZXN0MjI0Njg0Mzgw",
+      "title": "Two minor changes",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/34",
+      "state": "MERGED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "\"AEAD keys\" -> \"traffic keys\"\r\nIn (D)TLS, the algorithms may be other types than AEAD.\r\n\r\n\"thus mitigating error cases and attacks where the client may erroneously associate the wrong response to a request.\"\r\n\r\nSome more text about this in the intro, the current text was very barebone.",
+      "createdAt": "2018-10-22T13:39:59Z",
+      "updatedAt": "2018-10-22T20:24:43Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "b50b1d365d878402a8dd6e8ee207c4e53542888b",
+      "headRepository": null,
+      "headRefName": "patch-16",
+      "headRefOid": "795f81c95c8111b3f3d0c9c0450ace0cf6e495c9",
+      "closedAt": "2018-10-22T20:24:43Z",
+      "mergedAt": "2018-10-22T20:24:43Z",
+      "mergedBy": "gselander",
+      "mergeCommit": {
+        "oid": "e2006e4a1192cec310902c10965f1215fbd75832"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 35,
+      "id": "MDExOlB1bGxSZXF1ZXN0MjI0NzA3MTcz",
+      "title": "Aliveness Freshness",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/35",
+      "state": "MERGED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2018-10-22T14:53:44Z",
+      "updatedAt": "2018-10-22T16:39:07Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "b50b1d365d878402a8dd6e8ee207c4e53542888b",
+      "headRepository": null,
+      "headRefName": "patch-17",
+      "headRefOid": "ea050211e1e67e786c234fc1852df51254fc8cf3",
+      "closedAt": "2018-10-22T16:39:07Z",
+      "mergedAt": "2018-10-22T16:39:07Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "2f0a75c43051d4f9cc27fbc9dbcc7448380400a4"
+      },
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "LGTM. Merging an introduced typo easier.",
+          "createdAt": "2018-10-22T16:38:44Z",
+          "updatedAt": "2018-10-22T16:38:44Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 36,
+      "id": "MDExOlB1bGxSZXF1ZXN0MjUxNDQ4NDc0",
+      "title": "Changing -03 to -latest",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/36",
+      "state": "MERGED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2019-02-08T12:27:43Z",
+      "updatedAt": "2019-02-14T12:03:42Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "8be6249ae884561c075f88cd7e61a74033e63c63",
+      "headRepository": null,
+      "headRefName": "patch-18",
+      "headRefOid": "07c68aa1f04a6b438607f67f7229f74c230ea676",
+      "closedAt": "2019-02-14T12:03:42Z",
+      "mergedAt": "2019-02-14T12:03:42Z",
+      "mergedBy": "emanjon",
+      "mergeCommit": {
+        "oid": "b92131d5b8a17b7adbf791ee1317044d2320ec43"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 37,
+      "id": "MDExOlB1bGxSZXF1ZXN0MjUxOTAyODU2",
+      "title": "Update Title and Abstract according to Carstens comments",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/37",
+      "state": "CLOSED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2019-02-11T12:53:07Z",
+      "updatedAt": "2019-02-20T14:55:52Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "8be6249ae884561c075f88cd7e61a74033e63c63",
+      "headRepository": null,
+      "headRefName": "patch-19",
+      "headRefOid": "b637f8cd36540a0028f96b10d81f2fa1c1d850ad",
+      "closedAt": "2019-02-14T12:05:11Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "On Mon, Feb 11, 2019 at 04:53:08AM -0800, emanjon wrote:\n>   * Update Title and Abstract according to Carstens comments\n\nFunny how this still keeps the ERT acronym working :-)\n",
+          "createdAt": "2019-02-20T14:55:52Z",
+          "updatedAt": "2019-02-20T14:55:52Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 38,
+      "id": "MDExOlB1bGxSZXF1ZXN0MjU0Njk4Njg2",
+      "title": "Christian 20190220",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/38",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Changes in response to Carsten's comments\r\n\r\nDisposition: Will merge soon if nobody objects.",
+      "createdAt": "2019-02-20T16:09:55Z",
+      "updatedAt": "2019-03-12T13:32:56Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "0e2859f3f129997c986e5496a8f2a5e5bc950bff",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "christian-20190220",
+      "headRefOid": "7c099227576c6a09eb93d78d0a0714ac0f32c00d",
+      "closedAt": "2019-03-01T14:41:51Z",
+      "mergedAt": "2019-03-01T14:41:51Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "7c099227576c6a09eb93d78d0a0714ac0f32c00d"
+      },
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Updated to match the changes to master",
+          "createdAt": "2019-03-01T14:41:40Z",
+          "updatedAt": "2019-03-01T14:41:40Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 39,
+      "id": "MDExOlB1bGxSZXF1ZXN0MjY4NDE1NzEx",
+      "title": "Small wording changes around \"easiest\"",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/39",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Addresses Carsten's comment:\r\n\r\n> I don\u2019t know how to formally prove that a counter is \u201ceasiest\u201d.  So I would probably avoid the absolute.  Calling out more explicitly what scope that counter has (I.e., the messages covered by the matching rule) might help, too.\r\n",
+      "createdAt": "2019-04-08T16:47:53Z",
+      "updatedAt": "2019-05-06T14:29:46Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "34d0643d96973b6bc28e8ff82c6d57ed62d25540",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "dont-say-easiest",
+      "headRefOid": "8210ede49b1d81d9d9ee2ec3f5eecc95220f1fc9",
+      "closedAt": "2019-04-15T13:23:30Z",
+      "mergedAt": "2019-04-15T13:23:30Z",
+      "mergedBy": "gselander",
+      "mergeCommit": {
+        "oid": "03c75edf612aa73f3db999260d0bf91c8ec5a676"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 40,
+      "id": "MDExOlB1bGxSZXF1ZXN0MjY4ODI3NDQ1",
+      "title": "Move text to security considerations and rewrite",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/40",
+      "state": "MERGED",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2019-04-09T17:04:02Z",
+      "updatedAt": "2019-11-01T14:19:32Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "03c75edf612aa73f3db999260d0bf91c8ec5a676",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "emanjon-patch-1",
+      "headRefOid": "4891afe17c1c86492550b691dc11064a7a492e2d",
+      "closedAt": "2019-04-15T13:37:37Z",
+      "mergedAt": "2019-04-15T13:37:37Z",
+      "mergedBy": "gselander",
+      "mergeCommit": {
+        "oid": "54b6ca183ffc44013451b8e469ef76e1e131aabc"
+      },
+      "comments": [
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "\"the encoding of the sequence number has to be chosen . . .\"\r\n\r\nReplace \"has to\" with \"MUST\"?\r\n\r\n(I merged now and proposed the commit in the master branch)",
+          "createdAt": "2019-04-15T11:42:19Z",
+          "updatedAt": "2019-04-15T13:24:21Z"
+        },
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I had to resolve a conflict before merging. Hope I did that right.",
+          "createdAt": "2019-04-15T13:37:08Z",
+          "updatedAt": "2019-04-15T13:37:08Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 42,
+      "id": "MDExOlB1bGxSZXF1ZXN0Mjk2NjY5MjQy",
+      "title": "Updates following Jim's input",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/42",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Most of this is described in my response to https://mailarchive.ietf.org/arch/msg/core/kQDL3_ZtVWqET2wG1nnlUN8HM7E -- the most controversial is probably 22e8975a34076eca075cc8324c0ce193739a3a5a, but I'd appreciate eyes on the rest as well.",
+      "createdAt": "2019-07-11T14:06:58Z",
+      "updatedAt": "2019-09-11T12:29:42Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "9cc77eccd177048fa24de2a58f53e6fa2b92e37b",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "chrysn-processing-jims-input",
+      "headRefOid": "e76993b9537af144837f8e45a782b6698e6f7165",
+      "closedAt": "2019-09-11T12:28:34Z",
+      "mergedAt": "2019-09-11T12:28:33Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "e76993b9537af144837f8e45a782b6698e6f7165"
+      },
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "I'm happy with the changes except for those points already discussed per mail (text on clients using an Echo value on other links, and issues with the token reuse considerations for DTLS). Merging this to now to keep the changes more managable (ie. newer commits can go into new branches).",
+          "createdAt": "2019-09-11T12:27:53Z",
+          "updatedAt": "2019-09-11T12:27:53Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 45,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzE2NDM1MDU5",
+      "title": "Remove 0.00 wording, address \"same security context\" vs \"same endpoint\" comment",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/45",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "With those, any open issues I'm aware of except the single words from #44 and the larger discussion or #43 are resolved from my PoV.",
+      "createdAt": "2019-09-11T12:56:39Z",
+      "updatedAt": "2019-09-12T09:59:32Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "8acd11ce522940f3a615084decaa76c7afff0d79",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "chrysn-20190911",
+      "headRefOid": "e4edebf96327a5bd47e052970e747355531dab88",
+      "closedAt": "2019-09-12T09:59:29Z",
+      "mergedAt": "2019-09-12T09:59:29Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "e4edebf96327a5bd47e052970e747355531dab88"
+      },
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "s/freshness tokens/freshness indicators/ : Amended by a proposed term to solve the remaining point in #44 -- feel free to change to something different, it's just a shortcut suggestion.",
+          "createdAt": "2019-09-11T13:00:57Z",
+          "updatedAt": "2019-09-11T13:00:57Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "\"freshness indicators\": OK with John, 0.00 OK, endpoints with security associations OK",
+          "createdAt": "2019-09-12T07:49:24Z",
+          "updatedAt": "2019-09-12T07:49:24Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 47,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzE3ODE1OTA4",
+      "title": "Token security considerations",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/47",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "This is my take on #43, pointing to the cases when it's possible to reuse tokens, at the same time discouraging it for all other cases.\r\n\r\nThe acceptable cases are\r\n* the ones identified in the last authors' call, and\r\n* TLS and OSCORE\r\n\r\nI've added in a potential third case in source comments; it's still something we can dig up if people ask for more comprehensive exceptions, but there's so many things that can go wrong that I'd rather not have it in.",
+      "createdAt": "2019-09-16T10:38:44Z",
+      "updatedAt": "2019-09-18T14:22:13Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "2156a289f9267f565fa8134d04c9708281ec4340",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "chrysn/token-seccons",
+      "headRefOid": "537c78f75fe09489cfafae53ecfb4431b24b4540",
+      "closedAt": "2019-09-18T14:08:35Z",
+      "mergedAt": "2019-09-18T14:08:35Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "537c78f75fe09489cfafae53ecfb4431b24b4540"
+      },
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Thanks, merged. I did put in a clarification on the f81c97221a1f0e7571ad06811a8b713659741336 edit -- acutally both CON and NON would be unusable.",
+          "createdAt": "2019-09-18T14:09:01Z",
+          "updatedAt": "2019-09-18T14:09:01Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3Mjg5NzEwNTU4",
+          "commit": {
+            "abbreviatedOid": "f88f06b"
+          },
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2019-09-18T07:13:40Z",
+          "updatedAt": "2019-09-18T07:13:40Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 48,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzE3ODMxNTUx",
+      "title": "Allow OSCORE servers to send outer Echo for reachability, ...",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/48",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "... and clarify that client aliveness is a cryptographic property.\r\n\r\nThis is in response to comments about the conflict between \"OSCORE\r\nservers MUST ONLY produce Inner\" and \"Echo option [...] MAY be\r\nunprotected\".\r\n\r\nContributes-To: https://github.com/core-wg/echo-request-tag/issues/46",
+      "createdAt": "2019-09-16T11:23:04Z",
+      "updatedAt": "2019-09-17T16:26:30Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "2156a289f9267f565fa8134d04c9708281ec4340",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "chrysn/endpoints-and-aiveness",
+      "headRefOid": "c09eeaf8088bc62110ea4f8f66199105651e6d90",
+      "closedAt": "2019-09-17T13:38:23Z",
+      "mergedAt": "2019-09-17T13:38:23Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "c09eeaf8088bc62110ea4f8f66199105651e6d90"
+      },
+      "comments": [
+        {
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "body": "Sounds good.\r\n\r\nFrom: chrysn <notifications@github.com>\r\nReply to: core-wg/echo-request-tag <reply@reply.github.com>\r\nDate: Tuesday, 17 September 2019 at 15:23\r\nTo: core-wg/echo-request-tag <echo-request-tag@noreply.github.com>\r\nCc: John Mattsson <john.mattsson@ericsson.com>, Comment <comment@noreply.github.com>\r\nSubject: Re: [core-wg/echo-request-tag] Allow OSCORE servers to send outer Echo for reachability, ... (#48)\r\n\r\n\r\n@chrysn commented on this pull request.\r\n\r\n________________________________\r\n\r\nIn draft-ietf-core-echo-request-tag.md<https://protect2.fireeye.com/url?k=5112f2c7-0dc6fba1-5112b25c-8610d8a762ca-c54b8a5254bceef6&q=1&u=https%3A%2F%2Fgithub.com%2Fcore-wg%2Fecho-request-tag%2Fpull%2F48%23discussion_r325163168>:\r\n\r\n> @@ -144,9 +144,7 @@ The server may use request freshness provided by the Echo option to verify the a\r\n\r\n\r\n\r\n Upon receiving a 4.01 Unauthorized response with the Echo option, the client SHOULD resend the original request with the addition of an Echo option with the received Echo option value. The client MAY send a different request compared to the original request. Upon receiving any other response with the Echo option, the client SHOULD echo the Echo option value in the next request to the server. The client MAY include the same Echo option value in several different requests to the server.\r\n\r\n\r\n\r\n-A client MUST only send Echo values to endpoints it received them from (where as defined in {{RFC7252}} Section 1.2, the security association is part of the endpoint).\r\n\r\n-In OSCORE processing, that means sending Echo values from outer options back in outer options,\r\n\r\n-and those from inner options in inner options in the same security context.\r\n\r\n+A client MUST only send Echo values to endpoints it received them from (where as defined in {{RFC7252}} Section 1.2, the security association is part of the endpoint). In OSCORE processing, that means sending Echo values from outer options back in outer options, and those from inner options in inner options in the same security context. Echo options in error responses not protected by OSCORE are treated as outer options.\r\n\r\nOK, then let's just say \"from outer options (or non-OSCORE messages)\"; merging with that on top of it.\r\n\r\n\u2014\r\nYou are receiving this because you commented.\r\nReply to this email directly, view it on GitHub<https://protect2.fireeye.com/url?k=d05ebdf6-8c8ab490-d05efd6d-8610d8a762ca-2e98ea59e8abcd55&q=1&u=https%3A%2F%2Fgithub.com%2Fcore-wg%2Fecho-request-tag%2Fpull%2F48%3Femail_source%3Dnotifications%26email_token%3DAFYXKYQ2DQC2EJDOOXXV3T3QKDK3ZA5CNFSM4IXA5CMKYY3PNVWWK3TUL52HS4DFWFIHK3DMKJSXC5LFON2FEZLWNFSXPKTDN5WW2ZLOORPWSZGOCE63MBI%23discussion_r325163168>, or mute the thread<https://protect2.fireeye.com/url?k=148e2046-485a2920-148e60dd-8610d8a762ca-502cc4990ac93970&q=1&u=https%3A%2F%2Fgithub.com%2Fnotifications%2Funsubscribe-auth%2FAFYXKYWIDDZMK6LUPMRUR3LQKDK3ZANCNFSM4IXA5CMA>.\r\n",
+          "createdAt": "2019-09-17T13:36:57Z",
+          "updatedAt": "2019-09-17T13:36:57Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "I just noticed there as c09eeaf8088bc62110ea4f8f66199105651e6d90 on this stack as well and (hopefully) simplified that into 456a6f4b28cfc309938511f11dfbc87da25408d7, please have a look there.",
+          "createdAt": "2019-09-17T13:39:19Z",
+          "updatedAt": "2019-09-17T13:39:19Z"
+        },
+        {
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "body": "Good, looks like an improvement.\r\n\r\nFrom: chrysn <notifications@github.com>\r\nReply to: core-wg/echo-request-tag <reply@reply.github.com>\r\nDate: Tuesday, 17 September 2019 at 15:39\r\nTo: core-wg/echo-request-tag <echo-request-tag@noreply.github.com>\r\nCc: John Mattsson <john.mattsson@ericsson.com>, Comment <comment@noreply.github.com>\r\nSubject: Re: [core-wg/echo-request-tag] Allow OSCORE servers to send outer Echo for reachability, ... (#48)\r\n\r\n\r\nI just noticed there as c09eeaf<https://protect2.fireeye.com/url?k=7fe62be5-233227bb-7fe66b7e-8691959ed9b7-2a48e7ccc83ff15d&q=1&u=https%3A%2F%2Fgithub.com%2Fcore-wg%2Fecho-request-tag%2Fcommit%2Fc09eeaf8088bc62110ea4f8f66199105651e6d90> on this stack as well and (hopefully) simplified that into 456a6f4<https://protect2.fireeye.com/url?k=fcefcba8-a03bc7f6-fcef8b33-8691959ed9b7-644388e81905fb62&q=1&u=https%3A%2F%2Fgithub.com%2Fcore-wg%2Fecho-request-tag%2Fcommit%2F456a6f4b28cfc309938511f11dfbc87da25408d7>, please have a look there.\r\n\r\n\u2014\r\nYou are receiving this because you commented.\r\nReply to this email directly, view it on GitHub<https://protect2.fireeye.com/url?k=e2a18a47-be758619-e2a1cadc-8691959ed9b7-d559d032737d796e&q=1&u=https%3A%2F%2Fgithub.com%2Fcore-wg%2Fecho-request-tag%2Fpull%2F48%3Femail_source%3Dnotifications%26email_token%3DAFYXKYXA7R3DPZWPWTBC6MLQKDMYPA5CNFSM4IXA5CMKYY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOD64RZRA%23issuecomment-532225220>, or mute the thread<https://protect2.fireeye.com/url?k=e065bbcd-bcb1b793-e065fb56-8691959ed9b7-4fadb31e0b2d7c3c&q=1&u=https%3A%2F%2Fgithub.com%2Fnotifications%2Funsubscribe-auth%2FAFYXKYUO4BIWO2HRCYSCOXLQKDMYPANCNFSM4IXA5CMA>.\r\n",
+          "createdAt": "2019-09-17T13:43:28Z",
+          "updatedAt": "2019-09-17T13:43:28Z"
+        },
+        {
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "body": "\u201cCoAP-to-CoAP proxy MAY set an Echo option on responses, both on forwarded ones that had no Echo option or ones generated by the proxy (from cache or as an error).\u201d\r\n\r\nI assume a proxy having a cache can generate it\u2019s own requests as well. In these cases the proxy should be allowed to behave like any other client. The current text \u201cHowever, it MUST relay the Echo option of responses unmodified\u201d kind of give the idea that proxys cannot remove the Echo values.\r\n\r\nFrom: John Mattsson <john.mattsson@ericsson.com>\r\nDate: Tuesday, 17 September 2019 at 15:43\r\nTo: core-wg/echo-request-tag <reply@reply.github.com>, core-wg/echo-request-tag <echo-request-tag@noreply.github.com>\r\nCc: Comment <comment@noreply.github.com>\r\nSubject: Re: [core-wg/echo-request-tag] Allow OSCORE servers to send outer Echo for reachability, ... (#48)\r\n\r\nGood, looks like an improvement.\r\n\r\nFrom: chrysn <notifications@github.com>\r\nReply to: core-wg/echo-request-tag <reply@reply.github.com>\r\nDate: Tuesday, 17 September 2019 at 15:39\r\nTo: core-wg/echo-request-tag <echo-request-tag@noreply.github.com>\r\nCc: John Mattsson <john.mattsson@ericsson.com>, Comment <comment@noreply.github.com>\r\nSubject: Re: [core-wg/echo-request-tag] Allow OSCORE servers to send outer Echo for reachability, ... (#48)\r\n\r\n\r\nI just noticed there as c09eeaf<https://protect2.fireeye.com/url?k=7fe62be5-233227bb-7fe66b7e-8691959ed9b7-2a48e7ccc83ff15d&q=1&u=https%3A%2F%2Fgithub.com%2Fcore-wg%2Fecho-request-tag%2Fcommit%2Fc09eeaf8088bc62110ea4f8f66199105651e6d90> on this stack as well and (hopefully) simplified that into 456a6f4<https://protect2.fireeye.com/url?k=fcefcba8-a03bc7f6-fcef8b33-8691959ed9b7-644388e81905fb62&q=1&u=https%3A%2F%2Fgithub.com%2Fcore-wg%2Fecho-request-tag%2Fcommit%2F456a6f4b28cfc309938511f11dfbc87da25408d7>, please have a look there.\r\n\r\n\u2014\r\nYou are receiving this because you commented.\r\nReply to this email directly, view it on GitHub<https://protect2.fireeye.com/url?k=e2a18a47-be758619-e2a1cadc-8691959ed9b7-d559d032737d796e&q=1&u=https%3A%2F%2Fgithub.com%2Fcore-wg%2Fecho-request-tag%2Fpull%2F48%3Femail_source%3Dnotifications%26email_token%3DAFYXKYXA7R3DPZWPWTBC6MLQKDMYPA5CNFSM4IXA5CMKYY3PNVWWK3TUL52HS4DFVREXG43VMVBW63LNMVXHJKTDN5WW2ZLOORPWSZGOD64RZRA%23issuecomment-532225220>, or mute the thread<https://protect2.fireeye.com/url?k=e065bbcd-bcb1b793-e065fb56-8691959ed9b7-4fadb31e0b2d7c3c&q=1&u=https%3A%2F%2Fgithub.com%2Fnotifications%2Funsubscribe-auth%2FAFYXKYUO4BIWO2HRCYSCOXLQKDMYPANCNFSM4IXA5CMA>.\r\n",
+          "createdAt": "2019-09-17T13:54:34Z",
+          "updatedAt": "2019-09-17T13:54:34Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3Mjg5MDc4NTYx",
+          "commit": {
+            "abbreviatedOid": "31a5b43"
+          },
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-09-17T07:54:09Z",
+          "updatedAt": "2019-09-17T07:54:09Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "That might be read as giving license to a client to take the inner Echo from an inner error and use it on the outside, I don't think we want that. What motivates that addition anyway?",
+              "createdAt": "2019-09-17T07:54:09Z",
+              "updatedAt": "2019-09-17T08:07:40Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3Mjg5MjUyOTMy",
+          "commit": {
+            "abbreviatedOid": "c09eeaf"
+          },
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-09-17T13:17:06Z",
+          "updatedAt": "2019-09-17T13:17:06Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "I don't see how it could be read as a licence to a client to take the inner Echo from an inner error and use it on the outside. \"not protected by OSCORE\" means there are no inner.\r\n\r\nThe motivation was the following\r\n\r\n```\r\nC                                           P                                                      S\r\n\r\nOSCORE Req    \r\n----------------------------> \r\n\r\nerror with echo (not OSCORE)\r\n<---------------------------- \r\n\r\nOSCORE Req Outer Echo .           OSCORE Req without Echo\r\n---------------------------->    ----------------------------> \r\n```\r\n\r\nI do not think that RFC 8613 is clear the an echo in non-OSCORE error counts as Outer. And they \"In OSCORE processing, that means sending Echo values from outer options back in outer options, and those from inner options in inner options in the same security context.\" Makes it unclear how to do when a Proxy responds with error to an OSCORE request.\r\n",
+              "createdAt": "2019-09-17T13:17:06Z",
+              "updatedAt": "2019-09-17T13:17:06Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3Mjg5MjU2OTY1",
+          "commit": {
+            "abbreviatedOid": "c09eeaf"
+          },
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-09-17T13:23:07Z",
+          "updatedAt": "2019-09-17T13:23:07Z",
+          "comments": [
+            {
+              "originalPosition": 7,
+              "body": "OK, then let's just say \"from outer options (or non-OSCORE messages)\"; merging with that on top of it.",
+              "createdAt": "2019-09-17T13:23:07Z",
+              "updatedAt": "2019-09-17T13:23:07Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 49,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzM0ODc1OTcx",
+      "title": "Gs sec 2 fp review",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/49",
+      "state": "MERGED",
+      "author": "gselander",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Proposed resolution to Francesca's review comments on Section 2.",
+      "createdAt": "2019-10-31T12:53:09Z",
+      "updatedAt": "2019-11-01T14:19:33Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "269746a8096560f9ff0cb6426f60dadad21859d2",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "gs-sec-2-fp-review",
+      "headRefOid": "b13208a91c3b828bdda86d3b69d54cd6abc4d100",
+      "closedAt": "2019-11-01T14:17:34Z",
+      "mergedAt": "2019-11-01T14:17:34Z",
+      "mergedBy": "emanjon",
+      "mergeCommit": {
+        "oid": "460a247e43702eaac42ca6c626a1c0847b7b3d10"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzEwMDE1NDQ3",
+          "commit": {
+            "abbreviatedOid": "869605c"
+          },
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "Happy with the changes even if you turn down the two remarks I made.",
+          "createdAt": "2019-10-31T16:27:52Z",
+          "updatedAt": "2019-10-31T16:34:50Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "I like that addition a lot.",
+              "createdAt": "2019-10-31T16:27:52Z",
+              "updatedAt": "2019-11-01T14:14:03Z"
+            },
+            {
+              "originalPosition": 39,
+              "body": "Given we're up to reorder text it'd be useful to have kramdown resolve that number and refer to it by anchor in the source.",
+              "createdAt": "2019-10-31T16:29:32Z",
+              "updatedAt": "2019-11-01T14:14:03Z"
+            },
+            {
+              "originalPosition": 33,
+              "body": "I understand this to be a usage example. At this point I think it'd be easier for the reader to digest if this were simplified to a single latest-state (cache size 1), and explained in terms of \"fresh\" and \"not fresh\" rather than taking up the t0/t1 terminology of the time-based example.",
+              "createdAt": "2019-10-31T16:33:54Z",
+              "updatedAt": "2019-11-01T14:14:03Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzEwMzkwNDcz",
+          "commit": {
+            "abbreviatedOid": "869605c"
+          },
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-11-01T10:48:53Z",
+          "updatedAt": "2019-11-01T10:48:54Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "I would suggest removing \"uniquely\".",
+              "createdAt": "2019-11-01T10:48:54Z",
+              "updatedAt": "2019-11-01T14:14:03Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzEwMzkxMjg1",
+          "commit": {
+            "abbreviatedOid": "869605c"
+          },
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-11-01T10:50:51Z",
+          "updatedAt": "2019-11-01T10:50:51Z",
+          "comments": [
+            {
+              "originalPosition": 14,
+              "body": "I think it is more important to have an example of time based to not give the idea that only event based echo values can be reused. The server is perfectly fine to send the same echo value to to clients whos requests came close in time. This saves some processing.",
+              "createdAt": "2019-11-01T10:50:51Z",
+              "updatedAt": "2019-11-01T14:14:03Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzEwMzkyMDc5",
+          "commit": {
+            "abbreviatedOid": "869605c"
+          },
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-11-01T10:52:55Z",
+          "updatedAt": "2019-11-01T10:52:55Z",
+          "comments": [
+            {
+              "originalPosition": 50,
+              "body": "OLD a property (state or time) \r\nNEW properties (such as state or time)",
+              "createdAt": "2019-11-01T10:52:55Z",
+              "updatedAt": "2019-11-01T14:14:03Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzEwNDA0Mjcy",
+          "commit": {
+            "abbreviatedOid": "8a6e7a3"
+          },
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-11-01T11:27:25Z",
+          "updatedAt": "2019-11-01T11:27:25Z",
+          "comments": [
+            {
+              "originalPosition": 17,
+              "body": "Maybe \"to a particular previous\"?",
+              "createdAt": "2019-11-01T11:27:25Z",
+              "updatedAt": "2019-11-01T14:14:03Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzEwNDIzNTM5",
+          "commit": {
+            "abbreviatedOid": "1b0a273"
+          },
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-11-01T12:21:31Z",
+          "updatedAt": "2019-11-01T12:21:32Z",
+          "comments": [
+            {
+              "originalPosition": 48,
+              "body": "\"E.g. if access to a server resource is dependent on time, then the client requesting access MUST NOT set the time of the server.\"\r\n\r\nTwo comments of this sentence.\r\n1. This seems to rely on that the server is not the authority (which is may be)\r\n1. A client syncronizing seems to have nothing to do with echo\r\n ",
+              "createdAt": "2019-11-01T12:21:31Z",
+              "updatedAt": "2019-11-01T14:14:03Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzEwNDI3NzEz",
+          "commit": {
+            "abbreviatedOid": "1b0a273"
+          },
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-11-01T12:32:53Z",
+          "updatedAt": "2019-11-01T12:32:53Z",
+          "comments": [
+            {
+              "originalPosition": 33,
+              "body": "I like the addition but I think there are to much implementation details for this section. That kind of stuff we have in the appendix. I also think all time should be removed from the event based example.\r\n\r\nOne solution could be to udate the figure to\r\n\r\nOLD     Echo: 0x437468756c687521 (t0)\r\nNEW     Echo: 0x437468756c687521 (t0 or event value)\r\n\r\nAlt.\r\n\r\nOLD     Echo: 0x437468756c687521 (t0)\r\nNEW     Echo: 0x437468756c687521 (t0 or e0)\r\n\r\n\r\n\r\n",
+              "createdAt": "2019-11-01T12:32:53Z",
+              "updatedAt": "2019-11-01T14:14:03Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzEwNDY5ODEz",
+          "commit": {
+            "abbreviatedOid": "40f77d5"
+          },
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2019-11-01T14:01:46Z",
+          "updatedAt": "2019-11-01T14:01:46Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 50,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzM0OTMyMTYz",
+      "title": "Section 6 of fp review",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/50",
+      "state": "MERGED",
+      "author": "gselander",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Proposed resolution to Francesca's review comments on Section 6.",
+      "createdAt": "2019-10-31T14:25:07Z",
+      "updatedAt": "2019-11-01T15:00:54Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "269746a8096560f9ff0cb6426f60dadad21859d2",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "gs-sec-6-fp-review",
+      "headRefOid": "cf74136205e763146e7a8f0bb2ce2639f295add0",
+      "closedAt": "2019-11-01T14:38:33Z",
+      "mergedAt": "2019-11-01T14:38:33Z",
+      "mergedBy": "gselander",
+      "mergeCommit": {
+        "oid": "00f95c6216a4aaf010359e0aa3b43e973329e9d2"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzEwNDA3MzMy",
+          "commit": {
+            "abbreviatedOid": "b0c2cb6"
+          },
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-11-01T11:36:13Z",
+          "updatedAt": "2019-11-01T11:36:39Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "Is \"never jumps\" a) a necessary property we need, and b) typically a consequence of \"monotonic\"? (I only know the term's use from maths not clock theory; there \"never jumps\" would be \"continuous\" which isn't necessary for \"monotonous\").",
+              "createdAt": "2019-11-01T11:36:13Z",
+              "updatedAt": "2019-11-01T14:36:01Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzEwNDQ2NjY3",
+          "commit": {
+            "abbreviatedOid": "b0c2cb6"
+          },
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-11-01T13:18:14Z",
+          "updatedAt": "2019-11-01T13:18:14Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "Should determine if the clock is continuous or if it ticks. C++ documentation e.g. defines steady_clock as the time between ticks being constant:\r\n\r\nClass std::chrono::steady_clock - represents a monotonic clock. The time points of this clock cannot decrease as physical time moves forward and the time between ticks of this clock is constant. This clock is not related to wall clock time (for example, it can be time since last reboot), and is most suitable for measuring intervals.\r\n\r\nstd::chrono::system_clock - wall clock time from the system-wide realtime clock",
+              "createdAt": "2019-11-01T13:18:14Z",
+              "updatedAt": "2019-11-01T14:36:01Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzEwNDUxMTUw",
+          "commit": {
+            "abbreviatedOid": "b0c2cb6"
+          },
+          "author": "emanjon",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-11-01T13:27:28Z",
+          "updatedAt": "2019-11-01T13:27:28Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "I don't think this work. Which time can the attacker change? Not the monotonic clock that we talked about earlier. \r\n\r\nI think we need to talk about wall clock time and system time..... \r\n\r\nG\u00f6ran: The definitions we looked at yesterday was about \"periods of time\". Many of the uses in this document is about \"points in time\"",
+              "createdAt": "2019-11-01T13:27:28Z",
+              "updatedAt": "2019-11-01T14:36:01Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzEwNDg0MTIy",
+          "commit": {
+            "abbreviatedOid": "b0c2cb6"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-11-01T14:26:12Z",
+          "updatedAt": "2019-11-01T14:26:13Z",
+          "comments": [
+            {
+              "originalPosition": 5,
+              "body": "I remove the definition for the time being. We can put it back in the merged version.",
+              "createdAt": "2019-11-01T14:26:12Z",
+              "updatedAt": "2019-11-01T14:36:01Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzEwNDg0NDM5",
+          "commit": {
+            "abbreviatedOid": "b0c2cb6"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2019-11-01T14:26:44Z",
+          "updatedAt": "2019-11-01T14:26:44Z",
+          "comments": [
+            {
+              "originalPosition": 8,
+              "body": "I replace with \"server's system time\". We can make further changes in the merged version\r\n",
+              "createdAt": "2019-11-01T14:26:44Z",
+              "updatedAt": "2019-11-01T14:36:01Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 51,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzM0OTkyODI0",
+      "title": "Changes to Section 3 after Francesca's review",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/51",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Also includes changes to a paragraph that will be Section 3 after the pending intro-shoving.\r\n\r\nRationale as in the review response mail:\r\n\r\n> \"   (Concurrent block-wise request operations are impossible with the\r\n>    options of [RFC7959] because the second operation's block overwrites\r\n>    any state of the first exchange.).\r\n> \"\r\n> \r\n> I believe this is true, but could you point to the section that states\r\n> that? I didn't manage to find it while checking.\r\n\r\nReference made more precise, \"from a single endpopoint\" added.\r\n\r\n> \" They can\r\n>    still be treated as independent messages by the server (e.g. when it\r\n>    sends 2.01/2.04 responses for every block), or initiate a new\r\n>    operation (overwriting kept context) when the later message carries\r\n>    Block1 number 0.\r\n> \"\r\n>\r\n> I have a hard time parsing/understanding this paragraph, particularly from \"or initiate...\"\r\n\r\nSplit up into separate sentences for better clarity.\r\n\r\n> * Section 3.3\r\n> \r\n> \"\r\n>    Clients MUST NOT recycle a request tag unless the first operation has\r\n>    concluded. \r\n> \"\r\n> \r\n> in the case where a client supports but does not use Request-Tag, this implies \"concurrent block operations without Request-Tag are not allowed\". If that is the case, I would like that to be stated explicitely.\r\n> \r\n> (also minor, I'd like to add \"that support Request-Tag\" after \"Clients\")\r\n\r\nThat requirement was already kind of conditional on the client using\r\nRequest-Tag for a particular purpose -- for otherwise the \"unless\r\nconcluded\" clause makes no sense, for that's defined by the purpose.\r\n\r\nRephrased to pull in the purpose before the MUST and make that explicit.\r\n\r\nThe \"that support Request-Tag\" comment should be obsolete by hat, for\r\nonly who supports it can use it for something.\r\n\r\n(We did, in the chat earlier, consider asking the WG whether that'd all\r\nmean that we're updating RFC7959, but as we're now back to \"If you want\r\nto achieve X, do Y\" wording, I don't see necessity for such an update).\r\n\r\n> * Section 3.3\r\n> \r\n> The last sentence gives some requirements about where the Request-Tag option can/musty be used per message. I felt the document was missing on usage requirements (e.g. if it is set, it MUST be set for all requests for a specific operation)\r\n\r\nAdded to the initial (now split up) paragraph of that section.\r\n\r\n> * Section 3.4.2\r\n> \r\n> \"\r\n>    When initializing a new block-wise operation, a client has to look at\r\n>    other active operations:\r\n> \r\n>    o  If any of them is matchable to the new one, and the client neither\r\n>       wants to cancel the old one nor postpone the new one, it can pick\r\n>       a Request-Tag value that is not in use by the other matchable\r\n>       operations for the new operation.\r\n> \r\n>    o  Otherwise, it can start the new operation without setting the\r\n>       Request-Tag option on it.\r\n> \"\r\n> \r\n> Does not cover the fact that Request-Tag can be omitted if that is a\r\n> different from the other matchable operations. (\"pick a new value\"\r\n> excludes it)\r\n\r\nExplicitly included as an option now.\r\n\r\n(Would have been even easier if there were a once-and-for-all definition\r\nof a \"request-tag value\" that can be absent or have the option's data,\r\nbut that had long-winded wording in the last version that was in, and\r\nstill might be mistaken by readers that don't have the precise\r\ndefinition at hand).",
+      "createdAt": "2019-10-31T15:56:36Z",
+      "updatedAt": "2019-11-01T14:24:05Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "269746a8096560f9ff0cb6426f60dadad21859d2",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "sec-3-fp-review",
+      "headRefOid": "c481ee7ddd0adcd3bea87fc680382789432daee3",
+      "closedAt": "2019-11-01T14:23:44Z",
+      "mergedAt": "2019-11-01T14:23:44Z",
+      "mergedBy": "emanjon",
+      "mergeCommit": {
+        "oid": "98196a69dd7204ad81ff5e26aa8d44e531fa1e77"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzEwNDgyNzg2",
+          "commit": {
+            "abbreviatedOid": "c481ee7"
+          },
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "Looks good.",
+          "createdAt": "2019-11-01T14:24:05Z",
+          "updatedAt": "2019-11-01T14:24:05Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 52,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzM2MDQ2NzA3",
+      "title": "Post-restructuring suggestions",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/52",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "See commit messages for details; the general theme is \"clean-up after moving the per-section intros into the sections\"",
+      "createdAt": "2019-11-03T16:58:14Z",
+      "updatedAt": "2019-11-04T16:49:44Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "8f2ad6275608c90af03ff90038bfdac1ba9a930e",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "post-restructuring-suggestions",
+      "headRefOid": "accdf76d8aa6064d5d1277114e7005a153be2d91",
+      "closedAt": "2019-11-04T15:41:59Z",
+      "mergedAt": "2019-11-04T15:41:59Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "accdf76d8aa6064d5d1277114e7005a153be2d91"
+      },
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "I had those sentence-cased according to how I read RFC7322 Section 3.4 item 3, but anyway that's something that's a) better consistent, and b) will be managed at the RFC editor stage anyway.",
+          "createdAt": "2019-11-04T16:49:43Z",
+          "updatedAt": "2019-11-04T16:49:43Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 53,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzgyODY1NTUz",
+      "title": "Amplification mitigation additions",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/53",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "I take https://mailarchive.ietf.org/arch/msg/core/wy5bOuXaupfSY9u_hY99U9BDLZ0 as a mandate to make Echo mitigation of amplification issues a more prominent point in ERT. (It wasn't intended as an update, as the SHOULD mentioned there is just a copy of the original 7252 SHOULD and we \"provide one way\", but no objections from me either).\r\n\r\nAlong that I'd offer concrete size numbers, and a note that this really needs piggy-backed responses.\r\n\r\nUnless objected to, I'd take this into the next version of ERT (as soon as I have processed any other pending comments if there still are any).",
+      "createdAt": "2020-03-03T10:27:30Z",
+      "updatedAt": "2020-03-09T12:59:52Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "beb30c123f96d2e4ba31ea7a6b7124b19697e04a",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "recommend-echo",
+      "headRefOid": "e7cb01005a46f3d477b2f3cedcef844816e6839d",
+      "closedAt": "2020-03-09T12:59:43Z",
+      "mergedAt": "2020-03-09T12:59:43Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "9004ed21dd76a35d4bf22769b62f8fb3185e408a"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 57,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzgyOTIyMDg0",
+      "title": "Allow Request-Tag when no Block options are present",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/57",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "(because they *can* be created as a consequence of Request-Tag being\r\nsafe-to-forward), but make them no-ops.\r\n\r\nCloses #55, as that's the last item in there.",
+      "createdAt": "2020-03-03T12:26:25Z",
+      "updatedAt": "2020-03-03T13:24:31Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "beb30c123f96d2e4ba31ea7a6b7124b19697e04a",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "allow-outside-block",
+      "headRefOid": "4861b3592ee08c24d54c61701ef98e6bd72b3f1b",
+      "closedAt": "2020-03-03T13:23:59Z",
+      "mergedAt": "2020-03-03T13:23:59Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "bc1940ea8de57c678d10f602e22a6121719a7def"
+      },
+      "comments": [
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Closed following Francesca's mail at https://mailarchive.ietf.org/arch/msg/core/A55PprZYmc3VzkYNQsJG2Mt7Eik",
+          "createdAt": "2020-03-03T13:24:31Z",
+          "updatedAt": "2020-03-03T13:24:31Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 58,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzgyOTM3MTc4",
+      "title": "Allow 1-byte Echo values",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/58",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes: https://github.com/core-wg/echo-request-tag/issues/56\r\n\r\nThe numeric part is trivial, the security implications (the use case for short Echo values has a different threat model than what's previously in seccons) is not.",
+      "createdAt": "2020-03-03T12:59:59Z",
+      "updatedAt": "2020-03-09T12:59:46Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "beb30c123f96d2e4ba31ea7a6b7124b19697e04a",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "short-echo",
+      "headRefOid": "07413bce1a8534816c431c17566d9e7045edb5a4",
+      "closedAt": "2020-03-09T12:59:43Z",
+      "mergedAt": "2020-03-09T12:59:42Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "0b51ff757c6ea3545a36e9f52f65738d6ad1cf4c"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 59,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzgyOTQ4NDA4",
+      "title": "block1+2 stateless is complicated",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/59",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "The previous statement was overreaching, see discussion at https://mailarchive.ietf.org/arch/msg/core/5Pc92j3uriocjRVjyeo90fySEwc",
+      "createdAt": "2020-03-03T13:23:25Z",
+      "updatedAt": "2020-03-09T16:29:26Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "0b51ff757c6ea3545a36e9f52f65738d6ad1cf4c",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "careful-stateless",
+      "headRefOid": "de60b1a6c33953ac302aa1a3e42aadb52e59bb93",
+      "closedAt": "2020-03-09T16:29:23Z",
+      "mergedAt": "2020-03-09T16:29:23Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "f163e7e4264d721cf8b0ab7b7d9da93f2de98309"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 61,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDgyNjI3NDMx",
+      "title": "Clarify counter",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/61",
+      "state": "CLOSED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "The mentions of counting Echo values was seen as confusing in the reviews, especially given that we didn't \r\n\r\nOpen steps:\r\n\r\n1. [ ] Add distinction (in seccons? where the features are introduced?) of what one *may* want from an Echo, and what properties are *required* to be provided (\"Want aliveness? Must be unpredictable even when having seen value as another client.\") (CA)\r\n2. [x] read through it again for nits and (CA)\r\n3. [x] check whether this is the outcome we want of yesterday's call (GS, JPM)",
+      "createdAt": "2020-09-09T08:02:02Z",
+      "updatedAt": "2020-11-02T17:35:07Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "d90a50d1f86614c50a031cfc5d45be0620040ffe",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "clarify-counter",
+      "headRefOid": "0d476003cc3ca75192306f0656e40d2c0f421edd",
+      "closedAt": "2020-11-02T17:35:07Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "gselander",
+          "authorAssociation": "COLLABORATOR",
+          "body": "I added some more commits:\r\n\r\n* Barry\u2019s two comments leftover from Christian\u2019s latest fix.\r\n* Some rephrasing in new example of persistent counters\r\n* Rephrased occurrences of  \u201cunless counter \u2026 \u201c in security considerations since it wasn\u2019t clear if that was the only exception\r\n* Aligned terminology\r\n\r\nI think only the first \"Open step\" above remains to do.\r\n",
+          "createdAt": "2020-09-10T09:20:29Z",
+          "updatedAt": "2020-09-10T09:20:29Z"
+        },
+        {
+          "author": "chrysn",
+          "authorAssociation": "MEMBER",
+          "body": "Yes, and that's probably excessive for now.\r\n\r\nThanks for the updates, I'm merging this and will finish the changelog to submit as -11",
+          "createdAt": "2020-11-02T17:34:37Z",
+          "updatedAt": "2020-11-02T17:34:37Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 66,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTY0MDc0Njc3",
+      "title": "Use concrete tokens for figures 2 and 3 from appendix",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/66",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Text is added to show why values do or do not change, setting the cases\r\napart more clearly.\r\n\r\nCloses: https://github.com/core-wg/echo-request-tag/issues/65",
+      "createdAt": "2021-01-29T15:53:46Z",
+      "updatedAt": "2021-02-01T12:07:47Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "ab18432ed492744f5429380584b1fc9f5f7eef01",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "differentiated-t-e-figures",
+      "headRefOid": "3dabb29d21ad4606d5243ccaa05cb711c2cad10c",
+      "closedAt": "2021-02-01T12:03:07Z",
+      "mergedAt": "2021-02-01T12:03:07Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "a589eea204571f9fbab67b81edcb6046fcc91ffb"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 67,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTY0MTI3MjEw",
+      "title": "Explain the 152 (now 136) Bytes OK to send before amplification mitigation",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/67",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes: https://github.com/core-wg/echo-request-tag/issues/64\r\n\r\nNot tagging any of you for reviewers because that's a topic that primarily I was active on, but still not merging right away in case you want to chime in.",
+      "createdAt": "2021-01-29T17:25:07Z",
+      "updatedAt": "2021-02-01T12:07:40Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "4c3cfb5e024529e1018b7f442ecc17e07ed28c82",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "explain-152",
+      "headRefOid": "1fdeb1d0274b8063ca2c01207876118ffa3b7502",
+      "closedAt": "2021-02-01T12:03:07Z",
+      "mergedAt": "2021-02-01T12:03:07Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "991769b753ae7a36dae6ad88d87d2dfc633b19d5"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 68,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTY0MTM0Mjgy",
+      "title": "Add \"freshness\" to terminology section",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/68",
+      "state": "MERGED",
+      "author": "chrysn",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "Closes: https://github.com/core-wg/echo-request-tag/issues/62\r\n\r\nThe text is a mixture of the suggestions of #62.",
+      "createdAt": "2021-01-29T17:39:11Z",
+      "updatedAt": "2021-02-01T12:07:48Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "f12041bdc2a2183ba3814d7f3b74f1002ce9762e",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "freshness-terminology",
+      "headRefOid": "673971091f4d1473ace5d9a1c9bef293d1530b5c",
+      "closedAt": "2021-02-01T12:03:07Z",
+      "mergedAt": "2021-02-01T12:03:07Z",
+      "mergedBy": "chrysn",
+      "mergeCommit": {
+        "oid": "8745cc3c47779d2f2618c2cf4f78e1fafd537d96"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 71,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTcwMzMyNDQy",
+      "title": "Amplification mitigation update in body",
+      "url": "https://github.com/core-wg/echo-request-tag/pull/71",
+      "state": "OPEN",
+      "author": "emanjon",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "#70\r\n\r\nI think it make sense to make a subsection",
+      "createdAt": "2021-02-09T14:15:45Z",
+      "updatedAt": "2021-02-10T09:13:32Z",
+      "baseRepository": "core-wg/echo-request-tag",
+      "baseRefName": "master",
+      "baseRefOid": "2a35004b7984d333733d3ff006ec84a1183f5157",
+      "headRepository": "core-wg/echo-request-tag",
+      "headRefName": "emanjon-patch-1",
+      "headRefOid": "724da936f37739dbfaaeddd59f25287b5eb09cd7",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}
