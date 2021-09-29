@@ -11,10 +11,10 @@
 <meta content="
        This document specifies enhancements to the Constrained Application Protocol (CoAP) that mitigate security issues in particular use cases. The Echo option enables a CoAP server to verify the freshness of a request or to force a client to demonstrate reachability at its claimed network address. The Request-Tag option allows the CoAP server to match block-wise message fragments belonging to the same request. This document updates RFC 7252 with respect to the client Token processing requirements, forbidding non-secure reuse of Tokens to ensure binding of response to request when CoAP is used with a security protocol, and with respect to amplification mitigation, where the use of Echo is now recommended. 
     " name="description">
-<meta content="xml2rfc 3.9.1" name="generator">
+<meta content="xml2rfc 3.10.0" name="generator">
 <meta content="draft-ietf-core-echo-request-tag-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.9.1
+  xml2rfc 3.10.0
     Python 3.9.5
     appdirs 1.4.4
     ConfigArgParse 1.3
@@ -1007,11 +1007,11 @@ address div.right {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Echo, Request-Tag, and Token Processing</td>
-<td class="right">July 2021</td>
+<td class="right">September 2021</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Amsuess, et al.</td>
-<td class="center">Expires 19 January 2022</td>
+<td class="center">Expires 2 April 2022</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1027,12 +1027,12 @@ address div.right {
 <a href="https://datatracker.ietf.org/doc/html/rfc7252" class="eref">7252</a> (if approved)</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2021-07-18" class="published">18 July 2021</time>
+<time datetime="2021-09-29" class="published">29 September 2021</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-01-19">19 January 2022</time></dd>
+<dd class="expires"><time datetime="2022-04-02">2 April 2022</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1084,7 +1084,7 @@ address div.right {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 19 January 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 2 April 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1112,148 +1112,148 @@ address div.right {
         <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
 <a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
         </h2>
-<nav class="toc"><ul class="compact ulBare ulEmpty toc">
-<li class="compact ulBare ulEmpty toc" id="section-toc.1-1.1">
+<nav class="toc"><ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a></p>
-<ul class="ulBare toc compact ulEmpty">
-<li class="ulBare toc compact ulEmpty" id="section-toc.1-1.1.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
                 <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="xref">1.1</a>.  <a href="#name-terminology" class="xref">Terminology</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.2">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
             <p id="section-toc.1-1.2.1"><a href="#section-2" class="xref">2</a>.  <a href="#name-request-freshness-and-the-e" class="xref">Request Freshness and the Echo Option</a></p>
-<ul class="ulBare toc compact ulEmpty">
-<li class="ulBare toc compact ulEmpty" id="section-toc.1-1.2.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
                 <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-request-freshness" class="xref">Request Freshness</a></p>
 </li>
-              <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.2.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2">
                 <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="xref">2.2</a>.  <a href="#name-the-echo-option" class="xref">The Echo Option</a></p>
-<ul class="ulBare toc compact ulEmpty">
-<li class="ulBare toc compact ulEmpty" id="section-toc.1-1.2.2.2.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.2.2.1">
                     <p id="section-toc.1-1.2.2.2.2.1.1"><a href="#section-2.2.1" class="xref">2.2.1</a>.  <a href="#name-echo-option-format" class="xref">Echo Option Format</a></p>
 </li>
                 </ul>
 </li>
-              <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.2.2.3">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.3">
                 <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="xref">2.3</a>.  <a href="#name-echo-processing" class="xref">Echo Processing</a></p>
 </li>
-              <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.2.2.4">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.4">
                 <p id="section-toc.1-1.2.2.4.1"><a href="#section-2.4" class="xref">2.4</a>.  <a href="#name-applications-of-the-echo-op" class="xref">Applications of the Echo Option</a></p>
 </li>
-              <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.2.2.5">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5">
                 <p id="section-toc.1-1.2.2.5.1"><a href="#section-2.5" class="xref">2.5</a>.  <a href="#name-characterization-of-echo-ap" class="xref">Characterization of Echo Applications</a></p>
-<ul class="ulBare toc compact ulEmpty">
-<li class="ulBare toc compact ulEmpty" id="section-toc.1-1.2.2.5.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5.2.1">
                     <p id="section-toc.1-1.2.2.5.2.1.1"><a href="#section-2.5.1" class="xref">2.5.1</a>.  <a href="#name-time-versus-event-based-fre" class="xref">Time versus Event Based Freshness</a></p>
 </li>
-                  <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.2.2.5.2.2">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5.2.2">
                     <p id="section-toc.1-1.2.2.5.2.2.1"><a href="#section-2.5.2" class="xref">2.5.2</a>.  <a href="#name-authority-over-used-informa" class="xref">Authority over Used Information</a></p>
 </li>
-                  <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.2.2.5.2.3">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.5.2.3">
                     <p id="section-toc.1-1.2.2.5.2.3.1"><a href="#section-2.5.3" class="xref">2.5.3</a>.  <a href="#name-protection-by-a-security-pr" class="xref">Protection by a Security Protocol</a></p>
 </li>
                 </ul>
 </li>
-              <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.2.2.6">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.6">
                 <p id="section-toc.1-1.2.2.6.1"><a href="#section-2.6" class="xref">2.6</a>.  <a href="#name-updated-amplification-mitig" class="xref">Updated Amplification Mitigation Requirements for Servers</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.3">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
             <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-protecting-message-bodies-u" class="xref">Protecting Message Bodies using Request Tags</a></p>
-<ul class="ulBare toc compact ulEmpty">
-<li class="ulBare toc compact ulEmpty" id="section-toc.1-1.3.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.1">
                 <p id="section-toc.1-1.3.2.1.1"><a href="#section-3.1" class="xref">3.1</a>.  <a href="#name-fragmented-message-body-int" class="xref">Fragmented Message Body Integrity</a></p>
 </li>
-              <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.3.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2">
                 <p id="section-toc.1-1.3.2.2.1"><a href="#section-3.2" class="xref">3.2</a>.  <a href="#name-the-request-tag-option" class="xref">The Request-Tag Option</a></p>
-<ul class="ulBare toc compact ulEmpty">
-<li class="ulBare toc compact ulEmpty" id="section-toc.1-1.3.2.2.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.2.2.1">
                     <p id="section-toc.1-1.3.2.2.2.1.1"><a href="#section-3.2.1" class="xref">3.2.1</a>.  <a href="#name-request-tag-option-format" class="xref">Request-Tag Option Format</a></p>
 </li>
                 </ul>
 </li>
-              <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.3.2.3">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.3">
                 <p id="section-toc.1-1.3.2.3.1"><a href="#section-3.3" class="xref">3.3</a>.  <a href="#name-request-tag-processing-by-s" class="xref">Request-Tag Processing by Servers</a></p>
 </li>
-              <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.3.2.4">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.4">
                 <p id="section-toc.1-1.3.2.4.1"><a href="#section-3.4" class="xref">3.4</a>.  <a href="#name-setting-the-request-tag" class="xref">Setting the Request-Tag</a></p>
 </li>
-              <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.3.2.5">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5">
                 <p id="section-toc.1-1.3.2.5.1"><a href="#section-3.5" class="xref">3.5</a>.  <a href="#name-applications-of-the-request" class="xref">Applications of the Request-Tag Option</a></p>
-<ul class="ulBare toc compact ulEmpty">
-<li class="ulBare toc compact ulEmpty" id="section-toc.1-1.3.2.5.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5.2.1">
                     <p id="section-toc.1-1.3.2.5.2.1.1"><a href="#section-3.5.1" class="xref">3.5.1</a>.  <a href="#name-body-integrity-based-on-pay" class="xref">Body Integrity Based on Payload Integrity</a></p>
 </li>
-                  <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.3.2.5.2.2">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5.2.2">
                     <p id="section-toc.1-1.3.2.5.2.2.1"><a href="#section-3.5.2" class="xref">3.5.2</a>.  <a href="#name-multiple-concurrent-block-w" class="xref">Multiple Concurrent Block-wise Operations</a></p>
 </li>
-                  <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.3.2.5.2.3">
+                  <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.5.2.3">
                     <p id="section-toc.1-1.3.2.5.2.3.1"><a href="#section-3.5.3" class="xref">3.5.3</a>.  <a href="#name-simplified-block-wise-handl" class="xref">Simplified Block-Wise Handling for Constrained Proxies</a></p>
 </li>
                 </ul>
 </li>
-              <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.3.2.6">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.6">
                 <p id="section-toc.1-1.3.2.6.1"><a href="#section-3.6" class="xref">3.6</a>.  <a href="#name-rationale-for-the-option-pr" class="xref">Rationale for the Option Properties</a></p>
 </li>
-              <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.3.2.7">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.7">
                 <p id="section-toc.1-1.3.2.7.1"><a href="#section-3.7" class="xref">3.7</a>.  <a href="#name-rationale-for-introducing-t" class="xref">Rationale for Introducing the Option</a></p>
 </li>
-              <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.3.2.8">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3.2.8">
                 <p id="section-toc.1-1.3.2.8.1"><a href="#section-3.8" class="xref">3.8</a>.  <a href="#name-block2-etag-processing" class="xref">Block2 / ETag Processing</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.4">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-token-processing-for-secure" class="xref">Token Processing for Secure Request-Response Binding</a></p>
-<ul class="ulBare toc compact ulEmpty">
-<li class="ulBare toc compact ulEmpty" id="section-toc.1-1.4.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.1">
                 <p id="section-toc.1-1.4.2.1.1"><a href="#section-4.1" class="xref">4.1</a>.  <a href="#name-request-response-binding" class="xref">Request-Response Binding</a></p>
 </li>
-              <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.4.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4.2.2">
                 <p id="section-toc.1-1.4.2.2.1"><a href="#section-4.2" class="xref">4.2</a>.  <a href="#name-updated-token-processing-re" class="xref">Updated Token Processing Requirements for Clients</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.5">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-security-considerations" class="xref">Security Considerations</a></p>
-<ul class="ulBare toc compact ulEmpty">
-<li class="ulBare toc compact ulEmpty" id="section-toc.1-1.5.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
                 <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-token-reuse" class="xref">Token reuse</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.6">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-privacy-considerations" class="xref">Privacy Considerations</a></p>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.7">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-iana-considerations" class="xref">IANA Considerations</a></p>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.8">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
             <p id="section-toc.1-1.8.1"><a href="#section-8" class="xref">8</a>.  <a href="#name-references" class="xref">References</a></p>
-<ul class="ulBare toc compact ulEmpty">
-<li class="ulBare toc compact ulEmpty" id="section-toc.1-1.8.2.1">
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
                 <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="xref">8.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a></p>
 </li>
-              <li class="ulBare toc compact ulEmpty" id="section-toc.1-1.8.2.2">
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
                 <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="xref">8.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a></p>
 </li>
             </ul>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.9">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
             <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="xref">Appendix A</a>.  <a href="#name-methods-for-generating-echo" class="xref">Methods for Generating Echo Option Values</a></p>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.10">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
             <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="xref">Appendix B</a>.  <a href="#name-request-tag-message-size-im" class="xref">Request-Tag Message Size Impact</a></p>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.11">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.11">
             <p id="section-toc.1-1.11.1"><a href="#appendix-C" class="xref">Appendix C</a>.  <a href="#name-change-log" class="xref">Change Log</a></p>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.12">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.12">
             <p id="section-toc.1-1.12.1"><a href="#appendix-D" class="xref"></a><a href="#name-acknowledgments" class="xref">Acknowledgments</a></p>
 </li>
-          <li class="compact ulBare ulEmpty toc" id="section-toc.1-1.13">
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.13">
             <p id="section-toc.1-1.13.1"><a href="#appendix-E" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a></p>
 </li>
         </ul>
@@ -1325,7 +1325,7 @@ Two operations are said to be matchable if any of their messages are.<a href="#s
 <p id="section-2.2.1-1">The Echo Option is elective, safe-to-forward, not part of the cache-key, and not repeatable, see <a href="#echo-table" class="xref">Figure 1</a>, which extends Table 4 of <span>[<a href="#RFC7252" class="xref">RFC7252</a>]</span>).<a href="#section-2.2.1-1" class="pilcrow">¶</a></p>
 <span id="name-echo-option-summary"></span><div id="echo-table">
 <figure id="figure-1">
-            <div class="artwork art-text alignCenter" id="section-2.2.1-2.1">
+            <div class="alignCenter art-text artwork" id="section-2.2.1-2.1">
 <pre>
 +--------+---+---+---+---+-------------+--------+------+---------+
 | No.    | C | U | N | R | Name        | Format | Len. | Default |
@@ -1362,7 +1362,7 @@ Two operations are said to be matchable if any of their messages are.<a href="#s
 <p id="section-2.3-8">One way for the server to verify freshness is to bind the Echo value to a specific point in time and verify that the request is not older than a certain threshold T. The server can verify this by checking that (t1 - t0) &lt; T, where t1 is the request receive time and t0 is the time when the Echo option value was generated. An example message flow over DTLS is shown <a href="#echo-figure-time" class="xref">Figure 2</a>.<a href="#section-2.3-8" class="pilcrow">¶</a></p>
 <span id="name-example-message-flow-for-ti"></span><div id="echo-figure-time">
 <figure id="figure-2">
-          <div class="artwork art-text alignCenter" id="section-2.3-9.1">
+          <div class="alignCenter art-text artwork" id="section-2.3-9.1">
 <pre>
 Client   Server
    |       |
@@ -1397,7 +1397,7 @@ Client   Server
 <p id="section-2.3-10">Another way for the server to verify freshness is to maintain a cache of values associated to events. The size of the cache is defined by the application. In the following we assume the cache size is 1, in which case freshness is defined as no new event has taken place. At each event a new value is written into the cache. The cache values MUST be different except with negligible probability. The server verifies freshness by checking that e0 equals e1, where e0 is the cached value when the Echo option value was generated, and e1 is the cached value at the reception of the request. An example message flow over DTLS is shown in <a href="#echo-figure-event" class="xref">Figure 3</a>.<a href="#section-2.3-10" class="pilcrow">¶</a></p>
 <span id="name-example-message-flow-for-ev"></span><div id="echo-figure-event">
 <figure id="figure-3">
-          <div class="artwork art-text alignCenter" id="section-2.3-11.1">
+          <div class="alignCenter art-text artwork" id="section-2.3-11.1">
 <pre>
 Client   Server
    |       |
@@ -1537,18 +1537,18 @@ to obtain "usable once but only for 5 minutes"-style semantics.<a href="#section
           <h4 id="name-authority-over-used-informa">
 <a href="#section-2.5.2" class="section-number selfRef">2.5.2. </a><a href="#name-authority-over-used-informa" class="section-name selfRef">Authority over Used Information</a>
           </h4>
-<p id="section-2.5.2-1">The information extracted by the server from the request Echo value
-has different sources of truth depending on the application.
+<p id="section-2.5.2-1">Information conveyed to the server in the request Echo value
+has different authority depending on the application.
 Understanding who or what is the authoritative source of that information helps the server implementer decide the necessary protection of the Echo value.<a href="#section-2.5.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.5.2-2">If all that the server extracts is information which the client is authorized to provide arbitrarily,
-(which is another way of saying that the server has to trust the client on whatever Echo is used for),
+<p id="section-2.5.2-2">If all that is conveyed to the server is information which the client is authorized to provide arbitrarily,
+(which is another way of saying that the server has to trust the client on whatever Echo is being used for),
 then the server can issue Echo values that do not need to be protected on their own.
 They still need to be covered by the security protocol that covers the rest of the message,
 but the Echo value can be just short enough to be unique between this server and client.<a href="#section-2.5.2-2" class="pilcrow">¶</a></p>
 <p id="section-2.5.2-3">For example,
 the client's OSCORE sender sequence number (as used in <span>[<a href="#RFC8613" class="xref">RFC8613</a>]</span> Appendix B.1.2) is such information.<a href="#section-2.5.2-3" class="pilcrow">¶</a></p>
 <p id="section-2.5.2-4">In most other cases,
-there are properties extracted of which the server is the authority
+there is information conveyed for which the server is the authority
 ("The request must not be older than five minutes" is counted on the server's clock, not the client's)
 or which even involve the network
 (as when performing amplification mitigation).
@@ -1631,7 +1631,7 @@ for amplification mitigation.<a href="#section-2.5.3-3" class="pilcrow">¶</a></
 <p id="section-3.2.1-1">The Request-Tag option is not critical, is safe to forward, repeatable, and part of the cache key, see <a href="#req-tag-table" class="xref">Figure 4</a>, which extends Table 4 of <span>[<a href="#RFC7252" class="xref">RFC7252</a>]</span>).<a href="#section-3.2.1-1" class="pilcrow">¶</a></p>
 <span id="name-request-tag-option-summary"></span><div id="req-tag-table">
 <figure id="figure-4">
-            <div class="artwork art-text alignCenter" id="section-3.2.1-2.1">
+            <div class="alignCenter art-text artwork" id="section-3.2.1-2.1">
 <pre>
 +--------+---+---+---+---+-------------+--------+------+---------+
 | No.    | C | U | N | R | Name        | Format | Len. | Default |
@@ -1950,7 +1950,7 @@ and as high as possible to keep room for other options that might typically occu
 <p id="section-7-6">]<a href="#section-7-6" class="pilcrow">¶</a></p>
 <span id="name-coap-option-numbers"></span><div id="iana-table">
 <figure id="figure-5">
-        <div class="artwork art-text alignCenter" id="section-7-7.1">
+        <div class="alignCenter art-text artwork" id="section-7-7.1">
 <pre>
 +--------+-------------+-------------------+
 | Number | Name        | Reference         |
@@ -2025,7 +2025,7 @@ and as high as possible to keep room for other options that might typically occu
 <dd class="break"></dd>
 <dt id="I-D.mattsson-core-coap-attacks">[I-D.mattsson-core-coap-attacks]</dt>
         <dd>
-<span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Fornehed, J.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Palombini, F.</span>, and <span class="refAuthor">C. Amsüss</span>, <span class="refTitle">"Summarizing Known Attacks on CoAP"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-mattsson-core-coap-attacks-00</span>, <time datetime="2021-05-16" class="refDate">16 May 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-mattsson-core-coap-attacks-00">https://datatracker.ietf.org/doc/html/draft-mattsson-core-coap-attacks-00</a>&gt;</span>. </dd>
+<span class="refAuthor">Mattsson, J. P.</span>, <span class="refAuthor">Fornehed, J.</span>, <span class="refAuthor">Selander, G.</span>, <span class="refAuthor">Palombini, F.</span>, and <span class="refAuthor">C. Amsüss</span>, <span class="refTitle">"CoAP Attacks"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-mattsson-core-coap-attacks-01</span>, <time datetime="2021-07-27" class="refDate">27 July 2021</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-mattsson-core-coap-attacks-01">https://datatracker.ietf.org/doc/html/draft-mattsson-core-coap-attacks-01</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="REST">[REST]</dt>
         <dd>
@@ -2062,7 +2062,7 @@ and as high as possible to keep room for other options that might typically occu
 <p id="appendix-A-1">The content and structure of the Echo option value are implementation specific and determined by the server. Two simple mechanisms for time-based freshness and one for event-based freshness are outlined in this section, the first is RECOMMENDED in general, and the second is RECOMMENDED in case the Echo option is encrypted between the client and the server.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 <p id="appendix-A-2">Different mechanisms have different tradeoffs between the size of the Echo option value, the amount of server state, the amount of computation, and the security properties offered. A server MAY use different methods and security levels for different uses cases (client aliveness, request freshness, state synchronization, network address reachability, etc.).<a href="#appendix-A-2" class="pilcrow">¶</a></p>
 <p id="appendix-A-3">1. List of Cached Random Values and Timestamps. The Echo option value is a (pseudo-)random byte string called r. The server caches a list containing the random byte strings and their transmission times. Assuming 72-bit random values and 32-bit timestamps, the size of the Echo option value is 9 bytes and the amount of server state is 13n bytes, where n is the number of active Echo Option values. The security against an attacker guessing echo values is given by s = bit length of r - log2(n). The length of r and the maximum allowed n should be set so that the security level is harmonized with other parts of the deployment, e.g., s &gt;= 64. If the server loses time continuity, e.g. due to reboot, the entries in the old list MUST be deleted.<a href="#appendix-A-3" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="appendix-A-4">
+<div class="alignLeft art-text artwork" id="appendix-A-4">
 <pre>
       Echo option value: random value r
       Server State: random value r, timestamp t0
@@ -2071,7 +2071,7 @@ and as high as possible to keep room for other options that might typically occu
 <p id="appendix-A-5">This method is suitable both for time and for event base freshness (e.g. by clearing the cache when an event occurs),
   and independent of the client authority.<a href="#appendix-A-5" class="pilcrow">¶</a></p>
 <p id="appendix-A-6">2. Integrity Protected Timestamp. The Echo option value is an integrity protected timestamp. The timestamp can have different resolution and range. A 32-bit timestamp can e.g. give a resolution of 1 second with a range of 136 years. The (pseudo-)random secret key is generated by the server and not shared with any other party. The use of truncated HMAC-SHA-256 is RECOMMENDED. With a 32-bit timestamp and a 64-bit MAC, the size of the Echo option value is 12 bytes and the Server state is small and constant. The security against an attacker guessing echo values is given by the MAC length. If the server loses time continuity, e.g. due to reboot, the old key MUST be deleted and replaced by a new random secret key. Note that the privacy considerations in <a href="#priv-cons" class="xref">Section 6</a> may apply to the timestamp. Therefore, it might be important to encrypt it. Depending on the choice of encryption algorithms, this may require an initialization vector to be included in the Echo option value, see below.<a href="#appendix-A-6" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="appendix-A-7">
+<div class="alignLeft art-text artwork" id="appendix-A-7">
 <pre>
       Echo option value: timestamp t0, MAC(k, t0)
       Server State: secret key k
@@ -2082,7 +2082,7 @@ and as high as possible to keep room for other options that might typically occu
 <p id="appendix-A-9">If this method is used to additionally obtain network reachability of the client,
   the server MUST use the client's network address too, e.g. as in <code>MAC(k, t0, apparent network address)</code>.<a href="#appendix-A-9" class="pilcrow">¶</a></p>
 <p id="appendix-A-10">3. Persistent Counter. This can be used in OSCORE for sequence number recovery per Appendix B.1.2 of <span>[<a href="#RFC8613" class="xref">RFC8613</a>]</span>. The Echo option value is a simple counter without integrity protection of its own, serialized in uint format. The counter is incremented in a persistent way every time the state that needs to be synchronized is changed (in the B.1.2 case: when a reboot indicates that volatile state may have been lost). An example of how such a persistent counter can be implemented efficiently is the OSCORE server Sender Sequence Number mechanism described in Appendix B.1.1 of <span>[<a href="#RFC8613" class="xref">RFC8613</a>]</span>.<a href="#appendix-A-10" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="appendix-A-11">
+<div class="alignLeft art-text artwork" id="appendix-A-11">
 <pre>
       Echo option value: counter
       Server State: counter
