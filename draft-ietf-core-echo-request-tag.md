@@ -304,12 +304,12 @@ to obtain "usable once but only for 5 minutes"-style semantics.
 
 ### Authority over Used Information {#source-of-truth}
 
-The information extracted by the server from the request Echo value
-has different sources of truth depending on the application.
+Information conveyed to the server in the request Echo value
+has different authority depending on the application.
 Understanding who or what is the authoritative source of that information helps the server implementer decide the necessary protection of the Echo value.
 
-If all that the server extracts is information which the client is authorized to provide arbitrarily,
-(which is another way of saying that the server has to trust the client on whatever Echo is used for),
+If all that is conveyed to the server is information which the client is authorized to provide arbitrarily,
+(which is another way of saying that the server has to trust the client on whatever Echo is being used for),
 then the server can issue Echo values that do not need to be protected on their own.
 They still need to be covered by the security protocol that covers the rest of the message,
 but the Echo value can be just short enough to be unique between this server and client.
@@ -318,7 +318,7 @@ For example,
 the client's OSCORE sender sequence number (as used in {{RFC8613}} Appendix B.1.2) is such information.
 
 In most other cases,
-there are properties extracted of which the server is the authority
+there is information conveyed for which the server is the authority
 ("The request must not be older than five minutes" is counted on the server's clock, not the client's)
 or which even involve the network
 (as when performing amplification mitigation).
