@@ -885,15 +885,14 @@ Table of Contents
 
       When security services are provided by DTLS, this can only be
       confirmed if there was no CoAP retransmission of the request, the
-      request was responded to, and the server performs replay
-      protection.
+      request was responded to, and the server uses replay protection.
 
    Authors of other documents (e.g. applications of [RFC8613]) are
    invited to mandate this subsection's behavior for clients that
    execute block-wise interactions over secured transports.  In this
    way, the server can rely on a conforming client to set the Request-
-   Tag option when required, and thereby have confidence the integrity
-   of the assembled body.
+   Tag option when required, and thereby have confidence in the
+   integrity of the assembled body.
 
    Note that this mechanism is implicitly implemented when the security
    layer guarantees ordered delivery (e.g.  CoAP over TLS [RFC8323]).
@@ -1395,7 +1394,7 @@ Appendix A.  Methods for Generating Echo Option Values
          Echo option value: random value r
          Server State: random value r, timestamp t0
 
-   This method is suitable both for time and for event base freshness
+   This method is suitable both for time- and for event-based freshness
    (e.g. by clearing the cache when an event occurs), and independent of
    the client authority.
 
@@ -1418,7 +1417,7 @@ Appendix A.  Methods for Generating Echo Option Values
          Echo option value: timestamp t0, MAC(k, t0)
          Server State: secret key k
 
-   This method is suitable both for time and for event based freshness
+   This method is suitable both for time- and for event-based freshness
    (by the server remembering the time at which the event took place),
    and independent of the client authority.
 
