@@ -948,7 +948,15 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 # Acknowledgments
 {: numbered="no"}
 
-The authors want to thank Carsten Bormann, Francesca Palombini, and Jim Schaad for providing valuable input to the draft.
+The authors want to thank
+Carsten Bormann,
+Roman Danyliw,
+Benjamin Kaduk,
+Murray Kucherawy,
+Francesca Palombini
+and
+Jim Schaad
+for providing valuable input to the draft.
 
 
 --- fluff
