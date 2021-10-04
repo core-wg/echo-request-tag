@@ -2120,368 +2120,392 @@ or when block-wise request operations happen rarely (in OSCORE, if there is alwa
 <p id="appendix-C-1">[ The editor is asked to remove this section before publication. ]<a href="#appendix-C-1" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="appendix-C-2.1">
-          <p id="appendix-C-2.1.1">Changes since draft-ietf-core-echo-request-tag-12 (addressing comments from IESG review)<a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
-<p id="appendix-C-2.1.2">
-See CoRE point-to-point responses at <a href="https://github.com/core-wg/echo-request-tag/blob/master/point-to-point.md">https://github.com/core-wg/echo-request-tag/blob/master/point-to-point.md</a> and on CoRE mailing list.<a href="#appendix-C-2.1.2" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.1.1">Changes since draft-ietf-core-echo-request-tag-13<a href="#appendix-C-2.1.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-C-2.1.3.1">
-              <p id="appendix-C-2.1.3.1.1">Add subsection "Characterization of Echo Applications".<a href="#appendix-C-2.1.3.1.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-C-2.1.3.1.2.1">Changes in applications and appendices to use the newly introduced terms.<a href="#appendix-C-2.1.3.1.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-C-2.1.2.1">Minor editorial fixes.<a href="#appendix-C-2.1.2.1" class="pilcrow">¶</a>
 </li>
-                <li class="normal" id="appendix-C-2.1.3.1.2.2">In particular, some of the legitimization for using short Echo values was drawn from the applications being event based; the concept of the client being the "Authority over [the] Used Information" now legitimizes these more precisely.<a href="#appendix-C-2.1.3.1.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.1.2.2">
+              <p id="appendix-C-2.1.2.2.1">Wording enhancements:<a href="#appendix-C-2.1.2.2.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-2.1.2.2.2.1">nonce -&gt; initialization vector<a href="#appendix-C-2.1.2.2.2.1" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-C-2.1.2.2.2.2">information extracted by the sever -&gt; information conveyed to the server<a href="#appendix-C-2.1.2.2.2.2" class="pilcrow">¶</a>
 </li>
               </ul>
 </li>
-            <li class="normal" id="appendix-C-2.1.3.2">Add subsection "Updated Amplification Mitigation Requirements for Servers". It contains the normative text updating RFC 7252 w/rt recommended mitigation methods, which previously happened in passing.<a href="#appendix-C-2.1.3.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.1.2.3">Acknowledgements updated.<a href="#appendix-C-2.1.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.1.3.3">
-              <p id="appendix-C-2.1.3.3.1">Amplification mitigation:<a href="#appendix-C-2.1.3.3.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-C-2.1.3.3.2.1">Increase precision: Reachability check is performed once per endpoint (was: peer).<a href="#appendix-C-2.1.3.3.2.1" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.1.2.4">Changelog for -13 added (previous upload just pointed to other resources).<a href="#appendix-C-2.1.2.4" class="pilcrow">¶</a>
 </li>
-                <li class="normal" id="appendix-C-2.1.3.3.2.2">State that amplification factor applies to the sum of all (previously: "the size of the", implicitly, single) returned packets.<a href="#appendix-C-2.1.3.3.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.1.2.5">Short title is "Echo, Request-Tag, and Token Processing" now instead of outdated acronym.<a href="#appendix-C-2.1.2.5" class="pilcrow">¶</a>
 </li>
-                <li class="normal" id="appendix-C-2.1.3.3.2.3">Fix odd wording around how the Echo value would "contain" the claimed address: was meant to contain in a cryptographic sense, now clarified in that a MAC is recommended<a href="#appendix-C-2.1.3.3.2.3" class="pilcrow">¶</a>
-</li>
-              </ul>
-</li>
-            <li class="normal" id="appendix-C-2.1.3.4">Define "preemptive Echo value" that was previously used without definition; another occurrence of the concept was simplified using the term.<a href="#appendix-C-2.1.3.4" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.1.3.5">Add considerations for the use of DTLS without replay protection.<a href="#appendix-C-2.1.3.5" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.1.3.6">Privacy considerations: Address concerns raised in various numeric-ids documents.<a href="#appendix-C-2.1.3.6" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.1.3.7">Explicitly state expected security modes for Echo applications and examples.<a href="#appendix-C-2.1.3.7" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.1.3.8">Fix of requirements for H-C proxies: They <em>MUST NOT</em> relay unsafe requests. (Previously, it only said that they SHOULD use a particular method, but not clearly that some method is mandated.)<a href="#appendix-C-2.1.3.8" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.1.3.9">Clarify that state synchonization is an application of the freshness results in combination with some transported application data, and not an immediate result of using Echo alone.<a href="#appendix-C-2.1.3.9" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.1.3.10">Add text to tie together applications and suggested mechanisms<a href="#appendix-C-2.1.3.10" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.1.3.11">Restrict C-C proxy allowed behavior: Only safe requests (incorrectly said "idempotent") may be used to proactively populate the proxy's cache.<a href="#appendix-C-2.1.3.11" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.1.3.12">
-              <p id="appendix-C-2.1.3.12.1">Justify some "SHOULD"s by outlining justification for different behavior.<a href="#appendix-C-2.1.3.12.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-C-2.1.3.12.2.1">Normatively require H-C proxies to process Echo if they're justified to do so, as no alternatives are available.<a href="#appendix-C-2.1.3.12.2.1" class="pilcrow">¶</a>
-</li>
-              </ul>
-</li>
-            <li class="normal" id="appendix-C-2.1.3.13">
-              <p id="appendix-C-2.1.3.13.1">Reference updates:<a href="#appendix-C-2.1.3.13.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-C-2.1.3.13.2.1">QUIC is now RFC9000; precise section given as amplification reference.<a href="#appendix-C-2.1.3.13.2.1" class="pilcrow">¶</a>
-</li>
-                <li class="normal" id="appendix-C-2.1.3.13.2.2">Add note for RFC editor that RFC6347 can be upgraded to DTLS 1.3 if C321 overtakes C280<a href="#appendix-C-2.1.3.13.2.2" class="pilcrow">¶</a>
-</li>
-                <li class="normal" id="appendix-C-2.1.3.13.2.3">Follow the core-coap-actuators to core-coap-attacks update<a href="#appendix-C-2.1.3.13.2.3" class="pilcrow">¶</a>
-</li>
-                <li class="normal" id="appendix-C-2.1.3.13.2.4">RFC8470 reference is now normative (as using what's defined there has been RECOMMENDED already)<a href="#appendix-C-2.1.3.13.2.4" class="pilcrow">¶</a>
-</li>
-              </ul>
-</li>
-            <li class="normal" id="appendix-C-2.1.3.14">
-              <p id="appendix-C-2.1.3.14.1">Editorial fixes<a href="#appendix-C-2.1.3.14.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-C-2.1.3.14.2.1">Rewording of confusing sentences in amplification mitigation and inner-/outer Echo values<a href="#appendix-C-2.1.3.14.2.1" class="pilcrow">¶</a>
-</li>
-                <li class="normal" id="appendix-C-2.1.3.14.2.2">Replace "blacklist" terminology with "deny-list" where left after other changes<a href="#appendix-C-2.1.3.14.2.2" class="pilcrow">¶</a>
-</li>
-                <li class="normal" id="appendix-C-2.1.3.14.2.3">Removed sloppy use of Echo as a verb<a href="#appendix-C-2.1.3.14.2.3" class="pilcrow">¶</a>
-</li>
-                <li class="normal" id="appendix-C-2.1.3.14.2.4">Minor clarifications<a href="#appendix-C-2.1.3.14.2.4" class="pilcrow">¶</a>
-</li>
-                <li class="normal" id="appendix-C-2.1.3.14.2.5">Remove duplicate statements<a href="#appendix-C-2.1.3.14.2.5" class="pilcrow">¶</a>
-</li>
-                <li class="normal" id="appendix-C-2.1.3.14.2.6">Typography and spelling fixes<a href="#appendix-C-2.1.3.14.2.6" class="pilcrow">¶</a>
-</li>
-              </ul>
-</li>
-            <li class="normal" id="appendix-C-2.1.3.15">
-              <p id="appendix-C-2.1.3.15.1">Fixes that are not editorial but minor<a href="#appendix-C-2.1.3.15.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-C-2.1.3.15.2.1">Freshness is about time, of which round-trip time (specialization now removed) is only a part.<a href="#appendix-C-2.1.3.15.2.1" class="pilcrow">¶</a>
-</li>
-                <li class="normal" id="appendix-C-2.1.3.15.2.2">Reference how HTTP <em>1.1</em> does it when explaining token requirements, as that's an easily and widely understood baseline.<a href="#appendix-C-2.1.3.15.2.2" class="pilcrow">¶</a>
-</li>
-              </ul>
+            <li class="normal" id="appendix-C-2.1.2.6">Informative reference to RFC 7390 is now to draft-ietf-core-groupcomm-bis<a href="#appendix-C-2.1.2.6" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-C-2.2">
-          <p id="appendix-C-2.2.1">Changes since draft-ietf-core-echo-request-tag-11 (addressing GenART, TSVART, OpsDir comments)<a href="#appendix-C-2.2.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.2.1">Changes since draft-ietf-core-echo-request-tag-12 (addressing comments from IESG review)<a href="#appendix-C-2.2.1" class="pilcrow">¶</a></p>
+<p id="appendix-C-2.2.2">
+See CoRE point-to-point responses at <a href="https://github.com/core-wg/echo-request-tag/blob/master/point-to-point.md">https://github.com/core-wg/echo-request-tag/blob/master/point-to-point.md</a> and on CoRE mailing list.<a href="#appendix-C-2.2.2" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-C-2.2.2.1">Explain the size permissible for responses before amplification mitigation by referring to the QUIC draft for an OK factor, and giving the remaining numbers that led to it. The actual number is reduced from 152 to 136 because the more conservative case of the attacker not sending a token is considered now.<a href="#appendix-C-2.2.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-C-2.2.3.1">
+              <p id="appendix-C-2.2.3.1.1">Add subsection "Characterization of Echo Applications".<a href="#appendix-C-2.2.3.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-2.2.3.1.2.1">Changes in applications and appendices to use the newly introduced terms.<a href="#appendix-C-2.2.3.1.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.2.2.2">Added a definition for "freshness"<a href="#appendix-C-2.2.2.2" class="pilcrow">¶</a>
+                <li class="normal" id="appendix-C-2.2.3.1.2.2">In particular, some of the legitimization for using short Echo values was drawn from the applications being event based; the concept of the client being the "Authority over [the] Used Information" now legitimizes these more precisely.<a href="#appendix-C-2.2.3.1.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.2.2.3">Give more concrete example values in figures 2 and 3 (based on the appendix suggestions), highlighting the differences between the figures by telling how they are processed in the examples.<a href="#appendix-C-2.2.2.3" class="pilcrow">¶</a>
+              </ul>
 </li>
-            <li class="normal" id="appendix-C-2.2.2.4">Figure with option summary: E/U columns removed (for duplicate headers and generally not contributing)<a href="#appendix-C-2.2.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.2.3.2">Add subsection "Updated Amplification Mitigation Requirements for Servers". It contains the normative text updating RFC 7252 w/rt recommended mitigation methods, which previously happened in passing.<a href="#appendix-C-2.2.3.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.2.2.5">MAY capitalization changed for consistency.<a href="#appendix-C-2.2.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.2.3.3">
+              <p id="appendix-C-2.2.3.3.1">Amplification mitigation:<a href="#appendix-C-2.2.3.3.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-2.2.3.3.2.1">Increase precision: Reachability check is performed once per endpoint (was: peer).<a href="#appendix-C-2.2.3.3.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.2.2.6">Editorial changes (IV acronym expanded, s/can not/cannot/g)<a href="#appendix-C-2.2.2.6" class="pilcrow">¶</a>
+                <li class="normal" id="appendix-C-2.2.3.3.2.2">State that amplification factor applies to the sum of all (previously: "the size of the", implicitly, single) returned packets.<a href="#appendix-C-2.2.3.3.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.2.2.7">Draft ietf-core-stateless has become RFC8974<a href="#appendix-C-2.2.2.7" class="pilcrow">¶</a>
+                <li class="normal" id="appendix-C-2.2.3.3.2.3">Fix odd wording around how the Echo value would "contain" the claimed address: was meant to contain in a cryptographic sense, now clarified in that a MAC is recommended<a href="#appendix-C-2.2.3.3.2.3" class="pilcrow">¶</a>
+</li>
+              </ul>
+</li>
+            <li class="normal" id="appendix-C-2.2.3.4">Define "preemptive Echo value" that was previously used without definition; another occurrence of the concept was simplified using the term.<a href="#appendix-C-2.2.3.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.2.3.5">Add considerations for the use of DTLS without replay protection.<a href="#appendix-C-2.2.3.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.2.3.6">Privacy considerations: Address concerns raised in various numeric-ids documents.<a href="#appendix-C-2.2.3.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.2.3.7">Explicitly state expected security modes for Echo applications and examples.<a href="#appendix-C-2.2.3.7" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.2.3.8">Fix of requirements for H-C proxies: They <em>MUST NOT</em> relay unsafe requests. (Previously, it only said that they SHOULD use a particular method, but not clearly that some method is mandated.)<a href="#appendix-C-2.2.3.8" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.2.3.9">Clarify that state synchonization is an application of the freshness results in combination with some transported application data, and not an immediate result of using Echo alone.<a href="#appendix-C-2.2.3.9" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.2.3.10">Add text to tie together applications and suggested mechanisms<a href="#appendix-C-2.2.3.10" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.2.3.11">Restrict C-C proxy allowed behavior: Only safe requests (incorrectly said "idempotent") may be used to proactively populate the proxy's cache.<a href="#appendix-C-2.2.3.11" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.2.3.12">
+              <p id="appendix-C-2.2.3.12.1">Justify some "SHOULD"s by outlining justification for different behavior.<a href="#appendix-C-2.2.3.12.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-2.2.3.12.2.1">Normatively require H-C proxies to process Echo if they're justified to do so, as no alternatives are available.<a href="#appendix-C-2.2.3.12.2.1" class="pilcrow">¶</a>
+</li>
+              </ul>
+</li>
+            <li class="normal" id="appendix-C-2.2.3.13">
+              <p id="appendix-C-2.2.3.13.1">Reference updates:<a href="#appendix-C-2.2.3.13.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-2.2.3.13.2.1">QUIC is now RFC9000; precise section given as amplification reference.<a href="#appendix-C-2.2.3.13.2.1" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-C-2.2.3.13.2.2">Add note for RFC editor that RFC6347 can be upgraded to DTLS 1.3 if C321 overtakes C280<a href="#appendix-C-2.2.3.13.2.2" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-C-2.2.3.13.2.3">Follow the core-coap-actuators to core-coap-attacks update<a href="#appendix-C-2.2.3.13.2.3" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-C-2.2.3.13.2.4">RFC8470 reference is now normative (as using what's defined there has been RECOMMENDED already)<a href="#appendix-C-2.2.3.13.2.4" class="pilcrow">¶</a>
+</li>
+              </ul>
+</li>
+            <li class="normal" id="appendix-C-2.2.3.14">
+              <p id="appendix-C-2.2.3.14.1">Editorial fixes<a href="#appendix-C-2.2.3.14.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-2.2.3.14.2.1">Rewording of confusing sentences in amplification mitigation and inner-/outer Echo values<a href="#appendix-C-2.2.3.14.2.1" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-C-2.2.3.14.2.2">Replace "blacklist" terminology with "deny-list" where left after other changes<a href="#appendix-C-2.2.3.14.2.2" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-C-2.2.3.14.2.3">Removed sloppy use of Echo as a verb<a href="#appendix-C-2.2.3.14.2.3" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-C-2.2.3.14.2.4">Minor clarifications<a href="#appendix-C-2.2.3.14.2.4" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-C-2.2.3.14.2.5">Remove duplicate statements<a href="#appendix-C-2.2.3.14.2.5" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-C-2.2.3.14.2.6">Typography and spelling fixes<a href="#appendix-C-2.2.3.14.2.6" class="pilcrow">¶</a>
+</li>
+              </ul>
+</li>
+            <li class="normal" id="appendix-C-2.2.3.15">
+              <p id="appendix-C-2.2.3.15.1">Fixes that are not editorial but minor<a href="#appendix-C-2.2.3.15.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-2.2.3.15.2.1">Freshness is about time, of which round-trip time (specialization now removed) is only a part.<a href="#appendix-C-2.2.3.15.2.1" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-C-2.2.3.15.2.2">Reference how HTTP <em>1.1</em> does it when explaining token requirements, as that's an easily and widely understood baseline.<a href="#appendix-C-2.2.3.15.2.2" class="pilcrow">¶</a>
+</li>
+              </ul>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-C-2.3">
-          <p id="appendix-C-2.3.1">Changes since draft-ietf-core-echo-request-tag-10 (Barry's comments)<a href="#appendix-C-2.3.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.3.1">Changes since draft-ietf-core-echo-request-tag-11 (addressing GenART, TSVART, OpsDir comments)<a href="#appendix-C-2.3.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-C-2.3.2.1">Align terminology on attacker<a href="#appendix-C-2.3.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-C-2.3.2.1">Explain the size permissible for responses before amplification mitigation by referring to the QUIC draft for an OK factor, and giving the remaining numbers that led to it. The actual number is reduced from 152 to 136 because the more conservative case of the attacker not sending a token is considered now.<a href="#appendix-C-2.3.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.3.2.2">A number of clarifications and editorial fixes<a href="#appendix-C-2.3.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.3.2.2">Added a definition for "freshness"<a href="#appendix-C-2.3.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.3.2.3">Promote DTLS and OSCORE to normative references<a href="#appendix-C-2.3.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.3.2.3">Give more concrete example values in figures 2 and 3 (based on the appendix suggestions), highlighting the differences between the figures by telling how they are processed in the examples.<a href="#appendix-C-2.3.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.3.2.4">Add counter-based version to the Methods for Generating Echo Option Values appendix<a href="#appendix-C-2.3.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.3.2.4">Figure with option summary: E/U columns removed (for duplicate headers and generally not contributing)<a href="#appendix-C-2.3.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.3.2.5">Use 64-bit randomness recommendation throughout (but keep it as SHOULD so applications with strict requirements can reduce if if really needed)<a href="#appendix-C-2.3.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.3.2.5">MAY capitalization changed for consistency.<a href="#appendix-C-2.3.2.5" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.3.2.6">Speling and Capitalization<a href="#appendix-C-2.3.2.6" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.3.2.6">Editorial changes (IV acronym expanded, s/can not/cannot/g)<a href="#appendix-C-2.3.2.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.3.2.7">Draft ietf-core-stateless has become RFC8974<a href="#appendix-C-2.3.2.7" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-C-2.4">
-          <p id="appendix-C-2.4.1">Changes since draft-ietf-core-echo-request-tag-09:<a href="#appendix-C-2.4.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.4.1">Changes since draft-ietf-core-echo-request-tag-10 (Barry's comments)<a href="#appendix-C-2.4.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-C-2.4.2.1">Allow intermediaries to do Echo processing, provided they ask at least as much freshness as they forward<a href="#appendix-C-2.4.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-C-2.4.2.1">Align terminology on attacker<a href="#appendix-C-2.4.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.4.2.2">Emphasize that clients can forget Echo to further discourage abuse as cookies<a href="#appendix-C-2.4.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.4.2.2">A number of clarifications and editorial fixes<a href="#appendix-C-2.4.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.4.2.3">Emphasize that RESTful application design can avoid the need for a Request-Tag<a href="#appendix-C-2.4.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.4.2.3">Promote DTLS and OSCORE to normative references<a href="#appendix-C-2.4.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.4.2.4">Align with core-oscore-groupcomm-09<a href="#appendix-C-2.4.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.4.2.4">Add counter-based version to the Methods for Generating Echo Option Values appendix<a href="#appendix-C-2.4.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.4.2.5">Add interaction with HTTP Early Data / 425 Too Early<a href="#appendix-C-2.4.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.4.2.5">Use 64-bit randomness recommendation throughout (but keep it as SHOULD so applications with strict requirements can reduce if if really needed)<a href="#appendix-C-2.4.2.5" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.4.2.6">Abstract: Explicitly mention both updates to 7252<a href="#appendix-C-2.4.2.6" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.4.2.7">Change requested option number of Echo to 252 (previous property calculation was erroneous)<a href="#appendix-C-2.4.2.7" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.4.2.6">Speling and Capitalization<a href="#appendix-C-2.4.2.6" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-C-2.5">
-          <p id="appendix-C-2.5.1">Changes since draft-ietf-core-echo-request-tag-08:<a href="#appendix-C-2.5.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.5.1">Changes since draft-ietf-core-echo-request-tag-09:<a href="#appendix-C-2.5.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-C-2.5.2.1">Make amplification attack mitigation by Echo an RFC7252 updating recommendation<a href="#appendix-C-2.5.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-C-2.5.2.1">Allow intermediaries to do Echo processing, provided they ask at least as much freshness as they forward<a href="#appendix-C-2.5.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.5.2.2">Give some more concrete guidance to that use case in terms of sizes and message types<a href="#appendix-C-2.5.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.5.2.2">Emphasize that clients can forget Echo to further discourage abuse as cookies<a href="#appendix-C-2.5.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.5.2.3">Allow short (1-3 byte) Echo values for deterministic cases, with according security considerations<a href="#appendix-C-2.5.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.5.2.3">Emphasize that RESTful application design can avoid the need for a Request-Tag<a href="#appendix-C-2.5.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.5.2.4">Point out the tricky parts around Request-Tag for stateless proxies, and make that purely an outlook example with out-of-scope details<a href="#appendix-C-2.5.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.5.2.4">Align with core-oscore-groupcomm-09<a href="#appendix-C-2.5.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.5.2.5">Lift ban on Request-Tag options without Block1 (as they can legitimately be generated by an unaware proxy)<a href="#appendix-C-2.5.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.5.2.5">Add interaction with HTTP Early Data / 425 Too Early<a href="#appendix-C-2.5.2.5" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.5.2.6">Suggest concrete numbers for the options<a href="#appendix-C-2.5.2.6" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.5.2.6">Abstract: Explicitly mention both updates to 7252<a href="#appendix-C-2.5.2.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.5.2.7">Change requested option number of Echo to 252 (previous property calculation was erroneous)<a href="#appendix-C-2.5.2.7" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-C-2.6">
-          <p id="appendix-C-2.6.1">Changes since draft-ietf-core-echo-request-tag-07 (largely addressing Francesca's review):<a href="#appendix-C-2.6.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.6.1">Changes since draft-ietf-core-echo-request-tag-08:<a href="#appendix-C-2.6.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-C-2.6.2.1">Request tag: Explicitly limit "MUST NOT recycle" requirement to particular applications<a href="#appendix-C-2.6.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-C-2.6.2.1">Make amplification attack mitigation by Echo an RFC7252 updating recommendation<a href="#appendix-C-2.6.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.6.2.2">Token reuse: upper-case RECOMMEND sequence number approach<a href="#appendix-C-2.6.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.6.2.2">Give some more concrete guidance to that use case in terms of sizes and message types<a href="#appendix-C-2.6.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.6.2.3">Structure: Move per-topic introductions to respective chapters (this avoids long jumps by the reader)<a href="#appendix-C-2.6.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.6.2.3">Allow short (1-3 byte) Echo values for deterministic cases, with according security considerations<a href="#appendix-C-2.6.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.6.2.4">Structure: Group Block2 / ETag section inside new fragmentation (formerly Request-Tag) section<a href="#appendix-C-2.6.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.6.2.4">Point out the tricky parts around Request-Tag for stateless proxies, and make that purely an outlook example with out-of-scope details<a href="#appendix-C-2.6.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.6.2.5">More precise references into other documents<a href="#appendix-C-2.6.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.6.2.5">Lift ban on Request-Tag options without Block1 (as they can legitimately be generated by an unaware proxy)<a href="#appendix-C-2.6.2.5" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.6.2.6">"concurrent operations": Emphasise that all here only matters between endpoint pairs<a href="#appendix-C-2.6.2.6" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.6.2.7">Freshness: Generalize wording away from time-based freshness<a href="#appendix-C-2.6.2.7" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.6.2.8">Echo: Emphasise that no binding between any particular pair of responses and requests is established<a href="#appendix-C-2.6.2.8" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.6.2.9">Echo: Add event-based example<a href="#appendix-C-2.6.2.9" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.6.2.10">Echo: Clarify when protection is needed<a href="#appendix-C-2.6.2.10" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.6.2.11">Request tag: Enhance wording around "not sufficient condition"<a href="#appendix-C-2.6.2.11" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.6.2.12">Request tag: Explicitly state when a tag needs to be set<a href="#appendix-C-2.6.2.12" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.6.2.13">Request tag: Clarification about permissibility of leaving the option absent<a href="#appendix-C-2.6.2.13" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.6.2.14">Security considerations: wall clock time -&gt; system time (and remove inaccurate explanations)<a href="#appendix-C-2.6.2.14" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.6.2.15">Token reuse: describe deny-listing in a more implementation-independent way<a href="#appendix-C-2.6.2.15" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.6.2.6">Suggest concrete numbers for the options<a href="#appendix-C-2.6.2.6" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-C-2.7">
-          <p id="appendix-C-2.7.1">Changes since draft-ietf-core-echo-request-tag-06:<a href="#appendix-C-2.7.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.7.1">Changes since draft-ietf-core-echo-request-tag-07 (largely addressing Francesca's review):<a href="#appendix-C-2.7.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-C-2.7.2.1">Removed visible comment that should not be visible in Token reuse considerations.<a href="#appendix-C-2.7.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-C-2.7.2.1">Request tag: Explicitly limit "MUST NOT recycle" requirement to particular applications<a href="#appendix-C-2.7.2.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.7.2.2">Token reuse: upper-case RECOMMEND sequence number approach<a href="#appendix-C-2.7.2.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.7.2.3">Structure: Move per-topic introductions to respective chapters (this avoids long jumps by the reader)<a href="#appendix-C-2.7.2.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.7.2.4">Structure: Group Block2 / ETag section inside new fragmentation (formerly Request-Tag) section<a href="#appendix-C-2.7.2.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.7.2.5">More precise references into other documents<a href="#appendix-C-2.7.2.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.7.2.6">"concurrent operations": Emphasise that all here only matters between endpoint pairs<a href="#appendix-C-2.7.2.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.7.2.7">Freshness: Generalize wording away from time-based freshness<a href="#appendix-C-2.7.2.7" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.7.2.8">Echo: Emphasise that no binding between any particular pair of responses and requests is established<a href="#appendix-C-2.7.2.8" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.7.2.9">Echo: Add event-based example<a href="#appendix-C-2.7.2.9" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.7.2.10">Echo: Clarify when protection is needed<a href="#appendix-C-2.7.2.10" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.7.2.11">Request tag: Enhance wording around "not sufficient condition"<a href="#appendix-C-2.7.2.11" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.7.2.12">Request tag: Explicitly state when a tag needs to be set<a href="#appendix-C-2.7.2.12" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.7.2.13">Request tag: Clarification about permissibility of leaving the option absent<a href="#appendix-C-2.7.2.13" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.7.2.14">Security considerations: wall clock time -&gt; system time (and remove inaccurate explanations)<a href="#appendix-C-2.7.2.14" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.7.2.15">Token reuse: describe deny-listing in a more implementation-independent way<a href="#appendix-C-2.7.2.15" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-C-2.8">
-          <p id="appendix-C-2.8.1">Changes since draft-ietf-core-echo-request-tag-05:<a href="#appendix-C-2.8.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.8.1">Changes since draft-ietf-core-echo-request-tag-06:<a href="#appendix-C-2.8.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-C-2.8.2.1">Add privacy considerations on cookie-style use of Echo values<a href="#appendix-C-2.8.2.1" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.8.2.2">Add security considerations for token reuse<a href="#appendix-C-2.8.2.2" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.8.2.3">Add note in security considerations on use of nonvolatile memory when
-dealing with pseudorandom numbers<a href="#appendix-C-2.8.2.3" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.8.2.4">Appendix on echo generation: add a few words on up- and downsides of the
-encrypted timestamp alternative<a href="#appendix-C-2.8.2.4" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.8.2.5">
-              <p id="appendix-C-2.8.2.5.1">Clarifications around Outer Echo:<a href="#appendix-C-2.8.2.5.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-C-2.8.2.5.2.1">Could be generated by the origin server to prove network reachability
-(but for most applications it MUST be inner)<a href="#appendix-C-2.8.2.5.2.1" class="pilcrow">¶</a>
-</li>
-                <li class="normal" id="appendix-C-2.8.2.5.2.2">Could be generated by intermediaries<a href="#appendix-C-2.8.2.5.2.2" class="pilcrow">¶</a>
-</li>
-                <li class="normal" id="appendix-C-2.8.2.5.2.3">Is answered by the client to the endpoint from which it received it
-(ie. Outer if received as Outer)<a href="#appendix-C-2.8.2.5.2.3" class="pilcrow">¶</a>
-</li>
-              </ul>
-</li>
-            <li class="normal" id="appendix-C-2.8.2.6">Clarification that a server can send Echo preemtively<a href="#appendix-C-2.8.2.6" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.8.2.7">Refer to stateless to explain what "more information than just the
-sequence number" could be<a href="#appendix-C-2.8.2.7" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.8.2.8">Remove explanations around 0.00 empty messags<a href="#appendix-C-2.8.2.8" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.8.2.9">
-              <p id="appendix-C-2.8.2.9.1">Rewordings:<a href="#appendix-C-2.8.2.9.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-C-2.8.2.9.2.1">the attack: from "forging" to "guessing"<a href="#appendix-C-2.8.2.9.2.1" class="pilcrow">¶</a>
-</li>
-                <li class="normal" id="appendix-C-2.8.2.9.2.2">"freshness tokens" to "freshness indicators" (to avoid confusion with
-the Token)<a href="#appendix-C-2.8.2.9.2.2" class="pilcrow">¶</a>
-</li>
-              </ul>
-</li>
-            <li class="normal" id="appendix-C-2.8.2.10">
-              <p id="appendix-C-2.8.2.10.1">Editorial fixes:<a href="#appendix-C-2.8.2.10.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-C-2.8.2.10.2.1">Abstract and introduction mention what is updated in RFC7252<a href="#appendix-C-2.8.2.10.2.1" class="pilcrow">¶</a>
-</li>
-                <li class="normal" id="appendix-C-2.8.2.10.2.2">Reference updates<a href="#appendix-C-2.8.2.10.2.2" class="pilcrow">¶</a>
-</li>
-                <li class="normal" id="appendix-C-2.8.2.10.2.3">Capitalization, spelling, terms from other documents<a href="#appendix-C-2.8.2.10.2.3" class="pilcrow">¶</a>
-</li>
-              </ul>
+<li class="normal" id="appendix-C-2.8.2.1">Removed visible comment that should not be visible in Token reuse considerations.<a href="#appendix-C-2.8.2.1" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-C-2.9">
-          <p id="appendix-C-2.9.1">Changes since draft-ietf-core-echo-request-tag-04:<a href="#appendix-C-2.9.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.9.1">Changes since draft-ietf-core-echo-request-tag-05:<a href="#appendix-C-2.9.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-C-2.9.2.1">
-              <p id="appendix-C-2.9.2.1.1">Editorial fixes<a href="#appendix-C-2.9.2.1.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-C-2.9.2.1.2.1">Moved paragraph on collision-free encoding of data in the Token to
-Security Considerations and rephrased it<a href="#appendix-C-2.9.2.1.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-C-2.9.2.1">Add privacy considerations on cookie-style use of Echo values<a href="#appendix-C-2.9.2.1" class="pilcrow">¶</a>
 </li>
-                <li class="normal" id="appendix-C-2.9.2.1.2.2">"easiest" -&gt; "one easy"<a href="#appendix-C-2.9.2.1.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.9.2.2">Add security considerations for token reuse<a href="#appendix-C-2.9.2.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.9.2.3">Add note in security considerations on use of nonvolatile memory when
+dealing with pseudorandom numbers<a href="#appendix-C-2.9.2.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.9.2.4">Appendix on echo generation: add a few words on up- and downsides of the
+encrypted timestamp alternative<a href="#appendix-C-2.9.2.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.9.2.5">
+              <p id="appendix-C-2.9.2.5.1">Clarifications around Outer Echo:<a href="#appendix-C-2.9.2.5.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-2.9.2.5.2.1">Could be generated by the origin server to prove network reachability
+(but for most applications it MUST be inner)<a href="#appendix-C-2.9.2.5.2.1" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-C-2.9.2.5.2.2">Could be generated by intermediaries<a href="#appendix-C-2.9.2.5.2.2" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-C-2.9.2.5.2.3">Is answered by the client to the endpoint from which it received it
+(ie. Outer if received as Outer)<a href="#appendix-C-2.9.2.5.2.3" class="pilcrow">¶</a>
+</li>
+              </ul>
+</li>
+            <li class="normal" id="appendix-C-2.9.2.6">Clarification that a server can send Echo preemtively<a href="#appendix-C-2.9.2.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.9.2.7">Refer to stateless to explain what "more information than just the
+sequence number" could be<a href="#appendix-C-2.9.2.7" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.9.2.8">Remove explanations around 0.00 empty messags<a href="#appendix-C-2.9.2.8" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.9.2.9">
+              <p id="appendix-C-2.9.2.9.1">Rewordings:<a href="#appendix-C-2.9.2.9.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-2.9.2.9.2.1">the attack: from "forging" to "guessing"<a href="#appendix-C-2.9.2.9.2.1" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-C-2.9.2.9.2.2">"freshness tokens" to "freshness indicators" (to avoid confusion with
+the Token)<a href="#appendix-C-2.9.2.9.2.2" class="pilcrow">¶</a>
+</li>
+              </ul>
+</li>
+            <li class="normal" id="appendix-C-2.9.2.10">
+              <p id="appendix-C-2.9.2.10.1">Editorial fixes:<a href="#appendix-C-2.9.2.10.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-2.9.2.10.2.1">Abstract and introduction mention what is updated in RFC7252<a href="#appendix-C-2.9.2.10.2.1" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-C-2.9.2.10.2.2">Reference updates<a href="#appendix-C-2.9.2.10.2.2" class="pilcrow">¶</a>
+</li>
+                <li class="normal" id="appendix-C-2.9.2.10.2.3">Capitalization, spelling, terms from other documents<a href="#appendix-C-2.9.2.10.2.3" class="pilcrow">¶</a>
 </li>
               </ul>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-C-2.10">
-          <p id="appendix-C-2.10.1">Changes since draft-ietf-core-echo-request-tag-03:<a href="#appendix-C-2.10.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.10.1">Changes since draft-ietf-core-echo-request-tag-04:<a href="#appendix-C-2.10.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-C-2.10.2.1">Mention Token processing changes in title<a href="#appendix-C-2.10.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-C-2.10.2.1">
+              <p id="appendix-C-2.10.2.1.1">Editorial fixes<a href="#appendix-C-2.10.2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-2.10.2.1.2.1">Moved paragraph on collision-free encoding of data in the Token to
+Security Considerations and rephrased it<a href="#appendix-C-2.10.2.1.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.10.2.2">Abstract reworded<a href="#appendix-C-2.10.2.2" class="pilcrow">¶</a>
+                <li class="normal" id="appendix-C-2.10.2.1.2.2">"easiest" -&gt; "one easy"<a href="#appendix-C-2.10.2.1.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.10.2.3">Clarify updates to Token processing<a href="#appendix-C-2.10.2.3" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.10.2.4">Describe security levels from Echo length<a href="#appendix-C-2.10.2.4" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.10.2.5">Allow non-monotonic clocks under certain conditions for freshness<a href="#appendix-C-2.10.2.5" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.10.2.6">Simplify freshness expressions<a href="#appendix-C-2.10.2.6" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.10.2.7">Describe when a Request-Tag can be set<a href="#appendix-C-2.10.2.7" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.10.2.8">Add note on application-level freshness mechanisms<a href="#appendix-C-2.10.2.8" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.10.2.9">Minor editorial changes<a href="#appendix-C-2.10.2.9" class="pilcrow">¶</a>
+              </ul>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-C-2.11">
-          <p id="appendix-C-2.11.1">Changes since draft-ietf-core-echo-request-tag-02:<a href="#appendix-C-2.11.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.11.1">Changes since draft-ietf-core-echo-request-tag-03:<a href="#appendix-C-2.11.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-C-2.11.2.1">Define "freshness"<a href="#appendix-C-2.11.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-C-2.11.2.1">Mention Token processing changes in title<a href="#appendix-C-2.11.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.11.2.2">Note limitations of "aliveness"<a href="#appendix-C-2.11.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.11.2.2">Abstract reworded<a href="#appendix-C-2.11.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.11.2.3">Clarify proxy and OSCORE handling in presence of "echo"<a href="#appendix-C-2.11.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.11.2.3">Clarify updates to Token processing<a href="#appendix-C-2.11.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.11.2.4">Clarify when Echo values may be reused<a href="#appendix-C-2.11.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.11.2.4">Describe security levels from Echo length<a href="#appendix-C-2.11.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.11.2.5">Update security considerations<a href="#appendix-C-2.11.2.5" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.11.2.5">Allow non-monotonic clocks under certain conditions for freshness<a href="#appendix-C-2.11.2.5" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.11.2.6">Various minor clarifications<a href="#appendix-C-2.11.2.6" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.11.2.6">Simplify freshness expressions<a href="#appendix-C-2.11.2.6" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.11.2.7">Minor editorial changes<a href="#appendix-C-2.11.2.7" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.11.2.7">Describe when a Request-Tag can be set<a href="#appendix-C-2.11.2.7" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.11.2.8">Add note on application-level freshness mechanisms<a href="#appendix-C-2.11.2.8" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.11.2.9">Minor editorial changes<a href="#appendix-C-2.11.2.9" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-C-2.12">
-          <p id="appendix-C-2.12.1">Major changes since draft-ietf-core-echo-request-tag-01:<a href="#appendix-C-2.12.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.12.1">Changes since draft-ietf-core-echo-request-tag-02:<a href="#appendix-C-2.12.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-C-2.12.2.1">
-              <p id="appendix-C-2.12.2.1.1">Follow-up changes after the "relying on block-wise" change in -01:<a href="#appendix-C-2.12.2.1.1" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="appendix-C-2.12.2.1.2.1">Simplify the description of Request-Tag and matchability<a href="#appendix-C-2.12.2.1.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-C-2.12.2.1">Define "freshness"<a href="#appendix-C-2.12.2.1" class="pilcrow">¶</a>
 </li>
-                <li class="normal" id="appendix-C-2.12.2.1.2.2">Do not update RFC7959 any more<a href="#appendix-C-2.12.2.1.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.12.2.2">Note limitations of "aliveness"<a href="#appendix-C-2.12.2.2" class="pilcrow">¶</a>
 </li>
-              </ul>
+            <li class="normal" id="appendix-C-2.12.2.3">Clarify proxy and OSCORE handling in presence of "echo"<a href="#appendix-C-2.12.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.12.2.2">Make Request-Tag repeatable.<a href="#appendix-C-2.12.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.12.2.4">Clarify when Echo values may be reused<a href="#appendix-C-2.12.2.4" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.12.2.3">Add rationale on not relying purely on sequence numbers.<a href="#appendix-C-2.12.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.12.2.5">Update security considerations<a href="#appendix-C-2.12.2.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.12.2.6">Various minor clarifications<a href="#appendix-C-2.12.2.6" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.12.2.7">Minor editorial changes<a href="#appendix-C-2.12.2.7" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-C-2.13">
-          <p id="appendix-C-2.13.1">Major changes since draft-ietf-core-echo-request-tag-00:<a href="#appendix-C-2.13.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.13.1">Major changes since draft-ietf-core-echo-request-tag-01:<a href="#appendix-C-2.13.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-C-2.13.2.1">Reworded the Echo section.<a href="#appendix-C-2.13.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-C-2.13.2.1">
+              <p id="appendix-C-2.13.2.1.1">Follow-up changes after the "relying on block-wise" change in -01:<a href="#appendix-C-2.13.2.1.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-2.13.2.1.2.1">Simplify the description of Request-Tag and matchability<a href="#appendix-C-2.13.2.1.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.13.2.2">Added rules for Token processing.<a href="#appendix-C-2.13.2.2" class="pilcrow">¶</a>
+                <li class="normal" id="appendix-C-2.13.2.1.2.2">Do not update RFC7959 any more<a href="#appendix-C-2.13.2.1.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.13.2.3">Added security considerations.<a href="#appendix-C-2.13.2.3" class="pilcrow">¶</a>
+              </ul>
 </li>
-            <li class="normal" id="appendix-C-2.13.2.4">Added actual IANA section.<a href="#appendix-C-2.13.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.13.2.2">Make Request-Tag repeatable.<a href="#appendix-C-2.13.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.13.2.5">Made Request-Tag optional and safe-to-forward, relying on block-wise to treat it as part of the cache-key<a href="#appendix-C-2.13.2.5" class="pilcrow">¶</a>
-</li>
-            <li class="normal" id="appendix-C-2.13.2.6">Dropped use case about OSCORE Outer-block-wise (the case went away when its Partial IV was moved into the Object-Security option)<a href="#appendix-C-2.13.2.6" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.13.2.3">Add rationale on not relying purely on sequence numbers.<a href="#appendix-C-2.13.2.3" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
         <li class="normal" id="appendix-C-2.14">
-          <p id="appendix-C-2.14.1">Major changes since draft-amsuess-core-repeat-request-tag-00:<a href="#appendix-C-2.14.1" class="pilcrow">¶</a></p>
+          <p id="appendix-C-2.14.1">Major changes since draft-ietf-core-echo-request-tag-00:<a href="#appendix-C-2.14.1" class="pilcrow">¶</a></p>
 <ul class="normal">
-<li class="normal" id="appendix-C-2.14.2.1">The option used for establishing freshness was renamed from "Repeat" to "Echo" to reduce confusion about repeatable options.<a href="#appendix-C-2.14.2.1" class="pilcrow">¶</a>
+<li class="normal" id="appendix-C-2.14.2.1">Reworded the Echo section.<a href="#appendix-C-2.14.2.1" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.14.2.2">The response code that goes with Echo was changed from 4.03 to 4.01 because the client needs to provide better credentials.<a href="#appendix-C-2.14.2.2" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.14.2.2">Added rules for Token processing.<a href="#appendix-C-2.14.2.2" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.14.2.3">The interaction between the new option and (cross) proxies is now covered.<a href="#appendix-C-2.14.2.3" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.14.2.3">Added security considerations.<a href="#appendix-C-2.14.2.3" class="pilcrow">¶</a>
 </li>
-            <li class="normal" id="appendix-C-2.14.2.4">Two messages being "Request-Tag matchable" was introduced to replace the older concept of having a request tag value with its slightly awkward equivalence definition.<a href="#appendix-C-2.14.2.4" class="pilcrow">¶</a>
+            <li class="normal" id="appendix-C-2.14.2.4">Added actual IANA section.<a href="#appendix-C-2.14.2.4" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.14.2.5">Made Request-Tag optional and safe-to-forward, relying on block-wise to treat it as part of the cache-key<a href="#appendix-C-2.14.2.5" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.14.2.6">Dropped use case about OSCORE Outer-block-wise (the case went away when its Partial IV was moved into the Object-Security option)<a href="#appendix-C-2.14.2.6" class="pilcrow">¶</a>
+</li>
+          </ul>
+</li>
+        <li class="normal" id="appendix-C-2.15">
+          <p id="appendix-C-2.15.1">Major changes since draft-amsuess-core-repeat-request-tag-00:<a href="#appendix-C-2.15.1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="appendix-C-2.15.2.1">The option used for establishing freshness was renamed from "Repeat" to "Echo" to reduce confusion about repeatable options.<a href="#appendix-C-2.15.2.1" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.15.2.2">The response code that goes with Echo was changed from 4.03 to 4.01 because the client needs to provide better credentials.<a href="#appendix-C-2.15.2.2" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.15.2.3">The interaction between the new option and (cross) proxies is now covered.<a href="#appendix-C-2.15.2.3" class="pilcrow">¶</a>
+</li>
+            <li class="normal" id="appendix-C-2.15.2.4">Two messages being "Request-Tag matchable" was introduced to replace the older concept of having a request tag value with its slightly awkward equivalence definition.<a href="#appendix-C-2.15.2.4" class="pilcrow">¶</a>
 </li>
           </ul>
 </li>
