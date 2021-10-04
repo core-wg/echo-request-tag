@@ -6,8 +6,8 @@ CoRE Working Group                                            C. Amsuess
 Internet-Draft                                                          
 Updates: 7252 (if approved)                                  J. Mattsson
 Intended status: Standards Track                             G. Selander
-Expires: 2 April 2022                                        Ericsson AB
-                                                       29 September 2021
+Expires: 7 April 2022                                        Ericsson AB
+                                                          4 October 2021
 
 
              CoAP: Echo, Request-Tag, and Token Processing
@@ -53,7 +53,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 April 2022.
+   This Internet-Draft will expire on 7 April 2022.
 
 Copyright Notice
 
@@ -1860,8 +1860,9 @@ Appendix C.  Change Log
 
 Acknowledgments
 
-   The authors want to thank Carsten Bormann, Francesca Palombini, and
-   Jim Schaad for providing valuable input to the draft.
+   The authors want to thank Carsten Bormann, Roman Danyliw, Benjamin
+   Kaduk, Murray Kucherawy, Francesca Palombini and Jim Schaad for
+   providing valuable input to the draft.
 
 Authors' Addresses
 
