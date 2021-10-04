@@ -752,6 +752,17 @@ In situations where those overheads are unacceptable (e.g. because the payloads 
 
 \[ The editor is asked to remove this section before publication. \]
 
+* Changes since draft-ietf-core-echo-request-tag-13
+
+  * Minor editorial fixes.
+  * Wording enhancements:
+    * nonce -> initialization vector
+    * information extracted by the sever -> information conveyed to the server
+  * Acknowledgements updated.
+  * Changelog for -13 added (previous upload just pointed to other resources).
+  * Short title is "Echo, Request-Tag, and Token Processing" now instead of outdated acronym.
+  * Informative reference to RFC 7390 is now to draft-ietf-core-groupcomm-bis
+
 * Changes since draft-ietf-core-echo-request-tag-12 (addressing comments from IESG review)
 
   See CoRE point-to-point responses at <https://github.com/core-wg/echo-request-tag/blob/master/point-to-point.md> and on CoRE mailing list.
